@@ -4,15 +4,15 @@
 *.cginc text
 *.shader text
 
-*.mat merge=unityyamlmerge eol=lf
-*.anim merge=unityyamlmerge eol=lf
-*.unity merge=unityyamlmerge eol=lf
-*.prefab merge=unityyamlmerge eol=lf
-*.physicsMaterial2D merge=unityyamlmerge eol=lf
-*.physicMaterial merge=unityyamlmerge eol=lf
-*.asset merge=unityyamlmerge eol=lf
-*.meta merge=unityyamlmerge eol=lf
-*.controller merge=unityyamlmerge eol=lf
+*.mat filter=lfs diff=lfs merge=unityyamlmerge eol=lf
+*.anim filter=lfs diff=lfs merge=unityyamlmerge eol=lf
+*.unity filter=lfs diff=lfs merge=unityyamlmerge eol=lf
+*.prefab filter=lfs diff=lfs merge=unityyamlmerge eol=lf
+*.physicsMaterial2D filter=lfs diff=lfs merge=unityyamlmerge eol=lf
+*.physicMaterial filter=lfs diff=lfs merge=unityyamlmerge eol=lf
+*.asset filter=lfs diff=lfs merge=unityyamlmerge eol=lf
+*.meta filter=lfs diff=lfs merge=unityyamlmerge eol=lf
+*.controller filter=lfs diff=lfs merge=unityyamlmerge eol=lf
 
 
 ## git-lfs ##
