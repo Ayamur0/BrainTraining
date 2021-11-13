@@ -50,13 +50,13 @@ public class UIElementDragger : EventTrigger {
 
     void Rotate() {
         if (Input.GetKeyDown(KeyCode.Q)) {
-            transform.Rotate(0.0f, 0.0f, -90.0f, Space.Self);
+            transform.Rotate(0.0f, 0.0f, 90.0f, Space.Self);
             float d = height;
             height = width;
             width = d;
         }
         if (Input.GetKeyDown(KeyCode.E)) {
-            transform.Rotate(0.0f, 0.0f, 90.0f, Space.Self);
+            transform.Rotate(0.0f, 0.0f, -90.0f, Space.Self);
             float d = height;
             height = width;
             width = d;
