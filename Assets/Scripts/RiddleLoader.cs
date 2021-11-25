@@ -15,13 +15,22 @@ public class RiddleLoader : MonoBehaviour {
     public ResultArea resultArea;
     public Text description;
 
+    private Riddle currentRiddle;
+
     // Start is called before the first frame update
     void Start() {
         resultArea = new ResultArea(resultCanvas);
         mainAreaInputContainer = mainArea.transform.GetChild(0).GetComponent<Canvas>();
         mainAreaInput = mainAreaInputContainer.transform.GetChild(0).GetComponent<InputField>();
         if (testLoad) {
-            LoadRiddle(new R001());
+            currentRiddle = ScriptableObject.CreateInstance<R001>();
+            LoadRiddle(currentRiddle);
+        }
+    }
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.R)) {
+            Debug.Log(currentRiddle.checkResult());
         }
     }
 
@@ -39,6 +48,11 @@ public class RiddleLoader : MonoBehaviour {
                 break;
         }
         if (riddle.interactive) {
+            RectTransform rectTransform = riddle.interactiveArea.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = mainArea.GetComponent<RectTransform>().rect.size;
+            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+            rectTransform.position = Vector3.zero;
             riddle.interactiveArea.transform.SetParent(mainArea.transform, false);
             mainAreaInput.text = "Test";
             mainAreaInputContainer.enabled = false;
