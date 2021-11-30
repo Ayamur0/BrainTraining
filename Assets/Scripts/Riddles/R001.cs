@@ -14,8 +14,8 @@ public class R001 : Riddle {
 
     public override void OnEnable() {
         base.OnEnable();
-        resultType = 0;
-        resultAreaImage = Resources.Load<Sprite>("RiddleAssets/001/result") as Sprite;
+        resultType = NONE;
+        image = Resources.Load<Sprite>("RiddleAssets/001/result") as Sprite;
         description = "Aus dem Schild über dem Kuchenladen ist ein \"K\" heruntergefallen. \n\n"
          + "Verwende die drei Dreicke, um den Buchstaben \"K\" im Kasten zu bilden."
          + "Klicke auf ein Dreick und halte die Maustaste gedrückt um es zu nehmen. Sobald du es genommen hast, kannst du es mit Q und E drehen. \n\n"
@@ -57,6 +57,6 @@ public class R001 : Riddle {
 
         return Vector2.Distance(topPos, topTriangle.transform.localPosition)
              + Vector2.Distance(bottomPos, bottomTriangle.transform.localPosition)
-             + Vector2.Distance(rightPos, bigTriangle.transform.localPosition) < 30;
+             + Vector2.Distance(rightPos, bigTriangle.transform.localPosition) < 40;
     }
 }

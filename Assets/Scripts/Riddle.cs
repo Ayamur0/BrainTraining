@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Riddle : ScriptableObject {
+    public const string RED = "#b83e39";
     public const int NONE = 0;
     public const int TEXT = 1;
     public const int NUMBER = 2;
 
     public int resultType;
-    public Sprite resultAreaImage;
+    public Sprite image;
     public string description;
     public bool interactive;
     public GameObject interactiveArea;
@@ -18,4 +19,9 @@ public class Riddle : ScriptableObject {
     }
 
     virtual public bool checkResult() { return false; }
+
+    virtual public bool checkResult(int result) { return false; }
+
+    virtual public bool checkResult(string result) { return false; }
+
 }
