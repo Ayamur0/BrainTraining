@@ -8,7 +8,7 @@ public class SelectionManager : MonoBehaviour {
     public Text counter;
     public Sprite selectedSprite;
     private int selectedAmount;
-    private List<int> selectedIndices = new List<int>();
+    public List<int> selectedIndices = new List<int>();
 
     void Start() {
         int x = 0, y = 0;

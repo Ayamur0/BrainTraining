@@ -20,6 +20,10 @@ public class UIElementDragger : EventTrigger {
         RectTransform rectTransform = GetComponent<RectTransform>();
         width = rectTransform.sizeDelta.x;
         height = rectTransform.sizeDelta.y;
+        Vector2 thisMax = transform.TransformPoint(new Vector2(rectTransform.rect.xMax, rectTransform.rect.yMax));
+        Vector2 thisMin = transform.TransformPoint(new Vector2(rectTransform.rect.xMin, rectTransform.rect.yMin));
+        width = thisMax.x - thisMin.x;
+        height = thisMax.y - thisMin.y;
     }
 
 

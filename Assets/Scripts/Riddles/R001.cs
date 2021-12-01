@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class R001 : Riddle {
+public class R001 : Riddle { // 20
     public GameObject smallTriangle1;
     public GameObject smallTriangle2;
     public GameObject bigTriangle;

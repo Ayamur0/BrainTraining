@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class R002 : Riddle {
+public class R002 : Riddle { // 50
     public override void OnEnable() {
         base.OnEnable();
         resultType = NUMBER;

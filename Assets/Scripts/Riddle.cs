@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class Riddle : ScriptableObject {
     public const string RED = "#b83e39";
     public const int NONE = 0;
-    public const int TEXT = 1;
-    public const int NUMBER = 2;
+    public const int NUMBER = 1;
+    public const int SUBMIT = 2;
 
     public int resultType;
     public Sprite image;

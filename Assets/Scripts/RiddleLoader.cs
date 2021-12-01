@@ -23,8 +23,8 @@ public class RiddleLoader : MonoBehaviour {
         resultArea = new ResultArea(resultCanvas);
 
         if (testLoad) {
-            currentRiddle = ScriptableObject.CreateInstance<R002>();
-            // LoadRiddle(currentRiddle);
+            currentRiddle = ScriptableObject.CreateInstance<R008>();
+            LoadRiddle(currentRiddle);
         }
     }
 
@@ -49,14 +49,14 @@ public class RiddleLoader : MonoBehaviour {
                 resultArea.DisableInput();
                 submitButton.gameObject.SetActive(false);
                 break;
-            case Riddle.TEXT:
+            case Riddle.NUMBER:
                 resultArea.SetStandardImage();
                 resultArea.EnableInput();
                 submitButton.gameObject.SetActive(true);
                 break;
-            case Riddle.NUMBER:
-                resultArea.SetStandardImage();
-                resultArea.EnableInput();
+            case Riddle.SUBMIT:
+                resultArea.SetImage(riddle.image);
+                resultArea.DisableInput();
                 submitButton.gameObject.SetActive(true);
                 break;
         }
