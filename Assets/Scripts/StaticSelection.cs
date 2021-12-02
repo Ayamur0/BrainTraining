@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CircleSelectionManager : MonoBehaviour {
+public class StaticSelection : MonoBehaviour {
     public Button[] buttons;
     public Text counter;
     public int maxAllowedSelections;

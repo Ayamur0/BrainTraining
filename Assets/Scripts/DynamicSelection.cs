@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class SelectionController : EventTrigger {
+public class DynamicSelection : EventTrigger {
     public Image marker;
     private Vector2 areaMin;
     private Vector2 areaMax;

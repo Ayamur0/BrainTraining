@@ -21,7 +21,7 @@ public class RiddleLoader : MonoBehaviour {
         resultArea = new ResultArea(resultImage);
 
         if (testLoad) {
-            currentRiddle = ScriptableObject.CreateInstance<R017>();
+            currentRiddle = ScriptableObject.CreateInstance<R023>();
             LoadRiddle(currentRiddle);
         }
     }

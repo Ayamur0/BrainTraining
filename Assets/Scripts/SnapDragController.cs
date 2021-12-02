@@ -26,12 +26,14 @@ public class SnapDragController : MonoBehaviour {
     public Image[] tileImages;
     public Tile[] tiles;
     public Vector2[] locations;
+    public bool enableRotation;
+    private float pointerDownTime;
     private List<Location> possibleLocations = new List<Location>();
     private int dragging = -1;
     private Vector2 areaMin;
     private Vector2 areaMax;
 
-    void Start() {
+    public void Start() {
         foreach (Vector2 v in locations)
             possibleLocations.Add(new Location(v));
         tiles = new Tile[tileImages.Length];
@@ -52,6 +54,7 @@ public class SnapDragController : MonoBehaviour {
     }
 
     public void OnPointerDown(int tile) {
+        pointerDownTime = Time.time;
         dragging = tile;
         if (tiles[dragging].occupiedLocationIndex != -1)
             possibleLocations[tiles[dragging].occupiedLocationIndex].occupied = false;
@@ -62,6 +65,9 @@ public class SnapDragController : MonoBehaviour {
         // need to reset dragging first, else Update will set position while this function is executed
         int lastDrag = dragging;
         dragging = -1;
+        if (enableRotation && Time.time - pointerDownTime < 0.1) {
+            tiles[lastDrag].image.transform.Rotate(0.0f, 0.0f, 90.0f, Space.Self);
+        }
         float x = Input.mousePosition.x;
         float y = Input.mousePosition.y;
 

@@ -8,7 +8,10 @@ public class Riddle : ScriptableObject {
 
     public int resultType;
     public Sprite resultAreaImage;
+    public string title;
+    public int points;
     public string description;
+    public string solution;
     public GameObject interactiveArea;
     public bool autoSubmit = false;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class R001 : Riddle { // 20
+public class R001 : Riddle {
     public GameObject smallTriangle1;
     public GameObject smallTriangle2;
     public GameObject bigTriangle;
@@ -16,10 +16,13 @@ public class R001 : Riddle { // 20
         base.OnEnable();
         autoSubmit = true;
         resultAreaImage = Resources.Load<Sprite>("RiddleAssets/001/result") as Sprite;
+        title = "K für Kuchen";
+        points = 20;
         description = "Aus dem Schild über dem Kuchenladen ist ein \"K\" heruntergefallen. \n\n"
          + "Verwende die drei Dreicke, um den Buchstaben \"K\" im Kasten zu bilden."
          + "Klicke auf ein Dreick und halte die Maustaste gedrückt um es zu nehmen. Sobald du es genommen hast, kannst du es mit Q und E drehen. \n\n"
          + "Lasse die Maustaste los, um das Dreieck abzulegen. Wenn du ein \"K\" bildest, erscheint sofort die Erfolgsnachricht.";
+        solution = "Korrekt! \n\nDas Schild ist repariert, und das Geschäft hat wieder geöffnet. Hm... Hat jemand Lust auf Kuchen?";
 
         interactiveArea = Instantiate(Resources.Load<GameObject>("RiddleAssets/001/R001")) as GameObject;
         Canvas canvas = interactiveArea.GetComponentInChildren<Canvas>();
