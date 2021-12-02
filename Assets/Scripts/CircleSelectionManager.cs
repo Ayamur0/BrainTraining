@@ -3,40 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectionManager : MonoBehaviour {
+public class CircleSelectionManager : MonoBehaviour {
     public Button[] buttons;
     public Text counter;
-    public Sprite selectedSprite;
+    public int maxAllowedSelections;
     private int selectedAmount;
     public List<int> selectedIndices = new List<int>();
 
     void Start() {
-        int x = 0, y = 0;
+        int x = 0;
         foreach (Button b in buttons) {
-            int tempx = x, tempy = y;
-            b.onClick.AddListener(() => OnClick(tempx, tempy));
+            int tempx = x;
+            b.onClick.AddListener(() => OnClick(tempx));
             x++;
-            if (x >= 3) {
-                y++;
-                x = 0;
-            }
         }
     }
 
     void Update() {
-        counter.text = "" + (2 - selectedAmount);
+        if (counter != null)
+            counter.text = "" + (maxAllowedSelections - selectedAmount);
     }
 
-    public void OnClick(int x, int y) {
-        Debug.Log("x " + x + " y " + y);
-        int index = x + y * 3;
+    public void OnClick(int index) {
         Image selectedImage = buttons[index].transform.GetChild(0).GetComponent<Image>();
-        Debug.Log(selectedImage.gameObject.name);
         if (selectedIndices.Contains(index)) {
             selectedAmount--;
             selectedIndices.Remove(index);
             selectedImage.enabled = false;
-        } else if (selectedAmount < 2) {
+        } else if (selectedAmount < maxAllowedSelections) {
             selectedAmount++;
             selectedIndices.Add(index);
             selectedImage.enabled = true;

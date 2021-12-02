@@ -8,20 +8,18 @@ public class R008 : Riddle { // 55
 
     public override void OnEnable() {
         base.OnEnable();
-        resultType = SUBMIT;
-        image = Resources.Load<Sprite>("RiddleAssets/008/result") as Sprite;
+        resultAreaImage = Resources.Load<Sprite>("RiddleAssets/008/result") as Sprite;
         description = $"Die schwarzen Gespenster wandeln auf weißen Wegen, die weißen Gespenster auf schwarzen. \n\n"
          + $"Sie wurden im Schwarz-Weiß-Labyrinth von ihren Freunden getrennt.\n\n"
          + $"Verwende die fünf Felder, um <color={RED}>die Wege zu verbinden</color> damit die <color={RED}>weißen Gespenster vereint werden</color> und die "
          + $"<color={RED}>schwarzen Gespenster ebenso</color>.\n\n"
          + "Ziehe die Felder in das Labyrinth im rechten Bild und vervollständige es.";
 
-        interactive = true;
         interactiveArea = Instantiate(Resources.Load<GameObject>("RiddleAssets/008/R008")) as GameObject;
     }
 
     public override bool checkResult() {
-        DragController.Tile[] tiles = interactiveArea.transform.GetComponent<DragController>().tiles;
+        SnapDragController.Tile[] tiles = interactiveArea.transform.GetComponent<SnapDragController>().tiles;
         for (int i = 0; i < result.Length; i++) {
             if (tiles[i].occupiedLocationIndex != result[i])
                 return false;

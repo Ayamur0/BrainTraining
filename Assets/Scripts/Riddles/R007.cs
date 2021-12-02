@@ -8,13 +8,11 @@ public class R007 : Riddle { // 25
 
     public override void OnEnable() {
         base.OnEnable();
-        resultType = SUBMIT;
-        image = Resources.Load<Sprite>("RiddleAssets/007/result") as Sprite;
+        resultAreaImage = Resources.Load<Sprite>("RiddleAssets/007/result") as Sprite;
         description = $"Diesen abgeschlossenen Raum betritt normalerweise nie jemand. \n\n"
          + $"Jetzt ist jedoch <color={RED}>ein Jahr vergangen</color>, und offenbar <color={RED}>hat sich etwas im Raum verändert</color>. Was nur?\n\n"
          + "Klicke um den Kreis auf dem Element zu platzieren, das sich deiner Meinung nach verändert hat.";
 
-        interactive = true;
         interactiveArea = Instantiate(Resources.Load<GameObject>("RiddleAssets/007/R007")) as GameObject;
     }
 

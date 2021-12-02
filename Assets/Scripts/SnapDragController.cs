@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class DragController : MonoBehaviour {
+public class SnapDragController : MonoBehaviour {
     public class Tile {
         public Image image;
         public Vector2 basePos;
@@ -24,14 +24,17 @@ public class DragController : MonoBehaviour {
         }
     }
     public Image[] tileImages;
-    public Tile[] tiles = new Tile[5];
-    private List<Location> possibleLocations = new List<Location>{new Location(new Vector2(80, 75.5f)), new Location(new Vector2(9, 4)), new Location(new Vector2(151, 4)),
-                                                                  new Location(new Vector2(80, -67.5f)), new Location(new Vector2(151, -67.5f))};
+    public Tile[] tiles;
+    public Vector2[] locations;
+    private List<Location> possibleLocations = new List<Location>();
     private int dragging = -1;
     private Vector2 areaMin;
     private Vector2 areaMax;
 
     void Start() {
+        foreach (Vector2 v in locations)
+            possibleLocations.Add(new Location(v));
+        tiles = new Tile[tileImages.Length];
         for (int i = 0; i < tileImages.Length; i++)
             tiles[i] = new Tile(tileImages[i]);
         Rect rect = GetComponent<RectTransform>().rect;
