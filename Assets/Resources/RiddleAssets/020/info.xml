@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>20</id>
+    <title>Unglaublicher Durchbruch</title>
+    <maxPoints>40</maxPoints>
+    <minPoints>10</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Findest du durch das Labyrinth?</value>
+        <value>Um vom Startpunkt links unten zum Ziel rechts oben zu gelangen, $musst du eine Stelle der Mauer durchbrechen$.</value>
+        <value>Klicke um den Kreis auf dem Mauerstück zu platzieren, das deiner Meinung nach zerstört werden muss.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Was für ein Durchbruch!</value>
+        <value>Du hast den Weg durch den Irrgarten gefunden. Das ist offenbar eine Art Schatzkammer.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

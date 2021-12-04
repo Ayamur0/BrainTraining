@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>13</id>
+    <title>Die Schatzkarte</title>
+    <maxPoints>45</maxPoints>
+    <minPoints>15</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Du hast eine Schatzkarte gefunden, die mehrere Inseln mit unerschiedlichen Ruinen zeigt.</value>
+        <value>Der Schatz befindet sich in der Mitte eines gleichseitigen Dreiecks, das drei Insel verbindet, auf denen $verschieden geformte Ruinen liegen$.</value>
+        <value>Klicke die drei Inseln an, die zeigen, wo such der Schatz befinden, um deine Antwort zu geben. Klicke eine Insel erneut an um die Auswahl zu löschen.</value>
+        <value>Der Abstand zwischen den Punkten auf der Karte ist immer gleich groß.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Schatzjagd erfolgreich!</value>
+        <value>Die Mitte des Dreiecks liegt in der Mitte des Meeres. Du hast Ruinen auf dem Meeresboden gefunden!</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

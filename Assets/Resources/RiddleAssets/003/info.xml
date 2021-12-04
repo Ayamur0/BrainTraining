@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>3</id>
+    <title>Ein Fingerzeig</title>
+    <maxPoints>45</maxPoints>
+    <minPoints>20</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Wir haben hier neun Leute. Einige gehören zu den $"Braven"$, die anderen zu den $"Bösen"$.</value>
+        <value>$Wenn ein Braver einen Bösen neben sich hat, zeigt er auf ihn. Ansonsten verschränkt er die Arme.$</value>
+        <value>$Die Bösen zeigen immer auf jemanden, ganze egal, ob diese Person brav oder böse ist.$</value>
+        <value>Klicke auf eine Person, um die Markierung zu aktivieren oder deaktivieren.</value>
+        <value>Markiere die beiden Bösen, die sich in der Gruppe verstecken.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Die guten ins Töpfchen...</value>
+        <value>Die Bösen befinden sich oben in der Mitte und rechts. Wenn man weiß, dass die Bösen auf die Braven zeigen, findet man sie schnell.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

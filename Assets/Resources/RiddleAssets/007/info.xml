@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>7</id>
+    <title>Der verschlossene Raum</title>
+    <maxPoints>25</maxPoints>
+    <minPoints>10</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Diesen abgeschlossenen Raum betritt normalerweise nie jemand.</value>
+        <value>Jetzt ist jedoch $ein Jahr vergangen$, und offenbar $hat sich etwas im Raum verändert$. Was nur?</value>
+        <value>Klicke um den Kreis auf dem Element zu platzieren, das sich deiner Meinung nach verändert hat.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Fantastisch!</value>
+        <value>Der Wasserkrug hinten im Raum hat sich verändert. Nach einem Jahr ist das Wasser darin verdunstet.</value>
+        <value>Da bleint aber die Frage, wer überhaupt das Wasser in diesen Raum gestellt hat, den eigentlich niemand betritt.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

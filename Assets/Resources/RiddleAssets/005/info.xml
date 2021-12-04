@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>5</id>
+    <title>Verlogene Phantome</title>
+    <maxPoints>50</maxPoints>
+    <minPoints>20</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Ein paar freche Gespenster möchten mit dir spielen: Du musst Ihnen zuhören und $herausfinden, wer lügt$.</value>
+        <value>Offenbar sagen $höchstens zwei$ von ihnen nicht die Wahrheit.</value>
+        <value>Klicke auf ein Gespenst, um zu hören, was es zu sagen hat.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Perfekt durchschaut!</value>
+        <value>A und B haben gelogen. Denen hat das Spiel so richtig Spaß gemacht. Offenbar sind sie noch lange nicht fertig!</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

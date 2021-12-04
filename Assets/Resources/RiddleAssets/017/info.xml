@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>17</id>
+    <title>Eine ausdauernde Unterhaltung</title>
+    <maxPoints>50</maxPoints>
+    <minPoints>25</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Ein Mann und seine Frau haben eine seltsame Unterhaltung.</value>
+        <value>Der Mann sagt zu seiner Frau: "Es war unser $siebter Hochzeitstag$ am 30. Juni $letzten Jahres$, und unser $zehnter Hochzeitstag ist im nächsten Jahr$."</value>
+        <value>An welchem $Tag haben sie diese Unterhaltung begonnen?$</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Gut zugehört!</value>
+        <value>Der nächste Tag ist mitten in der Unterhaltung angebrochen, die gleichzeitig in ein neues Jahr hinüberlief. Das bedeutet, dass sie diese Unterhaltung am 31. Dezember des Jahres mit ihrem achten Hochzeitstag begonnen haben.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

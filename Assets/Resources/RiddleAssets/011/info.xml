@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>11</id>
+    <title>Bitte lächeln</title>
+    <maxPoints>40</maxPoints>
+    <minPoints>10</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Ein Mädchen verkauft Eis in einem Kiosk auf einer Aussichtsplattform.</value>
+        <value>Ein Junge mit einer Kamera kommt vorbei und macht ein Foto, auf dem ein Junge und ein Mädchen zu sehen sind.</value>
+        <value>Wie viele $Personen befanden sich mindestens$ auf der Aussichtsplattform, als das Foto gemacht wurde?</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Alles im Fokus!</value>
+        <value>Das Foto mit Junge und Mädchen zeigte das Mädchen im Kiosk und den Jungen mit der Kamera.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>1</id>
+    <title>K für Kuchen</title>
+    <maxPoints>20</maxPoints>
+    <minPoints>0</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Aus dem Schild über dem Kuchenladen ist ein "K" heruntergefallen.</value>
+        <value>Verwende die $drei Dreicke, um den Buchstaben "K" im Kasten zu bilden$. Klicke auf ein Dreick und halte die Maustaste gedrückt um es zu nehmen. Sobald du es genommen hast, kannst du es mit Q und E drehen.</value>
+        <value>Lasse die Maustaste los, um das Dreieck abzulegen. Wenn du ein "K" bildest, erscheint sofort die Erfolgsnachricht.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Korrekt!</value>
+        <value>Das Schild ist repariert, und das Geschäft hat wieder geöffnet. Hm... Hat jemand Lust auf Kuchen?</value>
+    </solutionParagraphs>
+    <autoSubmit>true</autoSubmit>
+</RiddleInfo>

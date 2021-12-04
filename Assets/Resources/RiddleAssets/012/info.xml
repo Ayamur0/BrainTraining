@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>12</id>
+    <title>Schatzjagd</title>
+    <maxPoints>45</maxPoints>
+    <minPoints>15</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Drei der Schatzkisten enthalten jeweils ein Juwel.</value>
+        <value>Berühre die Schalter zwischen den Truhe, um eine Zahl erscheinen zu lassen. Die Zahl sagt dir dann, $wie viele Juwelen sich in den umliegenden Kisten befinden.$</value>
+        <value>$Wo verstecken sich die Juwelen?$ Klicke auf eine Truhe, wenn du meinst, dass sich ein Juwel darin befindet. Berühre sie erneut um die Auswahl zu löschen.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Glänzende Leistung!</value>
+        <value>Du hast alle Juwelen gefunden. Zeit für die nächste Schatzjagd!</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

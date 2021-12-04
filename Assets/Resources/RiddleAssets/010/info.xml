@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>10</id>
+    <title>Zahlenreihe</title>
+    <maxPoints>35</maxPoints>
+    <minPoints>10</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Hier hängen einige Papierschnipsel mit Zahlen, und einer davon fehlt.</value>
+        <value>$Welche Zahl$ ist deiner Meinung nach auf $dem fehlenden Papierschnipsel gewesen?$</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Du hast es geschafft!</value>
+        <value>Die Zahlen sind ihrer Größe nach aufgehängt: 9, 10, 11, 12, 13.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>
