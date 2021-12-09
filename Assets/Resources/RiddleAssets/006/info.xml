@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>6</id>
+    <title>Seltsame Silhouette</title>
+    <maxPoints>45</maxPoints>
+    <minPoints>20</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Hinter dem Vorhang ist eine Silhouette von etwas.</value>
+        <value>Sie stammt $von drei Statuen$, aber von welchen?</value>
+        <value>Schaue dir die fünf Statuen an und wähle aus, welche sich hinter dem Vorhang befinden. Die Statuen können nicht auseinandergebaut werden und müssen als Ganzes verwendet werden.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Aus den Schatten ins Licht!</value>
+        <value>Die Silhouette war eine Kombination der Statuen A, C und D. Man musste A umdrehen und somit links und rechts vertauschen. D musste man sowohl umdrehen als auch auf den Kopf stellen.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

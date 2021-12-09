@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>23</id>
+    <title>Das Rätsel der Hoffnung</title>
+    <maxPoints>45</maxPoints>
+    <minPoints>20</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Auf dem Tisch stehen fünf Platten aus Buntglas.</value>
+        <value>$Stelle vier von ihnen auf dem Tisch auf$ und verwende das Licht der Kerzen, damit das englisch Wort "$HOPE$" für Hoffnugn zu sehen ist.</value>
+        <value>Ziehe die Platten, um sie zu bewegen, und stelle sie der Reihe nach in die Rahmen, um das Rätsel zu lösen.</value>
+        <value>Klicke sie kurz an, um sie zu drehen.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>So macht man Hoffnung!</value>
+        <value>HOPE...</value>
+        <value>Die Platten zeigen die Buchstaben, wenn das Licht der Kerzen durch sie scheint. Da wird einem ganz warm ums Herz.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

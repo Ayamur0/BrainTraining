@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>22</id>
+    <title>Wahrheit, Lügen und Bälle</title>
+    <maxPoints>50</maxPoints>
+    <minPoints>15</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Vier Personen (A, B, C und D) unterhalten sich neben einer Kiste mit einem Raster aus 4 x 4 Feldern.</value>
+        <value>A sagt: "In jeder vertikalen Reihe befinden sich zwei Bälle."</value>
+        <value>B sagt: "In jeder horizontalen Reihe befindet sich ein Ball."</value>
+        <value>C sagt: "In jeder der vier Ecken befindet sich ein Ball."</value>
+        <value>D sagt: "Der einzige Lügner hier ist A."</value>
+        <value>$Zwei der vier Personen lügen.$ In jedes Feld passt ein Ball, aber wie viele Bälle befinden sich insgesamt in der Kiste?</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Es sind insgesamt acht Bälle. Die Geschichten von A und C passen zueinander, B und D lügen. Ehrlich währt am längsten!</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

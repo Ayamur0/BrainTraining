@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>8</id>
+    <title>Schwarz-Weiß</title>
+    <maxPoints>55</maxPoints>
+    <minPoints>20</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Die schwarzen Gespenster wandeln auf weißen Wegen, die weißen Gespenster auf schwarzen.</value>
+        <value>Sie wurden im Schwarz-Weiß-Labyrinth von ihren Freunden getrennt.</value>
+        <value>Verwende die fünf Felder, um $die Wege zu verbinden$ damit die $weißen Gespenster vereint werden$ und die $schwarzen Gespenster ebenso$.</value>
+        <value>Ziehe die Felder in das Labyrinth im rechten Bild und vervollständige es.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Jetzt ist das Labyrinth wieder verbunden, und die Geisterpaare sind wieder vereint. Gruselig tolle Leistung!</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

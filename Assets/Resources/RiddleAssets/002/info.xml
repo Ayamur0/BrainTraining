@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>2</id>
+    <title>Die Zuckerwaagen</title>
+    <maxPoints>50</maxPoints>
+    <minPoints>30</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Hier stehen zwei digitale Waagen.</value>
+        <value>Die Displays sind an der gleichen Stelle kaputt. Daher kann man den $linken unteren Teil der Zahl nicht erkennen$.</value>
+        <value>Zum Beispiel würde die Zahl "6" als "5" erscheinen. Der Zucker wird durch das kaputte Display auf der $linken Waage ein Gramm schwerer$ und auf der $rechten Waage ein Gramm leichter angezeigt$, als er tatsächlich ist.</value>
+        <value>Was ist das tatsächliche $Gesamtgewicht in Gramm$ des Zuckers für jede der beiden Waagen?</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Zuckersüß!</value>
+        <value>Das eigentliche Gesamtgewicht des Zuckers war acht Gramm auf der linken Waage und sechs Gramm auf der rechten. Vielleicht sollte man sie mal reparieren lassen.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>4</id>
+    <title>Wiedervereint</title>
+    <maxPoints>35</maxPoints>
+    <minPoints>15</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Das ist ein Amida-kuji, eine sogenannte Leiter-Lotterie.</value>
+        <value>Du musst waagerechte Linien platzieren, um die Tierkinder zu ihren Müttern zu bringen. Dabei $muss das Tierkind einer waagerechten Linie folgen$, sobald es auf eine trifft.</value>
+        <value>$Wie viele waagerechte Linien musst du mindestens$ platzieren?</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Alle glücklich vereint!</value>
+        <value>Was sind sie doch froh, wieder bei ihren Müttern zu sein. Es gibt mehrere Möglichkeiten, die fünd waagerechten Linien zu platzieren.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

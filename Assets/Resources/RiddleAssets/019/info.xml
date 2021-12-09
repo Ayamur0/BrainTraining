@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>19</id>
+    <title>Auseinander, ihr Ziegen!</title>
+    <maxPoints>45</maxPoints>
+    <minPoints>5</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Wir haben hier neun Ziegen, die sich nicht vertragen.</value>
+        <value>Wenn die merken, $dass sie in einem Abstand von nur zwei Feldern zueinander sind - vertikal oder horionzal -$, fangen sie Streit an. Zum Glück streiten sie nicht, wenn sie diagonal zueinander sind oder ein Felsen sie trennt.</value>
+        <value>$Kannst die sie so stellen, dass sie sich nicht streiten?$</value>
+        <value>Ziehe sie, um sie zu bewegen, und platziere sie dort, wo sie deiner Meinung nach am besten auf der Farm aufgehoben sind.</value>
+        <value>Derselbe Buchstabe wird nie mehr als zweimal genutzt.</value>
+        <value>Das Passwort liest sich vorwärts und rückwärts gleich.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Die Stimmung auf der Farm ist jetzt ruhig und entspannt. Auch die Ziegen scheinen glücklich zu sein. Die Nähe der Felsen scheint eine besänftigende Wirkung auf sie zu haben.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

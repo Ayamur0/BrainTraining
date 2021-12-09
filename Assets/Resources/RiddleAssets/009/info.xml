@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>9</id>
+    <title>Passwort-ABC</title>
+    <maxPoints>40</maxPoints>
+    <minPoints>20</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Wie war gleich noch das Passwort für den Tresor?</value>
+        <value>$Es is sechstellig und besteht aus den Buchstaben A, B und C$.</value>
+        <value>Nutze die Hinweise und finde das Passwort heraus:</value>
+        <value>Es gibt zwei Stellen, an denen derselbe Buchstabe zweimal hintereinander vorkommt.</value>
+        <value>A und C kommen gleich häufig vor, aber zussammen weniger oft als B.</value>
+        <value>Auf ein C folgt immer ein A.</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Panzerknacker!</value>
+        <value>Das Licht leuchtet auf, und der Tresor öffnet sich! Was da wohl drin ist...?</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>

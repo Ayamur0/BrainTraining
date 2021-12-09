@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>16</id>
+    <title>Der goldene Schnitt</title>
+    <maxPoints>35</maxPoints>
+    <minPoints>10</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Im Bild siehst du einen Kuchen in Form einer Sechs.</value>
+        <value>Du musst ihn mit einer geraden Linie durchschneiden, damit $zwei Zahlen entstehen$.</value>
+        <value>Wie kannst du den Kuchen schneiden, um das $größtmögliche Ergebnis$ zu erreichen, wenn du $die beiden Zahlen addierst$?</value>
+        <value>Wie lautet dieses Ergebnis?</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Meisterlich aufgeschnitten!</value>
+        <value>Wenn du den Kuchen horizontal halbierst, erhältst du zwei Mal diselbe Zahl. Dreht man die Sechs um, erhält man eine Neun.</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>
