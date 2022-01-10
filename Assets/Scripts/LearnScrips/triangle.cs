@@ -5,23 +5,19 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 
-public class triangle : MonoBehaviour
+public class Triangle : MonoBehaviour
 {
 
 	public GameObject brick;
 
 	//rows of the triangle
-	public GameObject gameObject00;
-	public GameObject gameObject01;
-	public GameObject gameObject02;
-	public GameObject gameObject03;
-	public GameObject gameObject04;
+	public GameObject triangleGameObject;
 
 
 	private GameObject spawnedObject;
 
-	//0 = bottom 3 bricks, 1 = bottom 4 bricks, 2 = bottom 5 bricks
-	private int triangleSize = 0;
+	//3 = bottom 3 bricks, 4 = bottom 4 bricks, 5 = bottom 5 bricks
+	private int triangleSize = 5;
 
 
 
@@ -29,36 +25,29 @@ public class triangle : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		playGame(triangleSize);
-	}
-
-
-	public void playGame(int gameMode){
-		if(gameMode == 0){
-			spawnPyramid(3, gameObject02);
-			spawnPyramid(2, gameObject03);
-			spawnPyramid(1, gameObject04);
+		if(triangleSize == 3){
+			playGame(triangleSize);
 		}
-		else if(gameMode == 1){
-			spawnPyramid(4, gameObject01);
-			spawnPyramid(3, gameObject02);
-			spawnPyramid(2, gameObject03);
-			spawnPyramid(1, gameObject04);
+		else if(triangleSize == 4){
+			playGame(triangleSize);
 		}
-		else if(gameMode == 2){
-			spawnPyramid(5, gameObject00);
-			spawnPyramid(4, gameObject01);
-			spawnPyramid(3, gameObject02);
-			spawnPyramid(2, gameObject03);
-			spawnPyramid(1, gameObject04);
+		else if(triangleSize == 5){
+			playGame(triangleSize);
 		}
 	}
 
-	public void spawnPyramid(int brickAmmount, GameObject row){
+
+	public void playGame(int triangleSize){
+		for (int i = triangleSize; i > 0; i--){
+			spawnPyramidRow(i);
+		}
+	}
+
+	public void spawnPyramidRow(int brickAmmount){
 		for (int i = 0; i < brickAmmount; i++){
-			spawnedObject = Instantiate(brick, row.transform.position, Quaternion.identity);
+			spawnedObject = Instantiate(brick, triangleGameObject.transform.position, Quaternion.identity);
 			spawnedObject.name += i;
-			spawnedObject.transform.SetParent(row.transform.GetChild(i));
+			spawnedObject.transform.SetParent(triangleGameObject.transform.GetChild(brickAmmount - 1));
 		}
 	}
 

@@ -28,7 +28,6 @@ public class lightningView : MonoBehaviour {
 	private int wrongChoice = 0;
 	private int lvlNumber = 10;
 	private int lvlChoice = 1;
-	private float diameter = 39.3829f;
 	private float minDistance = 18f;
 	private bool hitPosition = false;
 

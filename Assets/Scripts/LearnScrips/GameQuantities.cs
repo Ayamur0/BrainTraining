@@ -10,6 +10,7 @@ public class GameQuantities : MonoBehaviour {
 	public Text TextfieldLeft;
 	public Text TextfieldRight;
 	public Text TextfieldLevel;
+	public Text Symbol;
 
 	//collider for Objects
 	public Collider2D spawnerLeftCollider;
@@ -25,6 +26,13 @@ public class GameQuantities : MonoBehaviour {
 	//array with gameObjects
 	private List<GameObject> alleQuantitiesObjects = new List<GameObject>(40);
 
+	public Image imageColor;
+
+	//Buttons
+	public Button lessBtn;
+	public Button equalsBtn;
+	public Button greaterBtn;
+
 	//variables for compare Quantities
 	private int numberLeft = 0;
 	private int numberRight = 0;
@@ -32,21 +40,26 @@ public class GameQuantities : MonoBehaviour {
 	private int counterRound = 0;
 	private int counterWrongChoice = 0;
 	private int lvlNumber = 10;
-	private int lvlChoice = 1;
-
-	private int xCoordinates;
-	private int yCoordinates;
-	private int counterObjectsPosition = 0;
-	//Vector for my target
-	Bounds target;
+	private int lvlChoice = 2;
 
 	void Start() {
+		lessBtn.onClick.AddListener(() => setSymbol('<'));
+		equalsBtn.onClick.AddListener(() => setSymbol('='));
+		greaterBtn.onClick.AddListener(() => setSymbol('>'));
 		PlayGame();
 		SetLevelText();
 	}
 
-	public void PlayGame() {
+	public void setSymbol(char symbol){
+		Symbol.text = symbol.ToString();
+		StartCoroutine(waiter(1, symbol));
 
+	}
+
+	public void PlayGame() {
+		//change color to white
+		imageColor.color = new Color32(255, 255, 255, 255);
+		Symbol.text = "";
 		numberLeft = GenerateNumber();
 		numberRight = GenerateNumber();
 		if (lvlChoice == 1) {
@@ -59,9 +72,6 @@ public class GameQuantities : MonoBehaviour {
 	}
 
 	public void SpawnQuantitiesObjects(int number, GameObject spawner, GameObject side) {
-		xCoordinates = -100;
-		yCoordinates = 100;
-		counterObjectsPosition = 0;
 		for (int i = 0; i < number; i++) {
 			spawnedObject = Instantiate(side, spawner.transform.position, Quaternion.identity);
 			spawnedObject.name += i;
@@ -81,53 +91,9 @@ public class GameQuantities : MonoBehaviour {
 		TextfieldLevel.text = "Level: " + counterRound + "/" + lvlNumber;
 	}
 
-	//check solution
-	public void Solution(int solutionNumber) {
-
-		if (counterRound < lvlNumber) {
-			if (solutionNumber == 0) {
-				Debug.Log("Noch nichts ausgewählt");
-			}
-			if (solutionNumber == '<') {
-				if (numberLeft < numberRight) {
-					Debug.Log("Richtig");
-					DeleteObjects();
-					PlayGame();
-				} else {
-					counterWrongChoice++;
-					Debug.Log("Nicht richtig");
-				}
-			}
-			if (solutionNumber == '=') {
-				if (numberLeft == numberRight) {
-					Debug.Log("Richtig");
-					DeleteObjects();
-					PlayGame();
-				} else {
-					counterWrongChoice++;
-					Debug.Log("Nicht richtig");
-				}
-			}
-			if (solutionNumber == '>') {
-				if (numberLeft > numberRight) {
-					Debug.Log("Richtig");
-					DeleteObjects();
-					PlayGame();
-				} else {
-					counterWrongChoice++;
-					Debug.Log("Nicht richtig");
-				}
-			}
-		} else {
-			PlayerPrefs.SetInt("wrongAnswers", counterWrongChoice);
-			SceneManager.LoadScene("LearnFinishScreen");
-			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + counterWrongChoice);
-		}
-	}
-
 	//Random Number generated
 	public int GenerateNumber() {
-		return randomNumber = UnityEngine.Random.Range(0, 10);
+		return randomNumber = UnityEngine.Random.Range(1, 10);
 	}
 
 	//setFields
@@ -161,6 +127,74 @@ public class GameQuantities : MonoBehaviour {
 		}
 		set {
 			lvlNumber = value;
+		}
+	}
+
+	IEnumerator waiter(int sec, char symbol){
+		if(counterRound < lvlNumber){
+			if(symbol.Equals('<')){
+				Symbol.text = '<'.ToString();
+				if (numberLeft < numberRight) {
+					Debug.Log("Richtig");
+					//change color green
+					imageColor.color = new Color32(37, 250, 53, 255);
+					yield return new WaitForSeconds(sec);
+					DeleteObjects();
+					PlayGame();
+				} else {
+					yield return new WaitForSeconds(sec);
+					counterWrongChoice++;
+					//change color red
+					imageColor.color = new Color32(251, 37, 37, 255);
+					yield return new WaitForSeconds(sec);
+					imageColor.color = new Color32(255, 255, 255, 255);
+					Symbol.text = "";
+					Debug.Log("Nicht richtig");
+				}
+			}
+			if(symbol.Equals('=')){
+				Symbol.text = '='.ToString();
+				if (numberLeft == numberRight) {
+					Debug.Log("Richtig");
+					//change color green
+					imageColor.color = new Color32(37, 250, 53, 255);
+					yield return new WaitForSeconds(sec);
+					DeleteObjects();
+					PlayGame();
+				} else {
+					counterWrongChoice++;
+					//change color red
+					imageColor.color = new Color32(251, 37, 37, 255);
+					yield return new WaitForSeconds(sec);
+					imageColor.color = new Color32(255, 255, 255, 255);
+					Symbol.text = "";
+					Debug.Log("Nicht richtig");
+				}
+			}
+			if(symbol.Equals('>')){
+				Symbol.text = '>'.ToString();
+				if (numberLeft > numberRight) {
+					Debug.Log("Richtig");
+					//change color green
+					imageColor.color = new Color32(37, 250, 53, 255);
+					yield return new WaitForSeconds(sec);
+					DeleteObjects();
+					PlayGame();
+				} else {
+					counterWrongChoice++;
+					//change color red
+					imageColor.color = new Color32(251, 37, 37, 255);
+					yield return new WaitForSeconds(sec);
+					imageColor.color = new Color32(255, 255, 255, 255);
+					Symbol.text = "";
+					Debug.Log("Nicht richtig");
+				}
+			}
+		}
+		else {
+			PlayerPrefs.SetInt("wrongAnswers", counterWrongChoice);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + counterWrongChoice);
 		}
 	}
 

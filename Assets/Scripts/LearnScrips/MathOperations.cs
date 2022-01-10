@@ -17,6 +17,8 @@ public class MathOperations : MonoBehaviour
 
 	public Button checkButton;
 
+	public Image imageColor;
+
 	private int leftNumber;
 	private int rightNumber;
 	private int solution;
@@ -25,7 +27,7 @@ public class MathOperations : MonoBehaviour
 	private int lvlNumber = 10;
 	private int countLvl = 0;
 	//add = 1, sub = 2, mult = 3, div = 4
-	private int gameMode = 4;
+	private int gameMode = 3;
 	private int wrongSolution = 0;
 
 	// Start is called before the first frame update
@@ -36,9 +38,17 @@ public class MathOperations : MonoBehaviour
 	}
 
 	void Update(){
+		if(string.IsNullOrEmpty(solutionNumber.text)){
+			checkButton.interactable = false;
+		}
+		else{
+			checkButton.interactable = true;
+		}
 	}
 
 	public void PlayGame(int gameMode){
+		//change color to white
+		imageColor.color = new Color32(255, 255, 255, 255);
 		showLevelNumber.text = "Level: " + countLvl + "/" + lvlNumber;
 		solutionNumber.text = "";
 		if(gameMode == 4){
@@ -95,32 +105,31 @@ public class MathOperations : MonoBehaviour
 
 	}
 
-	public void CheckSolutionDiv(){
-		if(countLvl < lvlNumber){
-			if(int.Parse(solutionNumber.text) == leftNumber){
-				countLvl++;
-				PlayGame(gameMode);
-			}
-			else{
-				wrongSolution++;
-				solutionNumber.text = "";
-			}
+	public void buttonClick(){
+		if(gameMode == 4){
+			StartCoroutine(waiterDiv(1));
 		}
 		else{
-			PlayerPrefs.SetInt("wrongAnswers", wrongSolution);
-			SceneManager.LoadScene("LearnFinishScreen");
-			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongSolution);
+			StartCoroutine(waiter(1));
 		}
 	}
 
-	public void CheckSolution(){
+	IEnumerator waiter(int sec){
 		if(countLvl < lvlNumber){
 			if(int.Parse(solutionNumber.text) == solution){
 				countLvl++;
+				//change color green
+				imageColor.color = new Color32(37, 250, 53, 255);
+				yield return new WaitForSeconds(sec);
 				PlayGame(gameMode);
 			}
 			else{
 				wrongSolution++;
+				//change color red
+				imageColor.color = new Color32(251, 37, 37, 255);
+				yield return new WaitForSeconds(sec);
+				//change color to white
+				imageColor.color = new Color32(255, 255, 255, 255);
 				solutionNumber.text = "";
 			}
 		}
@@ -131,12 +140,29 @@ public class MathOperations : MonoBehaviour
 		}
 	}
 
-	public void buttonClick(){
-		if(gameMode == 4){
-			CheckSolutionDiv();
+	IEnumerator waiterDiv(int sec){
+		if(countLvl < lvlNumber){
+			if(int.Parse(solutionNumber.text) == leftNumber){
+				countLvl++;
+				//change color green
+				imageColor.color = new Color32(37, 250, 53, 255);
+				yield return new WaitForSeconds(sec);
+				PlayGame(gameMode);
+			}
+			else{
+				wrongSolution++;
+				//change color red
+				imageColor.color = new Color32(251, 37, 37, 255);
+				yield return new WaitForSeconds(sec);
+				//change color to white
+				imageColor.color = new Color32(255, 255, 255, 255);
+				solutionNumber.text = "";
+			}
 		}
 		else{
-			CheckSolution();
+			PlayerPrefs.SetInt("wrongAnswers", wrongSolution);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongSolution);
 		}
 	}
 }
