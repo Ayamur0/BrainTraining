@@ -46,14 +46,24 @@ public class FinishPattern : MonoBehaviour {
 	//Button test
 	public Button checkSolution;
 
-	// public Image imageColor;
 
-	// public GameObject inputs;
+	public InputField[] arrayInputs = new InputField[5];
+	public Text[] arrayTextFields = new Text[5];
 
 
 	// Start is called before the first frame update
 	void Start() {
 		checkSolution.onClick.AddListener(() => clickButton());
+		arrayInputs[0] = inputNumberOne;
+		arrayInputs[1] = inputNumberTwo;
+		arrayInputs[2] = inputNumberThree;
+		arrayInputs[3] = inputNumberFour;
+		arrayInputs[4] = inputNumberFive;
+		arrayTextFields[0] = firstNumber;
+		arrayTextFields[1] = secondNumber;
+		arrayTextFields[2] = thirdNumber;
+		arrayTextFields[3] = forthNumber;
+		arrayTextFields[4] = fifthNumber;
 		PlayGame();
 	}
 
@@ -66,12 +76,7 @@ public class FinishPattern : MonoBehaviour {
 	}
 
 	public void clickButton() {
-		Debug.Log(int.Parse(inputNumberOne.text));
-		Debug.Log(int.Parse(inputNumberTwo.text));
-		Debug.Log(int.Parse(inputNumberThree.text));
-		Debug.Log(int.Parse(inputNumberFour.text));
-		Debug.Log(int.Parse(inputNumberFive.text));
-		StartCoroutine(waiter(1));
+		Solution();
 	}
 
 	public int RandomBeginningNumber(int maxNumbers) {
@@ -110,16 +115,12 @@ public class FinishPattern : MonoBehaviour {
 	}
 
 	public void SetPattern() {
-
-		firstNumber.text = patternNumbers[0].ToString();
-		secondNumber.text = patternNumbers[1].ToString();
-		thirdNumber.text = patternNumbers[2].ToString();
-		forthNumber.text = patternNumbers[3].ToString();
-		fifthNumber.text = patternNumbers[4].ToString();
+		for (int i = 0; i < arrayInputs.Length; i++){
+			arrayTextFields[i].text = patternNumbers[i].ToString();
+		}
 	}
 
-
-	IEnumerator waiter(int sec) {
+	public void Solution(){
 		bool skip = false;
 		if (lvlCounter < lvlAmount) {
 			inputNumbersArray[0] = int.Parse(inputNumberOne.text);
@@ -128,34 +129,15 @@ public class FinishPattern : MonoBehaviour {
 			inputNumbersArray[3] = int.Parse(inputNumberFour.text);
 			inputNumbersArray[4] = int.Parse(inputNumberFive.text);
 			for (int i = 0; i < 5; i++) {
-				if (solutionsNumbers[i] == inputNumbersArray[i]) {
-					//change color green
-					// imageColor.color = new Color32(37, 250, 53, 255);
-					yield return new WaitForSeconds(sec);
+				if (solutionsNumbers[i] == int.Parse(arrayInputs[i].text)) {
+					arrayInputs[i].interactable = false;
 					continue;
 				}
-				switch (i) {
-					case 0:
-						inputNumberOne.text = "";
-						break;
-					case 1:
-						inputNumberTwo.text = "";
-						break;
-					case 2:
-						inputNumberThree.text = "";
-						break;
-					case 3:
-						inputNumberFour.text = "";
-						break;
-					case 4:
-						inputNumberFive.text = "";
-						break;
-					default:
-						Debug.Log("Fehler Brudi");
-						break;
+				else{
+					skip = true;
+					wrongAnswers++;
+					arrayInputs[i].text = "";
 				}
-				skip = true;
-				wrongAnswers++;
 			}
 			if (!skip) {
 				lvlCounter++;
@@ -168,16 +150,14 @@ public class FinishPattern : MonoBehaviour {
 		}
 	}
 
-
 	public void SetLvlText(){
 		lvlText.text = "Level: " + lvlCounter + "/" + lvlAmount;
 	}
 
 	public void ResetInputFields(){
-		inputNumberOne.text = "";
-		inputNumberTwo.text = "";
-		inputNumberThree.text = "";
-		inputNumberFour.text = "";
-		inputNumberFive.text = "";
+		for (int i = 0; i < arrayInputs.Length; i++){
+			arrayInputs[i].text = "";
+			arrayInputs[i].interactable = true;
+		}
 	}
 }

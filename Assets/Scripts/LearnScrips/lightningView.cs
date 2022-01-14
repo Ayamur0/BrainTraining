@@ -11,6 +11,8 @@ public class lightningView : MonoBehaviour {
 
 	public InputField solution;
 
+	public Image imageColor;
+
 	public GameObject spawnedObject;
 	public GameObject spawner;
 	public GameObject cover;
@@ -41,7 +43,7 @@ public class lightningView : MonoBehaviour {
 		foreach (Transform child in spawnerCoverLeft.transform) {
 			Destroy(child.gameObject);
 		}
-		SolutionTest();
+		StartCoroutine(solutionWaiter(1));
 	}
 
 	public int randomNumber(){
@@ -106,6 +108,8 @@ public class lightningView : MonoBehaviour {
 	}
 
 	public void playGame(){
+		//change color to white
+		imageColor.color = new Color32(255, 255, 255, 255);
 		showLevel.text = "Level: " + counterRound + "/" + lvlNumber;
 		numberLeft = randomNumber();
 		Debug.Log(numberLeft);
@@ -120,16 +124,24 @@ public class lightningView : MonoBehaviour {
 		hideCircles.transform.SetParent(spawnerCoverLeft.transform);
 	}
 
-	public void SolutionTest(){
+	IEnumerator solutionWaiter(int sec){
 		if(counterRound < lvlNumber){
 			if(int.Parse(solution.text) == numberLeft){
+				//change color green
+				imageColor.color = new Color32(37, 250, 53, 255);
+				yield return new WaitForSeconds(sec);
 				deletObjects();
 				counterRound++;
 				playGame();
 
 			}
 			else{
+				//change color red
+				imageColor.color = new Color32(251, 37, 37, 255);
+				yield return new WaitForSeconds(sec);
 				wrongChoice++;
+				//change color to white
+				imageColor.color = new Color32(255, 255, 255, 255);
 				solution.text = "";
 				hideCircle();
 			}
@@ -140,7 +152,4 @@ public class lightningView : MonoBehaviour {
 			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoice);
 		}
 	}
-
-
-
 }

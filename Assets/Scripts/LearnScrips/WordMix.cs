@@ -17,6 +17,7 @@ public class WordMix : MonoBehaviour
 	// Start is called before the first frame update
 	private string mixedWord;
 	private string solution;
+	public Image imageColor;
 
 	private int lvlCount = 1;
 	private int lvlAmount = 10;
@@ -38,7 +39,37 @@ public class WordMix : MonoBehaviour
 
 	}
 
+
+	IEnumerator waiter(int sec){
+		if(lvlCount < lvlAmount){
+			if(solution.Equals(solutionChild.text)){
+				//change color green
+				imageColor.color = new Color32(37, 250, 53, 255);
+				yield return new WaitForSeconds(sec);
+				lvlCount++;
+				solutionChild.text = "";
+				PlayGame();
+			}
+			else{
+				//change color red
+				imageColor.color = new Color32(251, 37, 37, 255);
+				yield return new WaitForSeconds(sec);
+				//change color to white
+				imageColor.color = new Color32(255, 255, 255, 255);
+				solutionChild.text = "";
+				wrongChoices++;
+			}
+		}
+		else{
+			PlayerPrefs.SetInt("wrongAnswers", wrongChoices);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoices);
+		}
+	}
+
 	public void PlayGame(){
+		//change color to white
+		imageColor.color = new Color32(255, 255, 255, 255);
 		lvlNumber.text = "Level: " + lvlCount + "/" + lvlAmount;
 		GetWord();
 		wordLeft.text = mixedWord;
@@ -87,27 +118,8 @@ public class WordMix : MonoBehaviour
 		}
 	}
 
-	public void solutionWord(){
-		if(lvlCount < lvlAmount){
-			if(solution.Equals(solutionChild.text)){
-				lvlCount++;
-				solutionChild.text = "";
-				PlayGame();
-			}
-			else{
-				solutionChild.text = "";
-				wrongChoices++;
-			}
-		}
-		else{
-			PlayerPrefs.SetInt("wrongAnswers", wrongChoices);
-			SceneManager.LoadScene("LearnFinishScreen");
-			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoices);
-		}
-	}
-
 	public void ButtonClicked(){
-		solutionWord();
+		StartCoroutine(waiter(1));
 	}
 
 }

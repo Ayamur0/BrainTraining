@@ -25,7 +25,7 @@ public class MathOperations : MonoBehaviour
 	private int maxRandomNumber = 10;
 	private int minRandomNumber = 0;
 	private int lvlNumber = 10;
-	private int countLvl = 0;
+	private int countLvl = 1;
 	//add = 1, sub = 2, mult = 3, div = 4
 	private int gameMode = 3;
 	private int wrongSolution = 0;
