@@ -19,13 +19,31 @@ public class FinishScreen : MonoBehaviour
 	public GameObject star;
 	private int mistakes;
 
+	public Button lvlChoice;
+	public Button menu;
+
 
 	// Start is called before the first frame update
 	void Start()
 	{
+		lvlChoice.onClick.AddListener(() => GoLvlChoice());
+		menu.onClick.AddListener(() => GoMenu());
 		mistakes = PlayerPrefs.GetInt("wrongAnswers");
 		Debug.Log(mistakes);
 		SpawnStars();
+	}
+
+	public void GoMenu(){
+		MenuPickLevelAdvanced.maxNumberStatic = 0;
+		MenuPickLevelAdvanced.lvlAmmountStatic = 0;
+		MenuPickLevelAdvanced.fourChoices = 0;
+	}
+
+	public void GoLvlChoice(){
+		MenuPickLevelAdvanced.maxNumberStatic = 0;
+		MenuPickLevelAdvanced.lvlAmmountStatic = 0;
+		MenuPickLevelAdvanced.fourChoices = 0;
+		SceneManager.LoadScene("MenuLearning");
 	}
 
 	public void SpawnStars(){

@@ -16,6 +16,7 @@ public class MathOperations : MonoBehaviour
 	public InputField solutionNumber;
 
 	public Button checkButton;
+	public Button menu;
 
 	public Image imageColor;
 
@@ -33,6 +34,9 @@ public class MathOperations : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
+		menu.onClick.AddListener(() => GoBack());
+		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
+		gameMode = MenuPickLevelAdvanced.fourChoices;
 		checkButton.onClick.AddListener(() => buttonClick());
 		PlayGame(gameMode);
 	}
@@ -44,6 +48,13 @@ public class MathOperations : MonoBehaviour
 		else{
 			checkButton.interactable = true;
 		}
+	}
+
+	public void GoBack(){
+		MenuPickLevelAdvanced.maxNumberStatic = 0;
+		MenuPickLevelAdvanced.lvlAmmountStatic = 0;
+		MenuPickLevelAdvanced.fourChoices = 0;
+		SceneManager.LoadScene("MenuLearning");
 	}
 
 	public void PlayGame(int gameMode){

@@ -28,7 +28,7 @@ public class FinishPattern : MonoBehaviour {
 	private int SecondRandomNumber;
 
 	//lvl variabls
-	private int lvlAmount = 10;
+	private int lvlNumber = 10;
 	private int wrongAnswers;
 	private int lvlCounter = 1;
 	private int maxNumbers = 20;
@@ -45,6 +45,7 @@ public class FinishPattern : MonoBehaviour {
 
 	//Button test
 	public Button checkSolution;
+	public Button menu;
 
 
 	public InputField[] arrayInputs = new InputField[5];
@@ -53,6 +54,9 @@ public class FinishPattern : MonoBehaviour {
 
 	// Start is called before the first frame update
 	void Start() {
+		menu.onClick.AddListener(() => GoBack());
+		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
+		maxNumbers = MenuPickLevelAdvanced.maxNumberStatic;
 		checkSolution.onClick.AddListener(() => clickButton());
 		arrayInputs[0] = inputNumberOne;
 		arrayInputs[1] = inputNumberTwo;
@@ -73,6 +77,13 @@ public class FinishPattern : MonoBehaviour {
 		} else {
 			checkSolution.interactable = true;
 		}
+	}
+
+	public void GoBack(){
+		MenuPickLevelAdvanced.maxNumberStatic = 0;
+		MenuPickLevelAdvanced.lvlAmmountStatic = 0;
+		MenuPickLevelAdvanced.fourChoices = 0;
+		SceneManager.LoadScene("MenuLearning");
 	}
 
 	public void clickButton() {
@@ -122,7 +133,7 @@ public class FinishPattern : MonoBehaviour {
 
 	public void Solution(){
 		bool skip = false;
-		if (lvlCounter < lvlAmount) {
+		if (lvlCounter < lvlNumber) {
 			inputNumbersArray[0] = int.Parse(inputNumberOne.text);
 			inputNumbersArray[1] = int.Parse(inputNumberTwo.text);
 			inputNumbersArray[2] = int.Parse(inputNumberThree.text);
@@ -151,7 +162,7 @@ public class FinishPattern : MonoBehaviour {
 	}
 
 	public void SetLvlText(){
-		lvlText.text = "Level: " + lvlCounter + "/" + lvlAmount;
+		lvlText.text = "Level: " + lvlCounter + "/" + lvlNumber;
 	}
 
 	public void ResetInputFields(){

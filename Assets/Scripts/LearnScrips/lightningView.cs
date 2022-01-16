@@ -21,6 +21,7 @@ public class lightningView : MonoBehaviour {
 	public GameObject spawnerCoverLeft;
 
 	public Button checkButton;
+	public Button menu;
 
 	private List<Vector2> allPositions = new List<Vector2>(10);
 
@@ -29,14 +30,22 @@ public class lightningView : MonoBehaviour {
 	private int counterRound = 1;
 	private int wrongChoice = 0;
 	private int lvlNumber = 10;
-	private int lvlChoice = 1;
 	private float minDistance = 18f;
 	private bool hitPosition = false;
 
 	// Start is called before the first frame update
 	void Start() {
+		menu.onClick.AddListener(() => GoBack());
+		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
 		checkButton.onClick.AddListener(() => buttonClick());
 		playGame();
+	}
+
+	public void GoBack(){
+		MenuPickLevelAdvanced.maxNumberStatic = 0;
+		MenuPickLevelAdvanced.lvlAmmountStatic = 0;
+		MenuPickLevelAdvanced.fourChoices = 0;
+		SceneManager.LoadScene("MenuLearning");
 	}
 
 	public void buttonClick(){

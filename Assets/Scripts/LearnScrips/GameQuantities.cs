@@ -32,25 +32,41 @@ public class GameQuantities : MonoBehaviour {
 	public Button lessBtn;
 	public Button equalsBtn;
 	public Button greaterBtn;
+	public Button menu;
 
 	//variables for compare Quantities
 	private int numberLeft = 0;
 	private int numberRight = 0;
 	private int randomNumber = 0;
-	private int counterRound = 0;
+	private int counterRound = 1;
 	private int counterWrongChoice = 0;
+
+	//number of lvls
 	private int lvlNumber = 10;
-	private int lvlChoice = 2;
+	private int maxNumber = 0;
+
+	//1 für mit objekten, 2 für mit zahlen
+	private int lvlChoice = 1;
 
 	void Start() {
-		lessBtn.onClick.AddListener(() => setSymbol('<'));
-		equalsBtn.onClick.AddListener(() => setSymbol('='));
-		greaterBtn.onClick.AddListener(() => setSymbol('>'));
+		menu.onClick.AddListener(() => GoBack());
+		maxNumber = MenuPickLevelAdvanced.maxNumberStatic;
+		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
+		lvlChoice = MenuPickLevelAdvanced.fourChoices;
+		lessBtn.onClick.AddListener(() => SetSymbol('<'));
+		equalsBtn.onClick.AddListener(() => SetSymbol('='));
+		greaterBtn.onClick.AddListener(() => SetSymbol('>'));
 		PlayGame();
-		SetLevelText();
 	}
 
-	public void setSymbol(char symbol){
+	public void GoBack(){
+		MenuPickLevelAdvanced.maxNumberStatic = 0;
+		MenuPickLevelAdvanced.lvlAmmountStatic = 0;
+		MenuPickLevelAdvanced.fourChoices = 0;
+		SceneManager.LoadScene("MenuLearning");
+	}
+
+	public void SetSymbol(char symbol){
 		Symbol.text = symbol.ToString();
 		StartCoroutine(waiter(1, symbol));
 
@@ -59,12 +75,15 @@ public class GameQuantities : MonoBehaviour {
 	public void PlayGame() {
 		//change color to white
 		imageColor.color = new Color32(255, 255, 255, 255);
+		SetLevelText();
 		Symbol.text = "";
-		numberLeft = GenerateNumber();
-		numberRight = GenerateNumber();
-		if (lvlChoice == 1) {
+		if (lvlChoice == 2) {
+			numberLeft = GenerateNumber(maxNumber);
+			numberRight = GenerateNumber(maxNumber);
 			SetTextLeftAndRight(numberLeft, numberRight);
-		} else if (lvlChoice == 2) {
+		} else if (lvlChoice == 1) {
+			numberLeft = GenerateNumber(16);
+			numberRight = GenerateNumber(16);
 			SpawnQuantitiesObjects(numberLeft, spawnerLeft, objectLeft);
 			SpawnQuantitiesObjects(numberRight, spawnerRight, objectRight);
 		}
@@ -92,8 +111,8 @@ public class GameQuantities : MonoBehaviour {
 	}
 
 	//Random Number generated
-	public int GenerateNumber() {
-		return randomNumber = UnityEngine.Random.Range(1, 10);
+	public int GenerateNumber(int maxNumber) {
+		return randomNumber = UnityEngine.Random.Range(0, maxNumber);
 	}
 
 	//setFields
@@ -142,7 +161,6 @@ public class GameQuantities : MonoBehaviour {
 					DeleteObjects();
 					PlayGame();
 				} else {
-					yield return new WaitForSeconds(sec);
 					counterWrongChoice++;
 					//change color red
 					imageColor.color = new Color32(251, 37, 37, 255);

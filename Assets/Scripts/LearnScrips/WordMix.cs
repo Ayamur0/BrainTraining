@@ -30,13 +30,23 @@ public class WordMix : MonoBehaviour
 
 	//button
 	public Button testWord;
+	public Button menu;
 
 	void Start()
 	{
+		menu.onClick.AddListener(() => GoBack());
+		lvlAmount = MenuPickLevelAdvanced.lvlAmmountStatic;
 		testWord.onClick.AddListener(() => ButtonClicked());
 		ReadJsonFile();
 		PlayGame();
 
+	}
+
+	public void GoBack(){
+		MenuPickLevelAdvanced.maxNumberStatic = 0;
+		MenuPickLevelAdvanced.lvlAmmountStatic = 0;
+		MenuPickLevelAdvanced.fourChoices = 0;
+		SceneManager.LoadScene("MenuLearning");
 	}
 
 
