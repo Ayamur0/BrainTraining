@@ -22,6 +22,7 @@ public class R008 : Riddle {
     public override bool isResultValid() {
         SnapDragController.Tile[] tiles = interactiveArea.transform.GetComponent<SnapDragController>().tiles;
         for (int i = 0; i < result.Length; i++) {
+            // TODO Null ref
             if (tiles[i].occupiedLocationIndex == -1)
                 return false;
         }

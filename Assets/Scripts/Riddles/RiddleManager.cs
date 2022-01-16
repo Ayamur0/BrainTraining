@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class RiddleManager : MonoBehaviour {
+    [HideInInspector]
     public static int riddleId = 1;
 
     public Canvas mainArea;
@@ -16,7 +17,8 @@ public class RiddleManager : MonoBehaviour {
     public Image solutionImage;
     public Button submitButton;
 
-    private Riddle currentRiddle;
+    [HideInInspector]
+    public static Riddle currentRiddle;
 
     // Start is called before the first frame update
     void Start() {
@@ -27,7 +29,7 @@ public class RiddleManager : MonoBehaviour {
     void Update() {
         if (currentRiddle == null)
             return;
-        if (currentRiddle.info.autoSubmit)
+        if (currentRiddle.info.autoSubmit && !solution.enabled && currentRiddle.checkResult())
             SubmitSolution();
         if (Input.GetKeyDown(KeyCode.R)) {
             Debug.Log(currentRiddle.checkResult());
@@ -67,13 +69,18 @@ public class RiddleManager : MonoBehaviour {
     }
 
     public void SubmitSolution() {
-        if (currentRiddle.checkResult())
+        if (currentRiddle.checkResult()) {
             ShowSolution();
+            SolutionScene.success = true;
+        } else {
+            SolutionScene.success = false;
+        }
+        SceneManager.LoadScene("RiddleSolution", LoadSceneMode.Additive);
     }
 
     void ShowSolution() {
         solution.enabled = true;
-        solutionText.text = currentRiddle.solution;
+        solutionText.text = currentRiddle.info.solution;
         solutionImage.sprite = currentRiddle.solutionSprite;
     }
 
