@@ -4,7 +4,7 @@ using System.IO;
 using UnityEngine;
 
 public class SaveDataManager : MonoBehaviour {
-    public static RiddleSaveData RiddleSaveData;
+    public static SaveData RiddleSaveData;
 
     private static string RiddleSavePath = Application.dataPath + "/Saves/RiddleSaveData.dat";
 
@@ -20,11 +20,11 @@ public class SaveDataManager : MonoBehaviour {
         if (File.Exists(RiddleSavePath)) {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(RiddleSavePath, FileMode.Open);
-            RiddleSaveData = bf.Deserialize(file) as RiddleSaveData;
+            RiddleSaveData = bf.Deserialize(file) as SaveData;
             file.Close();
             Debug.Log("Game loaded");
         } else {
-            RiddleSaveData = new RiddleSaveData();
+            RiddleSaveData = new SaveData();
             Debug.Log("No saved data, loading default data");
         }
     }
@@ -32,7 +32,7 @@ public class SaveDataManager : MonoBehaviour {
     public static void ResetData() {
         if (File.Exists(RiddleSavePath)) {
             File.Delete(RiddleSavePath);
-            RiddleSaveData = new RiddleSaveData();
+            RiddleSaveData = new SaveData();
             Debug.Log("Reset save data");
         }
     }

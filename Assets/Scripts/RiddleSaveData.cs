@@ -4,11 +4,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
 [Serializable]
-public class RiddleSaveData {
+public class SaveData {
     [Serializable]
     public class RiddleData {
         public int RemainingPoints;
-        public bool completed;
+		public bool completed;
 
         public RiddleData(int r, bool c) {
             RemainingPoints = r;
@@ -17,10 +17,12 @@ public class RiddleSaveData {
     }
 
     public int TotalPoints;
+    public int stars = 0;
+
     public Dictionary<int, RiddleData> RiddleDataDict = new Dictionary<int, RiddleData>();
 
-    public RiddleSaveData() {
-        TotalPoints = 0;
+    public SaveData() {
+		TotalPoints = 0;
         for (int i = 1; i <= RiddleInfo.RiddleAmount; i++) {
             RiddleInfo.SimpleRiddleInfo info = RiddleInfo.loadSimpleInfoFromXML(i);
             RiddleDataDict.Add(i, new RiddleData(info.maxPoints, false));
