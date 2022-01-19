@@ -6,10 +6,12 @@ using UnityEngine;
 public class SaveDataManager : MonoBehaviour {
     public static SaveData RiddleSaveData;
 
-    private static string RiddleSavePath = Application.dataPath + "/Saves/RiddleSaveData.dat";
+    private static string RiddleSavePath = Directory.GetCurrentDirectory() + "/Saves/RiddleSaveData.dat";
 
     public static void SaveGame() {
         BinaryFormatter bf = new BinaryFormatter();
+        if (!Directory.Exists(Directory.GetCurrentDirectory() + "/Saves"))
+            Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/Saves");
         FileStream file = File.Create(RiddleSavePath);
         bf.Serialize(file, RiddleSaveData);
         file.Close();

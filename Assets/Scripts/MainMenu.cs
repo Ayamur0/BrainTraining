@@ -16,8 +16,8 @@ public class MainMenu : MonoBehaviour {
 
     void SetTexts() {
         RiddlePoints.text = SaveDataManager.RiddleSaveData.TotalPoints + "/950";
-		Stars.text = SaveDataManager.RiddleSaveData.stars.ToString();
-	}
+        Stars.text = SaveDataManager.RiddleSaveData.stars.ToString();
+    }
 
     public void OpenPopup() {
         Popup.enabled = true;
@@ -39,5 +39,10 @@ public class MainMenu : MonoBehaviour {
 
     public void SwitchToLearnScrene() {
         SceneManager.LoadScene("MenuLearning");
+    }
+
+    public void CloseGame() {
+        SaveDataManager.SaveGame();
+        Application.Quit();
     }
 }
