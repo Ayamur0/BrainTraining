@@ -19,14 +19,15 @@ public class FinishScreen : MonoBehaviour
 	public GameObject star;
 	private int mistakes;
 
-	public Button lvlChoice;
+	public Button MainMenu;
 	public Button menu;
+
 
 
 	// Start is called before the first frame update
 	void Start()
 	{
-		lvlChoice.onClick.AddListener(() => GoLvlChoice());
+		MainMenu.onClick.AddListener(() => GoMainMenu());
 		menu.onClick.AddListener(() => GoMenu());
 		mistakes = PlayerPrefs.GetInt("wrongAnswers");
 		Debug.Log(mistakes);
@@ -37,26 +38,30 @@ public class FinishScreen : MonoBehaviour
 		MenuPickLevelAdvanced.maxNumberStatic = 0;
 		MenuPickLevelAdvanced.lvlAmmountStatic = 0;
 		MenuPickLevelAdvanced.fourChoices = 0;
+		SceneManager.LoadScene("MenuLearning");
 	}
 
-	public void GoLvlChoice(){
+	public void GoMainMenu(){
 		MenuPickLevelAdvanced.maxNumberStatic = 0;
 		MenuPickLevelAdvanced.lvlAmmountStatic = 0;
 		MenuPickLevelAdvanced.fourChoices = 0;
-		SceneManager.LoadScene("MenuLearning");
+		SceneManager.LoadScene("MainMenu");
 	}
 
 	public void SpawnStars(){
 		Debug.Log("Bin in der Funktion");
 		if(mistakes <= 4){
+			SaveDataManager.RiddleSaveData.stars++;
 			Debug.Log("Erste IF");
 			spawnedStarLeft = Instantiate(star, LeftStarSpawn.transform.position, Quaternion.identity);
 			spawnedStarLeft.transform.SetParent(LeftStarSpawn.transform);
 			if(mistakes <= 2){
+				SaveDataManager.RiddleSaveData.stars++;
 				Debug.Log("Zweite IF");
 				spawnedStarCenter = Instantiate(star, CenterStarSpawn.transform.position, Quaternion.identity);
 				spawnedStarCenter.transform.SetParent(CenterStarSpawn.transform);
 				if(mistakes == 0){
+					SaveDataManager.RiddleSaveData.stars++;
 					Debug.Log("Dritte IF");
 					spawnedStarRight = Instantiate(star, RightStarSpawn.transform.position, Quaternion.identity);
 					spawnedStarRight.transform.SetParent(RightStarSpawn.transform);
@@ -64,6 +69,7 @@ public class FinishScreen : MonoBehaviour
 			}
 		}
 		TextfieldMistakes.text = ("Falsche Antworten: " + mistakes);
+		SaveDataManager.SaveGame();
 	}
 
 }

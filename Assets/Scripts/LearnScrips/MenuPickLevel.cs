@@ -17,7 +17,6 @@ public class MenuPickLevel : MonoBehaviour
 	public Button pattern;
 	public Button mixedWords;
 
-	const int MENU = 0;
 	const int BACK = 1;
 	const int QUANTITIES = 2;
 	const int TRIANGLE = 3;
@@ -31,7 +30,6 @@ public class MenuPickLevel : MonoBehaviour
 
 	void Start()
 	{
-		menu.onClick.AddListener(() => loadAdvancedOptions(MENU));
 		back.onClick.AddListener(() => loadAdvancedOptions(BACK));
 		quantities.onClick.AddListener(() => loadAdvancedOptions(QUANTITIES));
 		mathOperations.onClick.AddListener(() => loadAdvancedOptions(MATHOPERATIONS));
@@ -44,13 +42,9 @@ public class MenuPickLevel : MonoBehaviour
 	public void loadAdvancedOptions(int choice){
 		switch (choice)
 		{
-			case MENU:
-				loadButtonsPrefab = MENU;
-				SceneManager.LoadScene("MenuLearingAdvancedOptions");
-				break;
 			case BACK:
 				loadButtonsPrefab = BACK;
-				SceneManager.LoadScene("MenuLearingAdvancedOptions");
+				SceneManager.LoadScene("MainMenu");
 				break;
 			case QUANTITIES:
 				loadButtonsPrefab = QUANTITIES;

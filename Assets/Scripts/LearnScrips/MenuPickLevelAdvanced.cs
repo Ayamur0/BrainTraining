@@ -20,9 +20,9 @@ public class MenuPickLevelAdvanced : MonoBehaviour
 	public GameObject spawnerRight;
 	private GameObject spawnedObject;
 
-	private string[] quantitiesModes = {"Gegenstände", "Zahlen"};
-	private string[] mathModes = { "Addition", "Subtraktion", "Multiplikation", "Division" };
-	private string[] difficulty = { "Einfach", "Mittel", "Schwer" };
+	public Sprite[] quantitiesModes = new Sprite[2];
+	public Sprite[] mathModes = new Sprite[4];
+	public Sprite[] difficulty = new Sprite[3];
 
 	public static int maxNumberStatic = 0;
 	public static int lvlAmmountStatic = 0;
@@ -182,11 +182,11 @@ public class MenuPickLevelAdvanced : MonoBehaviour
 			leftSideList.Add(spawnedObject.GetComponent<Button>());
 			leftSideList[i].onClick.AddListener(() => SafeOptionsLeft(copy));
 			if(loadButtonsNumber == 2){
-				leftSideList[i].GetComponentInChildren<Text>().text = quantitiesModes[i];
+				leftSideList[i].GetComponentInChildren<Image>().sprite = quantitiesModes[i];
 				continue;
 			}
 			else if(loadButtonsNumber == 4){
-				leftSideList[i].GetComponentInChildren<Text>().text = mathModes[i];
+				leftSideList[i].GetComponentInChildren<Image>().sprite = mathModes[i];
 			}
 		}
 	}
@@ -199,7 +199,7 @@ public class MenuPickLevelAdvanced : MonoBehaviour
 			spawnedObject.transform.SetParent(spawnerRight.transform);
 			rightSideList.Add(spawnedObject.GetComponent<Button>());
 			rightSideList[i].onClick.AddListener(() => SafeOptionsRight(copy));
-			rightSideList[i].GetComponentInChildren<Text>().text = difficulty[i];
+			rightSideList[i].GetComponentInChildren<Image>().sprite = difficulty[i];
 
 		}
 	}
