@@ -35,10 +35,13 @@ public class RiddleManager : MonoBehaviour {
             Debug.Log(currentRiddle.checkResult());
         }
         Color color = submitButton.image.color;
-        if (currentRiddle.isResultValid())
+        if (currentRiddle.isResultValid()) {
             color.a = 1f;
-        else
+            submitButton.enabled = true;
+        } else {
             color.a = 0.5f;
+            submitButton.enabled = false;
+        }
         submitButton.image.color = color;
     }
 

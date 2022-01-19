@@ -54,6 +54,8 @@ public class SnapDragController : MonoBehaviour {
     }
 
     public void OnPointerDown(int tile) {
+        if (!Input.GetMouseButtonDown(0))
+            return;
         pointerDownTime = Time.time;
         dragging = tile;
         if (tiles[dragging].occupiedLocationIndex != -1)
@@ -63,6 +65,8 @@ public class SnapDragController : MonoBehaviour {
 
     public void OnPointerUp() {
         // need to reset dragging first, else Update will set position while this function is executed
+        if (!Input.GetMouseButtonUp(0))
+            return;
         int lastDrag = dragging;
         dragging = -1;
         if (enableRotation && Time.time - pointerDownTime < 0.1) {
