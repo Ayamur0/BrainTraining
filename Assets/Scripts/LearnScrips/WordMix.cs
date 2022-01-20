@@ -106,6 +106,9 @@ public class WordMix : MonoBehaviour
 		foreach(var x in list){
 			finishedMixing += x.Value.ToString();
 		}
+		if(word.Equals(finishedMixing)){
+			mixWord(word);
+		}
 		return finishedMixing;
 	}
 
