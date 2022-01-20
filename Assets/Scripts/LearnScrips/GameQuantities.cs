@@ -169,6 +169,7 @@ public class GameQuantities : MonoBehaviour {
 					DeleteObjects();
 					PlayGame();
 				} else {
+					EnableButtons();
 					counterWrongChoice++;
 					//change color red
 					imageColor.color = new Color32(251, 37, 37, 255);
@@ -188,6 +189,7 @@ public class GameQuantities : MonoBehaviour {
 					DeleteObjects();
 					PlayGame();
 				} else {
+					EnableButtons();
 					counterWrongChoice++;
 					//change color red
 					imageColor.color = new Color32(251, 37, 37, 255);
@@ -207,6 +209,7 @@ public class GameQuantities : MonoBehaviour {
 					DeleteObjects();
 					PlayGame();
 				} else {
+					EnableButtons();
 					counterWrongChoice++;
 					//change color red
 					imageColor.color = new Color32(251, 37, 37, 255);
@@ -224,4 +227,9 @@ public class GameQuantities : MonoBehaviour {
 		}
 	}
 
+	public void EnableButtons(){
+		lessBtn.interactable = true;
+		equalsBtn.interactable = true;
+		greaterBtn.interactable = true;
+	}
 }

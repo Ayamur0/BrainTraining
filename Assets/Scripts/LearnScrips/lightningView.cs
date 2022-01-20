@@ -39,10 +39,13 @@ public class lightningView : MonoBehaviour {
 		menu.onClick.AddListener(() => GoBack());
 		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
 		checkButton.onClick.AddListener(() => buttonClick());
+		solution.onValueChanged.AddListener(delegate {EnableButton(); });
 		playGame();
 	}
 
-	void Update(){
+
+
+	public void EnableButton(){
 		if(string.IsNullOrEmpty(solution.text)){
 			checkButton.interactable = false;
 		}
@@ -59,6 +62,7 @@ public class lightningView : MonoBehaviour {
 	}
 
 	public void buttonClick(){
+		checkButton.interactable = false;
 		foreach (Transform child in spawnerCoverLeft.transform) {
 			Destroy(child.gameObject);
 		}

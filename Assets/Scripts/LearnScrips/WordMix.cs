@@ -34,16 +34,22 @@ public class WordMix : MonoBehaviour
 
 	void Start()
 	{
+		testWord.interactable = false;
 		menu.onClick.AddListener(() => GoBack());
 		lvlAmount = MenuPickLevelAdvanced.lvlAmmountStatic;
 		testWord.onClick.AddListener(() => ButtonClicked());
+		solutionChild.onValueChanged.AddListener(delegate {EnableButton(); });
 		ReadJsonFile();
 		PlayGame();
 
 	}
 
-	void Update(){
-		if(string.IsNullOrEmpty(solutionChild.text)){
+	void Upadte(){
+
+	}
+
+	public void EnableButton(){
+		if(String.IsNullOrEmpty(solutionChild.text)){
 			testWord.interactable = false;
 		}
 		else{
@@ -87,7 +93,6 @@ public class WordMix : MonoBehaviour
 	}
 
 	public void PlayGame(){
-		testWord.interactable = true;
 		//change color to white
 		imageColor.color = new Color32(255, 255, 255, 255);
 		lvlNumber.text = "Level: " + lvlCount + "/" + lvlAmount;
@@ -143,6 +148,7 @@ public class WordMix : MonoBehaviour
 	}
 
 	public void ButtonClicked(){
+		testWord.interactable = false;
 		StartCoroutine(waiter(1));
 	}
 
