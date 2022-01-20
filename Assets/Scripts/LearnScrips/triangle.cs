@@ -34,6 +34,7 @@ public class Triangle : MonoBehaviour
 	private int wrongChoice = 0;
 	private int lvlNumber = 10;
 	private int maxNumber = 0;
+	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
 
 	// Start is called before the first frame update
 	void Start()
@@ -130,15 +131,6 @@ public class Triangle : MonoBehaviour
 		}
 	}
 
-	public void PrintArray(){
-		for (int i = 0; i < jaggedSolution.Length; i++)
-		{
-			for (int j = 0; j < jaggedSolution[i].Length; j++){
-				Debug.Log(i + " " + j + ": " + jaggedSolution[i][j]);
-			}
-		}
-	}
-
 	public void playGame(){
 		if(lvlCounter != 1){
 			Debug.Log("hier war ich");
@@ -148,7 +140,6 @@ public class Triangle : MonoBehaviour
 		GenerateNumbers();
 		ShowBottomLineNumbers();
 		FillSolutionArray();
-		PrintArray();
 	}
 
 	public void ClearArray(){
@@ -166,6 +157,7 @@ public class Triangle : MonoBehaviour
 				spawnedObject = Instantiate(brick, triangleGameObject.transform.position, Quaternion.identity);
 				spawnedObject.name += i;
 				spawnedObject.transform.SetParent(triangleGameObject.transform.GetChild(i));
+				spawnedObject.transform.localScale = scaleSize;
 				jaggedInputs[i][j] =spawnedObject.GetComponent<InputField>();
 			}
 		}

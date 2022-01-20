@@ -32,8 +32,7 @@ public class MenuPickLevelAdvanced : MonoBehaviour
 	private int loadButtonsNumber = 0;
 	private bool leftSide = false;
 	private bool rightSide = false;
-
-	private int setOptionLeft = 0;
+	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
 
 	void Start()
 	{
@@ -179,10 +178,13 @@ public class MenuPickLevelAdvanced : MonoBehaviour
 			spawnedObject = Instantiate(buttonPref, spawnerLeft.transform.position, Quaternion.identity);
 			spawnedObject.name += i;
 			spawnedObject.transform.SetParent(spawnerLeft.transform);
+			spawnedObject.transform.localScale = scaleSize;
+			spawnedObject.GetComponent<Image>().preserveAspect = true;
 			leftSideList.Add(spawnedObject.GetComponent<Button>());
 			leftSideList[i].onClick.AddListener(() => SafeOptionsLeft(copy));
 			if(loadButtonsNumber == 2){
 				leftSideList[i].GetComponentInChildren<Image>().sprite = quantitiesModes[i];
+				// leftSideList[i].GetComponentInChildren<Image>().preserveAspect = true;
 				continue;
 			}
 			else if(loadButtonsNumber == 4){
@@ -197,10 +199,12 @@ public class MenuPickLevelAdvanced : MonoBehaviour
 			spawnedObject = Instantiate(buttonPref, spawnerRight.transform.position, Quaternion.identity);
 			spawnedObject.name += i;
 			spawnedObject.transform.SetParent(spawnerRight.transform);
+			spawnedObject.transform.localScale = scaleSize;
+			spawnedObject.GetComponent<Image>().preserveAspect = true;
 			rightSideList.Add(spawnedObject.GetComponent<Button>());
 			rightSideList[i].onClick.AddListener(() => SafeOptionsRight(copy));
 			rightSideList[i].GetComponentInChildren<Image>().sprite = difficulty[i];
-
+			// rightSideList[i].GetComponentInChildren<Image>().preserveAspect = true;
 		}
 	}
 }

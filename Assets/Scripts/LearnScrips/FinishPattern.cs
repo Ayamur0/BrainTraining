@@ -7,20 +7,7 @@ using System;
 
 public class FinishPattern : MonoBehaviour {
 
-	//Number text fields
-	public Text firstNumber;
-	public Text secondNumber;
-	public Text thirdNumber;
-	public Text forthNumber;
-	public Text fifthNumber;
 	public Text lvlText;
-
-	//Input fields
-	public InputField inputNumberOne;
-	public InputField inputNumberTwo;
-	public InputField inputNumberThree;
-	public InputField inputNumberFour;
-	public InputField inputNumberFive;
 
 	//random Numbers
 	private int randomNumber;
@@ -40,7 +27,7 @@ public class FinishPattern : MonoBehaviour {
 	private int[] solutionsNumbers = new int[5];
 
 	//int inputNumbers
-	private int[] inputNumbersArray = new int[5];
+	// private int[] inputNumbersArray = new int[5];
 
 
 	//Button test
@@ -58,21 +45,11 @@ public class FinishPattern : MonoBehaviour {
 		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
 		maxNumbers = MenuPickLevelAdvanced.maxNumberStatic;
 		checkSolution.onClick.AddListener(() => clickButton());
-		arrayInputs[0] = inputNumberOne;
-		arrayInputs[1] = inputNumberTwo;
-		arrayInputs[2] = inputNumberThree;
-		arrayInputs[3] = inputNumberFour;
-		arrayInputs[4] = inputNumberFive;
-		arrayTextFields[0] = firstNumber;
-		arrayTextFields[1] = secondNumber;
-		arrayTextFields[2] = thirdNumber;
-		arrayTextFields[3] = forthNumber;
-		arrayTextFields[4] = fifthNumber;
 		PlayGame();
 	}
 
 	void Update() {
-		if (string.IsNullOrEmpty(inputNumberOne.text) || string.IsNullOrEmpty(inputNumberTwo.text) || string.IsNullOrEmpty(inputNumberThree.text) || string.IsNullOrEmpty(inputNumberFour.text) || string.IsNullOrEmpty(inputNumberFive.text)) {
+		if (string.IsNullOrEmpty(arrayInputs[0].text) || string.IsNullOrEmpty(arrayInputs[1].text) || string.IsNullOrEmpty(arrayInputs[2].text) || string.IsNullOrEmpty(arrayInputs[3].text) || string.IsNullOrEmpty(arrayInputs[4].text)) {
 			checkSolution.interactable = false;
 		} else {
 			checkSolution.interactable = true;
@@ -134,11 +111,6 @@ public class FinishPattern : MonoBehaviour {
 	public void Solution(){
 		bool skip = false;
 		if (lvlCounter < lvlNumber) {
-			inputNumbersArray[0] = int.Parse(inputNumberOne.text);
-			inputNumbersArray[1] = int.Parse(inputNumberTwo.text);
-			inputNumbersArray[2] = int.Parse(inputNumberThree.text);
-			inputNumbersArray[3] = int.Parse(inputNumberFour.text);
-			inputNumbersArray[4] = int.Parse(inputNumberFive.text);
 			for (int i = 0; i < 5; i++) {
 				if (solutionsNumbers[i] == int.Parse(arrayInputs[i].text)) {
 					arrayInputs[i].interactable = false;

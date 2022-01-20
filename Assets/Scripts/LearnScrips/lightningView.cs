@@ -32,6 +32,7 @@ public class lightningView : MonoBehaviour {
 	private int lvlNumber = 10;
 	private float minDistance = 18f;
 	private bool hitPosition = false;
+	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
 
 	// Start is called before the first frame update
 	void Start() {
@@ -39,6 +40,15 @@ public class lightningView : MonoBehaviour {
 		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
 		checkButton.onClick.AddListener(() => buttonClick());
 		playGame();
+	}
+
+	void Update(){
+		if(string.IsNullOrEmpty(solution.text)){
+			checkButton.interactable = false;
+		}
+		else{
+			checkButton.interactable = true;
+		}
 	}
 
 	public void GoBack(){
@@ -69,6 +79,7 @@ public class lightningView : MonoBehaviour {
 			allObjects = Instantiate(spawnedObject, spawner.transform.position, Quaternion.identity);
 			allObjects.name += i;
 			allObjects.transform.SetParent(spawner.transform);
+			allObjects.transform.localScale = scaleSize;
 			ChangePosition(i);
 		}
 	}
@@ -131,6 +142,7 @@ public class lightningView : MonoBehaviour {
 		yield return new WaitForSeconds(sec);
 		GameObject hideCircles = Instantiate(cover, spawnerCoverLeft.transform.position, Quaternion.identity);
 		hideCircles.transform.SetParent(spawnerCoverLeft.transform);
+		hideCircles.transform.localScale = scaleSize * (0.75f);
 	}
 
 	IEnumerator solutionWaiter(int sec){

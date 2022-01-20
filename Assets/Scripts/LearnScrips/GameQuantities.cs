@@ -40,6 +40,7 @@ public class GameQuantities : MonoBehaviour {
 	private int randomNumber = 0;
 	private int counterRound = 1;
 	private int counterWrongChoice = 0;
+	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
 
 	//number of lvls
 	private int lvlNumber = 10;
@@ -95,6 +96,7 @@ public class GameQuantities : MonoBehaviour {
 			spawnedObject = Instantiate(side, spawner.transform.position, Quaternion.identity);
 			spawnedObject.name += i;
 			spawnedObject.transform.SetParent(spawner.transform.GetChild(i / 4));
+			spawnedObject.transform.localScale = scaleSize;
 			alleQuantitiesObjects.Add(spawnedObject);
 		}
 	}

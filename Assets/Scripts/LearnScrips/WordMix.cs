@@ -91,6 +91,7 @@ public class WordMix : MonoBehaviour
 		Debug.Log("lenght list: " + list.words.Length);
 		copyArray();
 		solution = list.words.GetValue(randomNumber).ToString();
+		solutionChild.characterLimit = solution.Length;
 		mixedWord = mixWord(solution);
 		Debug.Log(mixedWord);
 		Debug.Log("Soltion: " + solution);
