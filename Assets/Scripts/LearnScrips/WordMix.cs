@@ -42,6 +42,15 @@ public class WordMix : MonoBehaviour
 
 	}
 
+	void Update(){
+		if(string.IsNullOrEmpty(solutionChild.text)){
+			testWord.interactable = false;
+		}
+		else{
+			testWord.interactable = true;
+		}
+	}
+
 	public void GoBack(){
 		MenuPickLevelAdvanced.maxNumberStatic = 0;
 		MenuPickLevelAdvanced.lvlAmmountStatic = 0;
@@ -78,6 +87,7 @@ public class WordMix : MonoBehaviour
 	}
 
 	public void PlayGame(){
+		testWord.interactable = true;
 		//change color to white
 		imageColor.color = new Color32(255, 255, 255, 255);
 		lvlNumber.text = "Level: " + lvlCount + "/" + lvlAmount;
@@ -137,12 +147,6 @@ public class WordMix : MonoBehaviour
 	}
 
 }
-
-// [System.Serializable]
-// public class Words
-// {
-// 	public string germanWord;
-// }
 
 [System.Serializable]
 public class WordList

@@ -68,12 +68,18 @@ public class GameQuantities : MonoBehaviour {
 	}
 
 	public void SetSymbol(char symbol){
+		lessBtn.interactable = false;
+		equalsBtn.interactable = false;
+		greaterBtn.interactable = false;
 		Symbol.text = symbol.ToString();
 		StartCoroutine(waiter(1, symbol));
 
 	}
 
 	public void PlayGame() {
+		lessBtn.interactable = true;
+		equalsBtn.interactable = true;
+		greaterBtn.interactable = true;
 		//change color to white
 		imageColor.color = new Color32(255, 255, 255, 255);
 		SetLevelText();
