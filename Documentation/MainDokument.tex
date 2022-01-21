@@ -1,0 +1,366 @@
+
+\documentclass[oneside]{ausarbeitung}
+\bibliography{latexlit}
+
+
+% ----------------------------------------------------------------------
+
+\begin{document}
+
+%--- Sprachauswahl
+% Erlaubte Werte:
+%   \selectlanguage{english}
+%   \selectlanguage{ngerman}
+\selectlanguage{ngerman}
+
+%--- Art der Arbeit
+% Erlaubte Werte:
+%   \Praxissemesterbericht
+%   \Projektbericht
+%   \Bachelorarbeit
+%   \Seminararbeit
+%   \Masterarbeit
+
+\Projektbericht
+
+%--- Studiengang:
+% Erlaubte Werte:
+%   \Informatik
+%   \Elektronik
+%   \DataScience
+\Informatik
+
+\title{Lernspiel für Grundschulkinder}
+
+\author{Vincent Ugrai, Tim Staudenmaier}
+\matrikelnr{12345, 75981}
+
+%--- Ist der Erstbetreuer (\examinerA) an der Hochschule ein Professor?
+% Erlaubte Werte:
+%   \examinerIsAProfessortrue   % Ja
+%   \examinerIsAProfessorfalse  % Nein
+\examinerIsAProfessortrue   % Ja
+
+%--- Betreuer
+\examinerA{Dr. Mark Hermann}
+%\examinerB{Prof.~Dr.~Ulrich~Klauck}
+
+%--- Einreichungsdatum
+\date{01. Dezember 2016}
+
+%--- Angaben zur Firma
+% Auskommentieren, wenn die Arbeit nicht bei einer ext. Firma gemacht wurde.
+% \companyname{Beispielfirma}
+% \industrialsector{Beispielbranche}
+% \department{Beispielabteilung}
+% \companystreet{Beispielstr. 1}
+% \companycity{12345 Musterstadt}
+
+%--- Angaben zum Betreuer bei dieser Firma
+% \advisorname{Name des Betreuers}
+% \advisorphone{(01234) 567-890}
+% \advisoremail{name@company.xxx}
+
+%--- Titelseite Anzeigen
+\maketitle
+\cleardoublepage
+
+%---
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+%--- Firmendaten Anzeigen
+% Auskommentieren, wenn die Arbeit nicht bei einer ext. Firma gemacht wurde.
+\makeworkplace
+\cleardoublepage
+
+%--- Eidesstattliche Erklärung anzeigen
+\makeaffirmation
+\cleardoublepage
+
+%---
+\begin{abstract}
+  Das Thema dieser Arbeit ist die Erstellung eines Lernspiels für Grundschulkinder.
+  Das Lernspiel soll dabei zwei große Teile beeinhalten: Spiele mit denen die Kinder    wichtige Grundlagen in unter anderem Mathematik und Deutsch lernen können und Rätsel.
+  Die Lernspiele beinhalten 6 einzelne Spiele:
+  \begin{itemize}
+  	\item %TODO
+  \end{itemize}    
+  Zudem sind 23 verschiedene Rätsel vorhanden, die von einfachen Rätseln, bei denen eine Zahl als Ergebnis eingegeben werden muss, bis zu Rätseln bei denen Ziegen auf einem Feld verteilt werden müssen, reichen.\\
+  
+  Das Spiel wird in 2D umgesetzt und mithilfe der Unity Engine programmiert.
+  In diesem Bericht wird der gesamte Erstellungsprozess eines 2D Spiels in Unity, vom Erstellen des Projekts, über den Aufbau des Codes, bis zum fertigen Spiel, beschrieben.
+  
+\end{abstract}
+%-----------------------------------------------------------------------
+\cleardoublepage
+\tableofcontents
+
+%---
+\listoffigures
+
+%---
+\listoftables
+
+%---
+\listoflistings
+
+%---
+\listofabbreviations
+\begin{acronym}[Bsp.]  % Längstes Kürzel in der nachfolgenden
+                       % Liste um die Breite der Spalte für die
+                       % Abkürzungen zu bestimmen.
+
+%% Eintrag: \acro{Referenzname}[Kürzel]{Langform}
+%% Im Text wird die Abkürzung dann mit \ac{Referenzname} benutzt.
+\acro{rup}[RUP]{Rational Unified Process}
+\acro{bsp}[Bsp.]{Beispiel}
+\end{acronym}
+%---
+
+
+\cleardoublepage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ----------------------------------------------------------------------
+\chapter{Einleitung}
+\label{cha:einleitung}
+
+In diesem Bericht werden zuerst die Grundlagen des Programmierens von Spielen in Unity erklärt. Alle Wissen, das notwendig ist um ein einfaches 2D Spiel in Unity zu entwickeln, sind im Kapitel \ref{cha:grundlagen} zu finden.\\
+Zuerst wurden die zwei Teile des Spiels (Rätsel und Lernspiele) einzeln entwickelt und am Ende durch ein Menü verbunden.\\
+Für die Rätsel wird eine Rätsel-Szene erstellt, welche drei Elemente beeinhaltet:
+\begin{itemize}
+	\item Die Beschreibung des Rätsels
+	\item Bereich in dem das Rätsel zu sehen ist (hier werden zB die Antwortmöglichkeiten gezeigt, aus denen bei manchen Rätseln eine oder mehrere auszuwählen sind %TODO Screenshot)
+	\item Bereich für die Eingabe einer Lösung
+\end{itemize}
+Des weiteren werden für die Rätsel eine Szene für die Rätselauswahl, sowie eine Szene für die Auflösung der eingegebenen Lösung erstellt. Die Implementierung dieser Rätsel findet sich im Kapitel \ref{sec:raetsel}\\
+
+Auch für die Lernspiele wird ein Menü erstellt, über welches alle Spiele ausgewählt werden können. Zudem können hier vor dem Starten für bestimmte Spiele noch Variationen und die Schwierigkeit gewählt werden. \\
+Zudem wird für jedes Lernspiel eine Szene benötigt, welche das eigentliche Spiel realisiert. Die Implementierung hierfür wird im Kapitel \ref{sec:lernspiele} beschrieben.\\
+
+\section{Motivation}
+\label{sec:motivation}
+
+Durch die Lernspiele sollen die Kinder spielend an das Lernen herangeführt werden. Denn vor allem viele Grunschüler/-innen lernen zu beginn nicht gerne. Viele dieser Kinder lernen mithilfe solcher Spiele schneller, da sie mehr Spaß am lernen haben. \\
+Die Lernspiele dienen dabei dazu, den Kindern einfache Grundlagen, wie zB die Grundrechenarten und Rechtschreibung einfacher Worte, spielend beizubringen. Die Rätsel dienen vor allem dazu, das logische Denken der Kinder zu fördern. Darüber hinaus werden in manchen Rätseln auch grundlegende Mathematik Kenntnisse benötigt, wodurch auch dieser weiter gefestigt werden.
+
+\section{Problemstellung und -abgrenzung}
+\label{sec:problemstellung}
+
+Das Menü des Spiels muss eine für Kinder ansprechendes und möglichst einfaches UI Design besitzen. Zudem müssen die Kinder durch zB das Sammeln von Punkten motiviert werden die Spiele und Rätsel abzuschließen.\\
+
+In Hinsicht auf den Code des Projekts, muss für die Rätsel ein Grundgerüst erstellt werden, welches die verschiedenen Rätsel laden und darstellen kann, um möglichst viel wiederzuverwenden und zu verhindern, dass jedes Rätsel von neuem erstellt werden muss.\\
+
+Für die Lernspiele müssen die Aufgaben für jedes Spiel möglichst zufällig erstellt werden, damit das Spiel nicht auswendig gelernt werden kann und bei mehrmaligem Spielen noch immer neue Aufgaben vorkommen.
+
+\section{Ziel der Arbeit}
+\label{sec:ziel}
+
+Es wird ein 2D-Spiel erstellt, welches über 20 verschiedene Rätsel und 6 verschieden Lernspiele mit unterschiedlichen Variationen und Schwierigkeiten beinhalten. Alle diese Rätsel müssen über ein möglichst simples und für Kinder ansprechendes Menü auswählbar sein.\\
+Des weiteren muss ein Punktesystem eingebaut werden, um die Kinder zu motivieren möglichst viele Rätsel zu lösen und möglichst viele Spiele zu spielen. Die Punkte müssen dabei auch zwischen den Spielstarts gespeichert werden und es muss möglich sein diese wieder zu löschen.
+
+\section{Vorgehen}
+\label{sec:vorgehen}
+
+Nachdem mit Problemstellung und Ziel gewissermaßen Anfangs- und Endpunkt 
+des Praktikums beschrieben sind, wird hier der zur Erreichung des Ziels 
+eingeschlagene Weg vorgestellt. Dazu werden typischerweise die folgenden 
+Kapitel und ihr Beitrag zur Erreichung des Ziels der Arbeit kurz 
+beschrieben. Die folgenden Kapitel sind ein – möglicher – Aufbau, 
+Abweichungen können durchaus notwendig sein. Zur Darstellung des 
+Vorgehens ist eine grafische Darstellung sinnvoll, bei der die einzelnen 
+Lösungsschritte und ihr Zusammenhang dargestellt werden. Ein Beispiel 
+hierfür findet sich in Abbildung \ref{fig:1}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[height=0.9\textheight]{images/ausarbeitung.jpg}
+  \caption{vorgehen nach \autocite{Schmidt:Geschaeftsprozesse}}
+  \label{fig:1}
+\end{figure}
+
+
+% ---
+\chapter{Grundlagen}
+\label{cha:grundlagen}
+
+In diesem Kapitel das für das Praktikum relevante Grundlagenwissen 
+dargestellt. Der Praktikant soll hierzu das ihm durch Vorlesungen 
+bekannte, bzw. durch Recherchen vertiefte theoretische Wissen 
+darstellen, das für die Lösung der im Praktikum gestellten Probleme 
+notwendig ist.
+
+Dabei ist darauf zu achten, nur solche Inhalte in das Grundlagenkapitel 
+aufzunehmen, die später auch verwendet werden (Problembezogenheit). 
+Ebenso ist auf eine ausreichend tiefe und vollständige Darstellung der 
+Grundlagen zu achten.
+
+Für die Erstellung des Literaturverzeichnisses 
+wird das Werkzeug JabRef\autocite{JabRef:JabRef} verwendet. 
+
+Sie können aber auch das Werkzeug Citavi\autocite{SAS:Citavi} benutzen
+und dort nach \textsc{Bib}\TeX{} exportieren.
+
+\section{C\# Grundlagen}
+\label{sec:grundlagenc}
+
+\subsection{Definition AA}
+\label{sub:definitionaa}
+
+\subsection{Definition AB}
+\label{sub:definitionab}
+
+\section{Unity Grundlagen}
+\label{sec:grundlagenunity}
+
+\subsection{Szenen Editor}
+\label{sub:szenenEditor}
+Im Editor von Unity können die Spielszenen erstellt werden.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[height=0.9\textheight]{images/unityEditor}
+  \caption{Szenen Editor von Unity}
+  \label{fig:unityEditor}
+\end{figure}
+Der Editor besteht standardmäßig aus 4 Teilen, wie in der Abbildung zu sehen.
+\begin{itemize}
+	\item \textbf{Teil 1:} Hier wird die Struktur der Szene dargestellt. In dieser Liste sind alle in der Szene vorhandenen Elemente aufgeführt. Elemente die dabei weiter unten liegen, liegen in der Szene hinter Elemente die darüber liegen. Zudem können Elemente weitere Elemente beinhalten (Child Elemente), die in der Szene dann ebenfalls in dem Element liegen, das sie beinhaltet. Über diese Liste können mittels Rechtsklick auch neue Elemente erstellt werden.
+	\item \textbf{Teil 2:} Hier ist zu sehen, wie die Szene momentan aussieht. Durch einen Wechsel vom 'Scene' Tab in den 'Game' Tab, lässt sich auch genau sehen, wie die Szene im Spiel aussehen würde. Hier können die einzelnen Elemente zB verschoben, vergrößert oder gedreht werden.
+	\item \textbf{Teil 3:} Hier können die Attribute des aktuell ausgewählten Elements verändert werden. Je nach Element sind hier andere Komponenten enthalten, für ein Image Objekt lässt sich hier zB das dargestellte Bild ändern. Hier können auch weitere Komponenten hinzugefügt werden oder bereits vorhandene deaktiviert oder entfernt werden.
+	\item \textbf{Teil 4:} Dieser Teil ist ein einfacher Dateiexplorer, um zB Bilddateien auszuwählen, Skripte zu erstellen bzw. öffnen oder neue Szenen zu erstellen.
+\end{itemize}
+
+\subsection{Prefabs}
+\label{sub:prefab}
+Prefabs sind Objekte, die aus mehreren Szenen-Elementen bestehen.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[height=0.9\textheight]{images/unityPrefab}
+  \caption{Prefab in Unity}
+  \label{fig:unityPrefab}
+\end{figure}
+In der obigen Abbildung wurde somit ein Zahlen Input Feld erstellt, welches aus einem Image ('NumberInput'), zwei Input Feldern ('tens' und 'ones') und zwei Texten ('Text') besteht. Dieses Prefab kann dann als ein Objekt in Szenen eingefügt werden, wodurch dieser Zahlen Input an mehreren Stellen verwendet werden kann, ohne ihn jedes mal neu zu erstellen.
+
+\subsection{Skripte}
+\label{sub:skripte}
+Die Skripte von Unity werden in C\# geschrieben. Erstellt man ein neues Skript, so sieht dieses zuerst wie folgt aus:
+\begin{lstlisting}[language=csh, caption={Generiertes Unity Skript}]
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TestScript : MonoBehaviour {
+    // Start is called before the first frame update
+    void Start() {
+    }
+	
+	// Update is called once per frame
+    void Update() {
+    }
+}
+\end{lstlisting}
+Jedes Skript, welches Funktionen von Unity verwendet, erbt von der Klasse MonoBehaviour.
+Diese erlaubt es zB die beiden Methoden Start und Update zu verwenden, welche beim erstellen eines neuen Skripts auch direkt generiert werden.\\
+Die Start Methode wird dabei aufgerufen, bevor der erste Frame geladen wird, in dem dieses Skript vorhanden ist. Ist das Skript also zB die Komponente eines Würfels, welcher nun in die Szene geladen wird, so wird die Start Methode einmal aufgerufen, bevor der Würfel in der Szene auftaucht.\\
+Die Update Methode wird hingegen jeden Frame aufgerufen, solange das Skript in der Szene vorhanden ist. \\
+
+Hier können noch viele weitere Funktionen verwendet werden, wie zB onCollisionEnter(), wenn ein Collider vorhanden ist. Weitere Informationen sind in der Unity Dokumentation zu finden %TODO Link zu Unity
+
+%---
+\chapter{Problemanalyse}
+\label{cha:problemanalyse}
+
+Die Rätsel sollen größtenteils aus XML Dateien geladen werden. Somit muss dann nur eine Szene für alle Rätsel erstellt werden. Die XML Dateien sollen so viele Informationen wie möglich beinhalten, so dass möglichst wenig Code wie möglich für die Rätsel benötigt wird. \\
+Für jedes Rätsel existiert zudem eine Klasse, welche die zu ladende XML Datei, das Rätsel Prefab und die benötigten Bilder beinhaltet. Das Rätsel Prefab ist dabei ein Prefab, das in die Szene geladen wird, um Rätsel, die mehr Interaktion erlauben (wie unter anderem das verschieben von Objekten), in derselben Szene darstellen zu können. \\
+Außerdem werden allgemeine Klassen benötigt, die in mehreren Rätseln zum Einsatz kommen. Unter anderem ein Skript das dem Spieler erlaubt Objekte mit der Maus zu verschieben und ein Zahleninput sowie Textinput. Zudem wird ein Manager benötigt, der aus den vorhandenen Informationen die Rätsel in die Szene laden kann.\\
+Auch müssen werden die Szene für die Rätselauswahl und das Ergebnis des Rätsel benötigt.
+
+%TODO Lernspiele Problemanalyse
+
+%---
+\chapter{Lösungskonzept}
+\label{cha:loesungskonzept}
+
+%TODO Klassendiagramme u.ä.
+
+%---
+\chapter{Implementierung}
+\label{cha:implementierung}
+
+\section{Rätsel}
+\label{sec:raetsel}
+\include{implementierung-raetsel}
+
+\section{Lernspiele}
+\label{sec:lernspiele}
+\include{implementierung-lernspiele}
+%---
+\chapter{Inbetriebnahme}
+\label{cha:inbetriebnahme}
+
+Aufgabe des Kapitels Inbetriebnahme ist es, die Überführung der in 
+Kapitel \ref{cha:implementierung} entwickelte Lösung in das betriebliche 
+Umfeld aufzuzeigen. Dabei wird beispielsweise die Inbetriebnahme eines 
+Programms beschrieben oder die Integration eines erstellten 
+Programmodules dargestellt.
+
+Bei der Software-Erstellung entspricht dieses Kapitel der 
+Auslieferungsphase (Deployment) im \ac{rup}.
+
+%---
+\chapter{Evaluierung}
+
+Aufgabe des Kapitels Evaluierung ist es, in wie weit die Ziele der 
+Arbeit erreicht wurden. Es sollen also die erreichten Arbeitsergebnisse 
+mit den Zielen verglichen werden. Ergebnis der Evaluierung kann auch 
+sein, das bestimmte Ziele nicht erreicht werden konnten, wobei die 
+Ursachen hierfür auch außerhalb des Verantwortungsbereichs des 
+Praktikanten liegen können.
+
+%---
+\chapter{Zusammenfassung und Ausblick}
+\label{cha:zusammenfassung}
+
+\section{Erreichte Ergebnisse}
+\label{sec:ergebnisse}
+
+Die Zusammenfassung dient dazu, die wesentlichen Ergebnisse des 
+Praktikums und vor allem die entwickelte Problemlösung und den 
+erreichten Fortschritt darzustellen. (Sie haben Ihr Ziel erreicht und 
+dies nachgewiesen).
+
+\section{Ausblick}
+\label{sec:ausblick}
+
+Im Ausblick werden Ideen für die Weiterentwicklung der erstellten Lösung 
+aufgezeigt. Der Ausblick sollte daher zeigen, dass die Ergebnisse der 
+Arbeit nicht nur für die in der Arbeit identifizierten Problemstellungen 
+verwendbar sind, sondern darüber hinaus erweitert sowie auf andere 
+Probleme übertragen werden können.
+
+\subsection{Erweiterbarkeit der Ergebnisse}
+\label{sub:erweiterbarkeit}
+
+Hier kann man was über die Erweiterbarkeit der Ergebnisse sagen.
+
+\subsection{Übertragbarkeit der Ergebnisse}
+\label{sub:uebertragbarkeit}
+
+Und hier etwas über deren Übertragbarkeit.
+
+%-----------------------------------------------------------------------
+\appendix
+
+%---
+\printbibliography[heading=bibintoc]
+
+%---
+\chapter{Anhang A}
+
+%---
+\chapter{Anhang B}
+
+
+\end{document}
