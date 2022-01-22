@@ -40,6 +40,7 @@ public class GameQuantities : MonoBehaviour {
 	private int randomNumber = 0;
 	private int counterRound = 1;
 	private int counterWrongChoice = 0;
+	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
 
 	//number of lvls
 	private int lvlNumber = 10;
@@ -67,12 +68,18 @@ public class GameQuantities : MonoBehaviour {
 	}
 
 	public void SetSymbol(char symbol){
+		lessBtn.interactable = false;
+		equalsBtn.interactable = false;
+		greaterBtn.interactable = false;
 		Symbol.text = symbol.ToString();
 		StartCoroutine(waiter(1, symbol));
 
 	}
 
 	public void PlayGame() {
+		lessBtn.interactable = true;
+		equalsBtn.interactable = true;
+		greaterBtn.interactable = true;
 		//change color to white
 		imageColor.color = new Color32(255, 255, 255, 255);
 		SetLevelText();
@@ -95,6 +102,7 @@ public class GameQuantities : MonoBehaviour {
 			spawnedObject = Instantiate(side, spawner.transform.position, Quaternion.identity);
 			spawnedObject.name += i;
 			spawnedObject.transform.SetParent(spawner.transform.GetChild(i / 4));
+			spawnedObject.transform.localScale = scaleSize;
 			alleQuantitiesObjects.Add(spawnedObject);
 		}
 	}
@@ -161,6 +169,7 @@ public class GameQuantities : MonoBehaviour {
 					DeleteObjects();
 					PlayGame();
 				} else {
+					EnableButtons();
 					counterWrongChoice++;
 					//change color red
 					imageColor.color = new Color32(251, 37, 37, 255);
@@ -180,6 +189,7 @@ public class GameQuantities : MonoBehaviour {
 					DeleteObjects();
 					PlayGame();
 				} else {
+					EnableButtons();
 					counterWrongChoice++;
 					//change color red
 					imageColor.color = new Color32(251, 37, 37, 255);
@@ -199,6 +209,7 @@ public class GameQuantities : MonoBehaviour {
 					DeleteObjects();
 					PlayGame();
 				} else {
+					EnableButtons();
 					counterWrongChoice++;
 					//change color red
 					imageColor.color = new Color32(251, 37, 37, 255);
@@ -216,4 +227,9 @@ public class GameQuantities : MonoBehaviour {
 		}
 	}
 
+	public void EnableButtons(){
+		lessBtn.interactable = true;
+		equalsBtn.interactable = true;
+		greaterBtn.interactable = true;
+	}
 }

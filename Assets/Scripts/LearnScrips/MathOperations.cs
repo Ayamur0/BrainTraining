@@ -38,10 +38,12 @@ public class MathOperations : MonoBehaviour
 		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
 		gameMode = MenuPickLevelAdvanced.fourChoices;
 		checkButton.onClick.AddListener(() => buttonClick());
+		solutionNumber.onValueChanged.AddListener(delegate {EnableButton(); });
 		PlayGame(gameMode);
 	}
 
-	void Update(){
+
+	public void EnableButton(){
 		if(string.IsNullOrEmpty(solutionNumber.text)){
 			checkButton.interactable = false;
 		}
@@ -117,6 +119,7 @@ public class MathOperations : MonoBehaviour
 	}
 
 	public void buttonClick(){
+		checkButton.interactable = false;
 		if(gameMode == 4){
 			StartCoroutine(waiterDiv(1));
 		}

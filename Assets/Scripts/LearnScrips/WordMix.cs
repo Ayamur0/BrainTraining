@@ -34,12 +34,27 @@ public class WordMix : MonoBehaviour
 
 	void Start()
 	{
+		testWord.interactable = false;
 		menu.onClick.AddListener(() => GoBack());
 		lvlAmount = MenuPickLevelAdvanced.lvlAmmountStatic;
 		testWord.onClick.AddListener(() => ButtonClicked());
+		solutionChild.onValueChanged.AddListener(delegate {EnableButton(); });
 		ReadJsonFile();
 		PlayGame();
 
+	}
+
+	void Upadte(){
+
+	}
+
+	public void EnableButton(){
+		if(String.IsNullOrEmpty(solutionChild.text)){
+			testWord.interactable = false;
+		}
+		else{
+			testWord.interactable = true;
+		}
 	}
 
 	public void GoBack(){
@@ -91,6 +106,7 @@ public class WordMix : MonoBehaviour
 		Debug.Log("lenght list: " + list.words.Length);
 		copyArray();
 		solution = list.words.GetValue(randomNumber).ToString();
+		solutionChild.characterLimit = solution.Length;
 		mixedWord = mixWord(solution);
 		Debug.Log(mixedWord);
 		Debug.Log("Soltion: " + solution);
@@ -104,6 +120,9 @@ public class WordMix : MonoBehaviour
 			list.Add(rnd.Next(), c);
 		foreach(var x in list){
 			finishedMixing += x.Value.ToString();
+		}
+		if(word.Equals(finishedMixing)){
+			mixWord(word);
 		}
 		return finishedMixing;
 	}
@@ -129,16 +148,11 @@ public class WordMix : MonoBehaviour
 	}
 
 	public void ButtonClicked(){
+		testWord.interactable = false;
 		StartCoroutine(waiter(1));
 	}
 
 }
-
-// [System.Serializable]
-// public class Words
-// {
-// 	public string germanWord;
-// }
 
 [System.Serializable]
 public class WordList
