@@ -72,7 +72,7 @@ public class FinishPattern : MonoBehaviour {
 	}
 
 	public int RandomPatternNumbers() {
-		return UnityEngine.Random.Range(1, 5);
+		return UnityEngine.Random.Range(1, maxNumbers);
 	}
 
 	public void PlayGame() {
