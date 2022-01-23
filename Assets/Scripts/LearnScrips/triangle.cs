@@ -30,7 +30,7 @@ public class Triangle : MonoBehaviour
 	public Button testSolution;
 	public Button menu;
 
-	private int lvlCounter = 1;
+	private int lvlCounter = 0;
 	private int wrongChoice = 0;
 	private int lvlNumber = 10;
 	private int maxNumber = 0;
@@ -43,6 +43,7 @@ public class Triangle : MonoBehaviour
 		maxNumber = MenuPickLevelAdvanced.maxNumberStatic;
 		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
 		triangleSize = MenuPickLevelAdvanced.wallSize;
+		testSolution.interactable = false;
 		testSolution.onClick.AddListener(() => CheckSolution());
 		jaggedInputs[0] = new InputField[1];
 		jaggedInputs[1] = new InputField[2];
@@ -52,6 +53,25 @@ public class Triangle : MonoBehaviour
 		SpawnPyramidRows();
 		playGame();
 	}
+
+	void Update(){
+				bool enabel = false;
+		for (int i = 0; i < triangleSize - 1; i++){
+			for (int j = 0; j < jaggedInputs[i].Length; j++) {
+				if(string.IsNullOrEmpty(jaggedInputs[i][j].text)){
+					enabel = true;
+					testSolution.interactable = false;
+
+				}
+			}
+		}
+		if(!enabel){
+			testSolution.interactable = true;
+		}
+	}
+
+
+
 
 	public void GoBack(){
 		MenuPickLevelAdvanced.maxNumberStatic = 0;
@@ -107,7 +127,7 @@ public class Triangle : MonoBehaviour
 
 	public void CheckSolution(){
 		bool finished = false;
-		if(lvlCounter < lvlNumber){
+		if(lvlCounter <= lvlNumber){
 			for (int i = triangleSize - 2; i >= 0; i--){
 				for (int j = 0; j < jaggedSolution[i].Length; j++){
 					if(jaggedSolution[i][j] == int.Parse(jaggedInputs[i][j].text)){
@@ -122,21 +142,23 @@ public class Triangle : MonoBehaviour
 				}
 			}
 			if(!finished){
-				lvlCounter++;
 				playGame();
 			}
-		}
-		else{
-			Debug.Log("Fertig");
 		}
 	}
 
 	public void playGame(){
+		lvlCounter++;
+		if(lvlCounter > lvlNumber){
+			PlayerPrefs.SetInt("wrongAnswers", wrongChoice);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoice);
+		}
 		if(lvlCounter != 1){
 			Debug.Log("hier war ich");
 			ClearArray();
 		}
-		lvlText.text = "Level: " + lvlCounter + "/" + lvlNumber;
+		if(lvlCounter <= lvlNumber)	lvlText.text = "Level: " + lvlCounter + "/" + lvlNumber;
 		GenerateNumbers();
 		ShowBottomLineNumbers();
 		FillSolutionArray();

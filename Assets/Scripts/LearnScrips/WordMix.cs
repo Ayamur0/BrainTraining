@@ -19,7 +19,7 @@ public class WordMix : MonoBehaviour
 	private string solution;
 	public Image imageColor;
 
-	private int lvlCount = 1;
+	private int lvlCount = 0;
 	private int lvlAmount = 10;
 	private int wrongChoices = 0;
 	private int randomNumber = 0;
@@ -64,12 +64,11 @@ public class WordMix : MonoBehaviour
 
 	IEnumerator waiter(int sec){
 		solutionChild.interactable = false;
-		if(lvlCount < lvlAmount){
+		if(lvlCount <= lvlAmount){
 			if(solution.Equals(solutionChild.text)){
 				//change color green
 				imageColor.color = new Color32(37, 250, 53, 255);
 				yield return new WaitForSeconds(sec);
-				lvlCount++;
 				solutionChild.text = "";
 				PlayGame();
 			}
@@ -83,17 +82,18 @@ public class WordMix : MonoBehaviour
 				wrongChoices++;
 			}
 		}
-		else{
+	}
+
+	public void PlayGame(){
+		lvlCount++;
+		if(lvlCount > lvlAmount){
 			PlayerPrefs.SetInt("wrongAnswers", wrongChoices);
 			SceneManager.LoadScene("LearnFinishScreen");
 			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoices);
 		}
-	}
-
-	public void PlayGame(){
 		//change color to white
 		imageColor.color = new Color32(255, 255, 255, 255);
-		lvlNumber.text = "Level: " + lvlCount + "/" + lvlAmount;
+		if(lvlCount <= lvlAmount)	lvlNumber.text = "Level: " + lvlCount + "/" + lvlAmount;
 		GetWord();
 		wordLeft.text = mixedWord;
 	}

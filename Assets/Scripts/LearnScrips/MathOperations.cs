@@ -26,7 +26,7 @@ public class MathOperations : MonoBehaviour
 	private int maxRandomNumber = 10;
 	private int minRandomNumber = 0;
 	private int lvlNumber = 10;
-	private int countLvl = 1;
+	private int countLvl = 0;
 	//add = 1, sub = 2, mult = 3, div = 4
 	private int gameMode = 3;
 	private int wrongSolution = 0;
@@ -61,9 +61,16 @@ public class MathOperations : MonoBehaviour
 	}
 
 	public void PlayGame(int gameMode){
+		countLvl++;
+		if(countLvl > lvlNumber){
+			PlayerPrefs.SetInt("wrongAnswers", wrongSolution);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongSolution);
+		}
 		//change color to white
 		imageColor.color = new Color32(255, 255, 255, 255);
-		showLevelNumber.text = "Level: " + countLvl + "/" + lvlNumber;
+
+		if(countLvl <= lvlNumber)	showLevelNumber.text = "Level: " + countLvl + "/" + lvlNumber;
 		solutionNumber.text = "";
 		if(gameMode == 4){
 			operatorSymbole.text = "/";
@@ -131,9 +138,8 @@ public class MathOperations : MonoBehaviour
 
 	IEnumerator waiter(int sec){
 		solutionNumber.interactable = false;
-		if(countLvl < lvlNumber){
+		if(countLvl <= lvlNumber){
 			if(int.Parse(solutionNumber.text) == solution){
-				countLvl++;
 				//change color green
 				imageColor.color = new Color32(37, 250, 53, 255);
 				yield return new WaitForSeconds(sec);
@@ -148,18 +154,12 @@ public class MathOperations : MonoBehaviour
 				imageColor.color = new Color32(255, 255, 255, 255);
 				solutionNumber.text = "";
 			}
-		}
-		else{
-			PlayerPrefs.SetInt("wrongAnswers", wrongSolution);
-			SceneManager.LoadScene("LearnFinishScreen");
-			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongSolution);
 		}
 	}
 
 	IEnumerator waiterDiv(int sec){
-		if(countLvl < lvlNumber){
+		if(countLvl <= lvlNumber){
 			if(int.Parse(solutionNumber.text) == leftNumber){
-				countLvl++;
 				//change color green
 				imageColor.color = new Color32(37, 250, 53, 255);
 				yield return new WaitForSeconds(sec);
@@ -174,11 +174,6 @@ public class MathOperations : MonoBehaviour
 				imageColor.color = new Color32(255, 255, 255, 255);
 				solutionNumber.text = "";
 			}
-		}
-		else{
-			PlayerPrefs.SetInt("wrongAnswers", wrongSolution);
-			SceneManager.LoadScene("LearnFinishScreen");
-			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongSolution);
 		}
 	}
 }

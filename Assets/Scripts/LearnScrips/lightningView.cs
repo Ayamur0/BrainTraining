@@ -27,7 +27,7 @@ public class lightningView : MonoBehaviour {
 
 	//Variabln for lightningView
 	private int numberLeft;
-	private int counterRound = 1;
+	private int counterRound = 0;
 	private int wrongChoice = 0;
 	private int lvlNumber = 10;
 	private float minDistance = 0f;
@@ -75,7 +75,7 @@ public class lightningView : MonoBehaviour {
 	}
 
 	public int randomNumber(){
-		return UnityEngine.Random.Range(10, 10);
+		return UnityEngine.Random.Range(1, 10);
 	}
 
 	public void hideCircle(){
@@ -140,9 +140,15 @@ public class lightningView : MonoBehaviour {
 	}
 
 	public void playGame(){
+		counterRound++;
+		if(counterRound > lvlNumber){
+			PlayerPrefs.SetInt("wrongAnswers", wrongChoice);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoice);
+		}
 		//change color to white
 		imageColor.color = new Color32(255, 255, 255, 255);
-		showLevel.text = "Level: " + counterRound + "/" + lvlNumber;
+		if(counterRound <= lvlNumber)	showLevel.text = "Level: " + counterRound + "/" + lvlNumber;
 		numberLeft = randomNumber();
 		Debug.Log(numberLeft);
 		solution.text = "";
@@ -156,19 +162,17 @@ public class lightningView : MonoBehaviour {
 		GameObject hideCircles = Instantiate(cover, spawnerCoverLeft.transform.position, Quaternion.identity);
 		hideCircles.transform.SetParent(spawnerCoverLeft.transform);
 		hideCircles.transform.localScale = scaleSize * (0.75f);
-
 		solution.interactable = true;
 	}
 
 	IEnumerator solutionWaiter(int sec){
 		solution.interactable = false;
-		if(counterRound < lvlNumber){
+		if(counterRound <= lvlNumber){
 			if(int.Parse(solution.text) == numberLeft){
 				//change color green
 				imageColor.color = new Color32(37, 250, 53, 255);
 				yield return new WaitForSeconds(sec);
 				deletObjects();
-				counterRound++;
 				playGame();
 
 			}
@@ -182,11 +186,6 @@ public class lightningView : MonoBehaviour {
 				solution.text = "";
 				hideCircle();
 			}
-		}
-		else{
-			PlayerPrefs.SetInt("wrongAnswers", wrongChoice);
-			SceneManager.LoadScene("LearnFinishScreen");
-			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoice);
 		}
 	}
 }

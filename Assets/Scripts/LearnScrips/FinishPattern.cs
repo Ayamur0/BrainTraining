@@ -17,7 +17,7 @@ public class FinishPattern : MonoBehaviour {
 	//lvl variabls
 	private int lvlNumber = 10;
 	private int wrongAnswers;
-	private int lvlCounter = 1;
+	private int lvlCounter = 0;
 	private int maxNumbers = 20;
 
 	//int start start pattern
@@ -44,11 +44,15 @@ public class FinishPattern : MonoBehaviour {
 		menu.onClick.AddListener(() => GoBack());
 		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
 		maxNumbers = MenuPickLevelAdvanced.maxNumberStatic;
+		checkSolution.interactable = false;
 		checkSolution.onClick.AddListener(() => clickButton());
+		for (int i = 0; i < arrayInputs.Length; i++){
+			arrayInputs[i].onValueChanged.AddListener(delegate { EnableButton(); });
+		}
 		PlayGame();
 	}
 
-	void Update() {
+	public void EnableButton() {
 		if (string.IsNullOrEmpty(arrayInputs[0].text) || string.IsNullOrEmpty(arrayInputs[1].text) || string.IsNullOrEmpty(arrayInputs[2].text) || string.IsNullOrEmpty(arrayInputs[3].text) || string.IsNullOrEmpty(arrayInputs[4].text)) {
 			checkSolution.interactable = false;
 		} else {
@@ -56,7 +60,8 @@ public class FinishPattern : MonoBehaviour {
 		}
 	}
 
-	public void GoBack(){
+
+		public void GoBack(){
 		MenuPickLevelAdvanced.maxNumberStatic = 0;
 		MenuPickLevelAdvanced.lvlAmmountStatic = 0;
 		MenuPickLevelAdvanced.fourChoices = 0;
@@ -76,8 +81,14 @@ public class FinishPattern : MonoBehaviour {
 	}
 
 	public void PlayGame() {
+		lvlCounter++;
+		if(lvlCounter > lvlNumber){
+			PlayerPrefs.SetInt("wrongAnswers", wrongAnswers);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongAnswers);
+		}
 		ResetInputFields();
-		SetLvlText();
+		if(lvlCounter <= lvlNumber)	SetLvlText();
 		randomNumber = RandomBeginningNumber(maxNumbers);
 		FirstRandomNumber = RandomPatternNumbers();
 		SecondRandomNumber = RandomPatternNumbers();
@@ -110,7 +121,7 @@ public class FinishPattern : MonoBehaviour {
 
 	public void Solution(){
 		bool skip = false;
-		if (lvlCounter < lvlNumber) {
+		if (lvlCounter <= lvlNumber) {
 			for (int i = 0; i < 5; i++) {
 				if (solutionsNumbers[i] == int.Parse(arrayInputs[i].text)) {
 					arrayInputs[i].interactable = false;
@@ -123,13 +134,8 @@ public class FinishPattern : MonoBehaviour {
 				}
 			}
 			if (!skip) {
-				lvlCounter++;
 				PlayGame();
 			}
-		} else {
-			PlayerPrefs.SetInt("wrongAnswers", wrongAnswers);
-			SceneManager.LoadScene("LearnFinishScreen");
-			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongAnswers);
 		}
 	}
 
