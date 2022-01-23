@@ -46,6 +46,7 @@ public class MathOperations : MonoBehaviour
 	public void EnableButton(){
 		if(string.IsNullOrEmpty(solutionNumber.text)){
 			checkButton.interactable = false;
+			solutionNumber.interactable = true;
 		}
 		else{
 			checkButton.interactable = true;
@@ -129,6 +130,7 @@ public class MathOperations : MonoBehaviour
 	}
 
 	IEnumerator waiter(int sec){
+		solutionNumber.interactable = false;
 		if(countLvl < lvlNumber){
 			if(int.Parse(solutionNumber.text) == solution){
 				countLvl++;

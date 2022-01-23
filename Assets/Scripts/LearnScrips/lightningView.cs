@@ -30,12 +30,14 @@ public class lightningView : MonoBehaviour {
 	private int counterRound = 1;
 	private int wrongChoice = 0;
 	private int lvlNumber = 10;
-	private float minDistance = 16f;
+	private float minDistance = 0f;
 	private bool hitPosition = false;
 	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
 
 	// Start is called before the first frame update
 	void Start() {
+		minDistance = spawnedObject.GetComponent<RectTransform>().rect.width / 2;
+		spawner.transform.localScale = scaleSize;
 		checkButton.interactable = false;
 		menu.onClick.AddListener(() => GoBack());
 		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
@@ -85,8 +87,8 @@ public class lightningView : MonoBehaviour {
 		for (int i = 0; i < numberLeft; i++) {
 			allObjects = Instantiate(spawnedObject, spawner.transform.position, Quaternion.identity);
 			allObjects.name += i;
-			allObjects.transform.localScale = scaleSize;
 			allObjects.transform.SetParent(spawner.transform);
+			allObjects.transform.localScale = scaleSize;
 			ChangePosition(i);
 		}
 	}
@@ -95,19 +97,22 @@ public class lightningView : MonoBehaviour {
 		RectTransform spawnRect = spawner.GetComponent<RectTransform>();
 		float width = spawnRect.rect.width;
 		float height = spawnRect.rect.height;
-		float xPos = UnityEngine.Random.Range(((float)spawnRect.transform.position.x - (width - 39.3829f)/2), (float)spawnRect.transform.position.x + (width - 39.383f)/2);
-		float yPos = UnityEngine.Random.Range(((float)spawnRect.transform.position.x - (height - 39.3829f)/2), (float)spawnRect.transform.position.x + (height - 39.383f)/2);
+		// float xPos = UnityEngine.Random.Range(((float)spawnRect.transform.position.x - (width - 39.3829f)/2), (float)spawnRect.transform.position.x + (width - 39.383f)/2);
+		// float yPos = UnityEngine.Random.Range(((float)spawnRect.transform.position.x - (height - 39.3829f)/2), (float)spawnRect.transform.position.x + (height - 39.383f)/2);
+		float xPos = UnityEngine.Random.Range(-width/2 + minDistance, width/2 - minDistance);
+		float yPos = UnityEngine.Random.Range(-height/2 + minDistance, height/2 - minDistance);
 		Vector2 newPos = new Vector2(xPos, yPos);
+		Debug.Log("x:" + xPos);
 
 		if(firstNumber == 0){
 			allPositions.Add(newPos);
-			allObjects.transform.position = newPos;
+			allObjects.transform.localPosition = newPos;
 			return;
 		}
 
 
 		for (int i = 0; i < allPositions.Count; i++){
-			float distance = Vector2.Distance(new Vector2(allPositions[i].x, allPositions[i].y), new Vector2(newPos.x, newPos.y)) - 2;
+			float distance = Vector2.Distance(new Vector2(allPositions[i].x, allPositions[i].y), new Vector2(newPos.x, newPos.y));
 			if(distance >= minDistance){
 				hitPosition = true;
 			}
@@ -119,7 +124,7 @@ public class lightningView : MonoBehaviour {
 		}
 		if(hitPosition){
 			allPositions.Add(newPos);
-			allObjects.transform.position = newPos;
+			allObjects.transform.localPosition = newPos;
 
 		}
 		else{

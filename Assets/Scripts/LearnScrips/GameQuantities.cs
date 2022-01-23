@@ -158,7 +158,7 @@ public class GameQuantities : MonoBehaviour {
 	}
 
 	IEnumerator waiter(int sec, char symbol){
-		if(counterRound < lvlNumber){
+		if(counterRound <= lvlNumber){
 			if(symbol.Equals('<')){
 				Symbol.text = '<'.ToString();
 				if (numberLeft < numberRight) {

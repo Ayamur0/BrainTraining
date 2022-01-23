@@ -44,13 +44,10 @@ public class WordMix : MonoBehaviour
 
 	}
 
-	void Upadte(){
-
-	}
-
 	public void EnableButton(){
 		if(String.IsNullOrEmpty(solutionChild.text)){
 			testWord.interactable = false;
+			solutionChild.interactable = true;
 		}
 		else{
 			testWord.interactable = true;
@@ -66,6 +63,7 @@ public class WordMix : MonoBehaviour
 
 
 	IEnumerator waiter(int sec){
+		solutionChild.interactable = false;
 		if(lvlCount < lvlAmount){
 			if(solution.Equals(solutionChild.text)){
 				//change color green
