@@ -18,6 +18,11 @@ public class Triangle : MonoBehaviour
 
 	private GameObject spawnedObject;
 
+	public GameObject leftFirework;
+	public GameObject rightFirework;
+
+	public GameObject fireworkPrefab;
+
 	//3 = bottom 3 bricks, 4 = bottom 4 bricks, 5 = bottom 5 bricks
 	private int triangleSize = 3;
 
@@ -51,7 +56,7 @@ public class Triangle : MonoBehaviour
 		jaggedSolution[1] = new int[2];
 		GenerateSolutionArray();
 		SpawnPyramidRows();
-		playGame();
+		PlayGame();
 	}
 
 	void Update(){
@@ -126,28 +131,10 @@ public class Triangle : MonoBehaviour
 	}
 
 	public void CheckSolution(){
-		bool finished = false;
-		if(lvlCounter <= lvlNumber){
-			for (int i = triangleSize - 2; i >= 0; i--){
-				for (int j = 0; j < jaggedSolution[i].Length; j++){
-					if(jaggedSolution[i][j] == int.Parse(jaggedInputs[i][j].text)){
-						jaggedInputs[i][j].interactable = false;
-						continue;
-					}
-					else{
-						jaggedInputs[i][j].text = "";
-						wrongChoice++;
-						finished = true;
-					}
-				}
-			}
-			if(!finished){
-				playGame();
-			}
-		}
+		StartCoroutine(Waiter(1));
 	}
 
-	public void playGame(){
+	public void PlayGame(){
 		lvlCounter++;
 		if(lvlCounter > lvlNumber){
 			PlayerPrefs.SetInt("wrongAnswers", wrongChoice);
@@ -191,6 +178,48 @@ public class Triangle : MonoBehaviour
 		for (int i = 0; i < bottomNumbers.Length; i++) {
 			bottomNumbers[i] = UnityEngine.Random.Range(0, maxNumber);
 			jaggedSolution[triangleSize - 1][i] = bottomNumbers[i];
+		}
+	}
+
+	public void SpawnFirework(){
+		spawnedObject = Instantiate(fireworkPrefab, leftFirework.transform.position, leftFirework.transform.rotation);
+		spawnedObject.transform.SetParent(leftFirework.transform);
+		spawnedObject.transform.localScale = scaleSize;
+		spawnedObject = Instantiate(fireworkPrefab, rightFirework.transform.position, rightFirework.transform.rotation);
+		spawnedObject.transform.SetParent(rightFirework.transform);
+		spawnedObject.transform.localScale = scaleSize;
+		Debug.Log("Firework");
+
+	}
+
+	public void DeleteFirework(){
+		Destroy(leftFirework.transform.GetChild(0).gameObject);
+		Destroy(rightFirework.transform.GetChild(0).gameObject);
+	}
+
+
+	IEnumerator Waiter(int sec){
+		bool finished = false;
+		if(lvlCounter <= lvlNumber){
+			for (int i = triangleSize - 2; i >= 0; i--){
+				for (int j = 0; j < jaggedSolution[i].Length; j++){
+					if(jaggedSolution[i][j] == int.Parse(jaggedInputs[i][j].text)){
+						jaggedInputs[i][j].interactable = false;
+						continue;
+					}
+					else{
+						jaggedInputs[i][j].text = "";
+						wrongChoice++;
+						finished = true;
+					}
+				}
+			}
+			if(!finished){
+				SpawnFirework();
+				yield return new WaitForSeconds(sec);
+				DeleteFirework();
+				PlayGame();
+			}
 		}
 	}
 

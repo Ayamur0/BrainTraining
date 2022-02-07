@@ -134,6 +134,31 @@ public class WordMix : MonoBehaviour
 		}
 	}
 
+	// public string mixWord(string word){
+	// 	string newWord = "";
+	// 	int oldNumber = 0;
+	// 	int counter = 0;
+	// 	while(counter != word.Length){
+	// 		int randomPos = GetRandomNumbers(counter, word.Length);
+	// 		if(oldNumber != randomPos){
+	// 			oldNumber = randomPos;
+	// 			counter++;
+	// 			newWord += word[randomPos];
+
+	// 		}
+	// 	}
+	// 	return newWord;
+	// }
+
+	// public int GetRandomNumbers(int minNumber, int maxNumber){
+	// 	if(list.words.Length != 0){
+	// 		return UnityEngine.Random.Range(minNumber, maxNumber);
+	// 	}
+	// 	else{
+	// 		return -1;
+	// 	}
+	// }
+
 	public void ReadJsonFile(){
 		list = JsonUtility.FromJson<WordList>(textJson.text);
 	}

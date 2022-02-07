@@ -176,11 +176,11 @@ public class GameQuantities : MonoBehaviour {
 					DeleteObjects();
 					PlayGame();
 				} else {
-					EnableButtons();
 					counterWrongChoice++;
 					//change color red
 					imageColor.color = new Color32(251, 37, 37, 255);
 					yield return new WaitForSeconds(sec);
+					EnableButtons();
 					imageColor.color = new Color32(255, 255, 255, 255);
 					Symbol.text = "";
 					Debug.Log("Nicht richtig");
@@ -196,11 +196,11 @@ public class GameQuantities : MonoBehaviour {
 					DeleteObjects();
 					PlayGame();
 				} else {
-					EnableButtons();
 					counterWrongChoice++;
 					//change color red
 					imageColor.color = new Color32(251, 37, 37, 255);
 					yield return new WaitForSeconds(sec);
+					EnableButtons();
 					imageColor.color = new Color32(255, 255, 255, 255);
 					Symbol.text = "";
 					Debug.Log("Nicht richtig");
@@ -216,11 +216,11 @@ public class GameQuantities : MonoBehaviour {
 					DeleteObjects();
 					PlayGame();
 				} else {
-					EnableButtons();
 					counterWrongChoice++;
 					//change color red
 					imageColor.color = new Color32(251, 37, 37, 255);
 					yield return new WaitForSeconds(sec);
+					EnableButtons();
 					imageColor.color = new Color32(255, 255, 255, 255);
 					Symbol.text = "";
 					Debug.Log("Nicht richtig");

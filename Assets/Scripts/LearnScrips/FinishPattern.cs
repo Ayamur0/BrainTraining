@@ -34,6 +34,11 @@ public class FinishPattern : MonoBehaviour {
 	public Button checkSolution;
 	public Button menu;
 
+	//Firework
+	private GameObject spawnedObject;
+	public GameObject leftFirework;
+	public GameObject rightFirework;
+	public GameObject fireworkPrefab;
 
 	public InputField[] arrayInputs = new InputField[5];
 	public Text[] arrayTextFields = new Text[5];
@@ -69,7 +74,7 @@ public class FinishPattern : MonoBehaviour {
 	}
 
 	public void clickButton() {
-		Solution();
+		StartCoroutine(Solution(1));
 	}
 
 	public int RandomBeginningNumber(int maxNumbers) {
@@ -119,7 +124,21 @@ public class FinishPattern : MonoBehaviour {
 		}
 	}
 
-	public void Solution(){
+	public void SpawnFirework(){
+		spawnedObject = Instantiate(fireworkPrefab, leftFirework.transform.position, leftFirework.transform.rotation);
+		spawnedObject.transform.SetParent(leftFirework.transform);
+		spawnedObject = Instantiate(fireworkPrefab, rightFirework.transform.position, rightFirework.transform.rotation);
+		spawnedObject.transform.SetParent(rightFirework.transform);
+		Debug.Log("Firework");
+
+	}
+
+	public void DeleteFirework(){
+		Destroy(leftFirework.transform.GetChild(0).gameObject);
+		Destroy(rightFirework.transform.GetChild(0).gameObject);
+	}
+
+	IEnumerator Solution(int sec){
 		bool skip = false;
 		if (lvlCounter <= lvlNumber) {
 			for (int i = 0; i < 5; i++) {
@@ -134,6 +153,9 @@ public class FinishPattern : MonoBehaviour {
 				}
 			}
 			if (!skip) {
+				SpawnFirework();
+				yield return new WaitForSeconds(sec);
+				DeleteFirework();
 				PlayGame();
 			}
 		}
