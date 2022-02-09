@@ -32,13 +32,28 @@ public class lightningView : MonoBehaviour {
 	private int lvlNumber = 10;
 	private float minDistance = 18f;
 	private bool hitPosition = false;
+	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
 
 	// Start is called before the first frame update
 	void Start() {
 		menu.onClick.AddListener(() => GoBack());
 		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
 		checkButton.onClick.AddListener(() => buttonClick());
+		solution.onValueChanged.AddListener(delegate {EnableButton(); });
 		playGame();
+	}
+
+
+
+	public void EnableButton(){
+		if(string.IsNullOrEmpty(solution.text)){
+			checkButton.interactable = false;
+			solution.interactable = true;
+
+		}
+		else{
+			checkButton.interactable = true;
+		}
 	}
 
 	public void GoBack(){
@@ -49,6 +64,7 @@ public class lightningView : MonoBehaviour {
 	}
 
 	public void buttonClick(){
+		checkButton.interactable = false;
 		foreach (Transform child in spawnerCoverLeft.transform) {
 			Destroy(child.gameObject);
 		}
@@ -69,6 +85,7 @@ public class lightningView : MonoBehaviour {
 			allObjects = Instantiate(spawnedObject, spawner.transform.position, Quaternion.identity);
 			allObjects.name += i;
 			allObjects.transform.SetParent(spawner.transform);
+			allObjects.transform.localScale = scaleSize;
 			ChangePosition(i);
 		}
 	}
@@ -128,12 +145,17 @@ public class lightningView : MonoBehaviour {
 	}
 
 	IEnumerator waiter(int sec){
+		solution.interactable = false;
 		yield return new WaitForSeconds(sec);
 		GameObject hideCircles = Instantiate(cover, spawnerCoverLeft.transform.position, Quaternion.identity);
 		hideCircles.transform.SetParent(spawnerCoverLeft.transform);
+		hideCircles.transform.localScale = scaleSize * (0.75f);
+
+		solution.interactable = true;
 	}
 
 	IEnumerator solutionWaiter(int sec){
+		solution.interactable = false;
 		if(counterRound < lvlNumber){
 			if(int.Parse(solution.text) == numberLeft){
 				//change color green

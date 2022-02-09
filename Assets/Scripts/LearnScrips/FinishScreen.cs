@@ -10,6 +10,7 @@ public class FinishScreen : MonoBehaviour
 
 	private GameQuantities game;
 	public Text TextfieldMistakes;
+	public Text head;
 	private GameObject spawnedStarLeft;
 	private GameObject spawnedStarCenter;
 	private GameObject spawnedStarRight;
@@ -39,25 +40,32 @@ public class FinishScreen : MonoBehaviour
 
 	public void SpawnStars(){
 		Debug.Log("Bin in der Funktion");
+		head.text = ("Schade!");
+		TextfieldMistakes.text = ("Nächstes mal klappts!!!");
 		if(mistakes <= 4){
 			SaveDataManager.RiddleSaveData.stars++;
 			Debug.Log("Erste IF");
 			spawnedStarLeft = Instantiate(star, LeftStarSpawn.transform.position, Quaternion.identity);
 			spawnedStarLeft.transform.SetParent(LeftStarSpawn.transform);
+			head.text = ("Glückwunsch!");
+			TextfieldMistakes.text = ("Nur " + mistakes + " Fehler");
 			if(mistakes <= 2){
 				SaveDataManager.RiddleSaveData.stars++;
 				Debug.Log("Zweite IF");
 				spawnedStarCenter = Instantiate(star, CenterStarSpawn.transform.position, Quaternion.identity);
 				spawnedStarCenter.transform.SetParent(CenterStarSpawn.transform);
+				head.text = ("Glückwunsch!");
+				TextfieldMistakes.text = ("Nur " + mistakes + " Fehler");
 				if(mistakes == 0){
 					SaveDataManager.RiddleSaveData.stars++;
 					Debug.Log("Dritte IF");
 					spawnedStarRight = Instantiate(star, RightStarSpawn.transform.position, Quaternion.identity);
 					spawnedStarRight.transform.SetParent(RightStarSpawn.transform);
+					head.text = ("Glückwunsch!");
+					TextfieldMistakes.text = ("Super alles Richtig!!!");
 				}
 			}
 		}
-		TextfieldMistakes.text = ("Falsche Antworten: " + mistakes);
 		SaveDataManager.SaveGame();
 	}
 
