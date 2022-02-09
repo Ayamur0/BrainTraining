@@ -6,7 +6,7 @@
     <minPoints>5</minPoints>
     <descriptionParagraphs type="array">
         <value>Wir haben hier neun Ziegen, die sich nicht vertragen.</value>
-        <value>Wenn die merken, $dass sie in einem Abstand von nur zwei Feldern zueinander sind - vertikal oder horionzal -$, fangen sie Streit an. Zum Glück streiten sie nicht, wenn sie diagonal zueinander sind oder ein Felsen sie trennt.</value>
+        <value>Wenn sie merken, $dass sie in einem Abstand von nur zwei Feldern zueinander sind - vertikal oder horizontal -$, fangen sie Streit an. Zum Glück streiten sie nicht, wenn sie diagonal zueinander sind oder ein Felsen sie trennt.</value>
         <value>$Kannst du sie so stellen, dass sie sich nicht streiten?$</value>
         <value>Ziehe sie, um sie zu bewegen, und platziere sie dort, wo sie deiner Meinung nach am besten auf der Farm aufgehoben sind.</value>
     </descriptionParagraphs>

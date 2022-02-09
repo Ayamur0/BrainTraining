@@ -68,6 +68,7 @@ public class RiddleManager : MonoBehaviour {
     }
 
     public void LoadNextRiddle() {
+        RiddleManager.riddleId = currentRiddle.info.id + 1;
         LoadRiddle(currentRiddle.info.id + 1);
     }
 

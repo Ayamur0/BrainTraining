@@ -69,7 +69,7 @@ public class SnapDragController : MonoBehaviour {
             return;
         int lastDrag = dragging;
         dragging = -1;
-        if (enableRotation && Time.time - pointerDownTime < 0.1) {
+        if (enableRotation && Time.time - pointerDownTime < 0.2) {
             tiles[lastDrag].image.transform.Rotate(0.0f, 0.0f, 90.0f, Space.Self);
         }
         float x = Input.mousePosition.x;

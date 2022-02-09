@@ -9,7 +9,7 @@ public class R009 : Riddle {
     }
 
     public override bool checkResult() {
-        return interactiveArea.GetComponent<TextInput>().GetInput() == "bbacbb";
+        return interactiveArea.GetComponent<TextInput>().GetInput() == "bbcabb";
     }
 
     public override bool isResultValid() {

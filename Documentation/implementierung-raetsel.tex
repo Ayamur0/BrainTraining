@@ -1,0 +1,555 @@
+\subsection{Rätsel Szene}
+\graphic{riddleScene}{Szenenaufbau für Rätsel}
+In der obigen Abbildung ist der generelle Aufbau der Rätsel Szene zu sehen. Oben links gibt es ein Textfeld, in das die Rätselbeschreibung eingetragen wird. Darunter ist Platz für ein Eingabefeld für das Ergebnis, oder ein Bild, falls das Rätsel keine Ergebniseingabe benötigt.\\ 
+In der rechten Hälfte findet sich der Hauptteil des Rätsel. Hier werden Rätsel gelöst, die zB verschiebbare Objekte haben. Für Rätsel die lediglich eine Beschreibung und dann eine Lösungseingabe benötigen, wird hier nur ein Bild eingefügt.
+
+\subsection{Laden der Rätsel in die Szene}
+Damit nicht für jedes Rätsel eine eigene Szene erstellt werden muss, sollen die Rätsel dynamisch in diese eine Szene geladen werden können.\\
+Dafür müssen die Daten für jedes Rätsel in Dateien gespeichert werden, welche dann geladen werden.
+
+\subsubsection{Rätseldaten}
+Für jedes Rätsel werden verschiedene Assets benötigt:
+\begin{itemize}
+	\item \textbf{info.xml} mit den Daten für das Rätsel
+	\item \textbf{main.png} das Hintergrundbild für die rechte Hälfte
+	\item \textbf{R001.prefab} das Prefab, das in die rechte Hälfte geladen wird und Funktionen beinhaltet die das Rätsel zum lösen bietet
+	\item \textbf{solution.png} das Bild, das in der Lösung angezeigt wird
+	\item optional: \textbf{result.png} falls keine Lösungseingabe benötigt wird, ein Bild für die untere linke Ecke
+	\item Eventuell weitere für das Prefab benötigte Assets
+\end{itemize}
+
+Die Daten für die Rätsel werden in XML-Dateien gespeichert. Diese enthalten alle notwendigen Informationen um ein Rätsel laden zu können.
+\begin{lstlisting}[language=xml, caption={Aufbau einer Rätsel XML-Datei}]
+<?xml version="1.0"?>
+<RiddleInfo>
+    <id>1</id>
+    <title>Titel</title>
+    <maxPoints>35</maxPoints>
+    <minPoints>5</minPoints>
+    <descriptionParagraphs type="array">
+        <value>Absatz 1</value>
+        <value>Absatz 2 $roter Text$</value>
+    </descriptionParagraphs>
+    <solutionParagraphs>
+        <value>Absatz 1</value>
+        <value>Absatz 2</value>
+    </solutionParagraphs>
+    <autoSubmit>false</autoSubmit>
+</RiddleInfo>
+\end{lstlisting}
+In der XML-Datei ist die ID enthalten, welche ein Rätsel eindeutig identifiziert. Der Titel wird später in der Rätselauswahl angezeigt, die Punkte werden beim abschließen des Rätsels verrechnet und die Beschreibung wird in der Rätsel Szene angezeigt. 
+\\Die Lösung wird nach lösen des Rätsel in einem Popup angezeigt.
+\\Wird autoSubmit auf true gesetzt, so wird der 'Bestätigen' Button aus der Szene entfernt und das Rätsel wird automatisch bestätigt, sobald die korrekte Lösung eingeben wurde.\\
+
+\subsubsection{RiddleInfo Klasse zum Laden der XML-Dateien}
+\label{sub:RiddleInfo}
+\begin{lstlisting}[language=csh, caption={In der Klasse gespeicherte Daten}]
+	[XmlElement]
+    public int id;
+    [XmlElement]
+    public string title;
+    public bool completed;
+    public int points;
+    [XmlElement]
+    public int maxPoints;
+    [XmlElement]
+    public int minPoints;
+    public int pointReduction;
+    [XmlArrayItem("value")]
+    public string[] descriptionParagraphs;
+    public string description = "";
+    [XmlArrayItem("value")]
+    public string[] solutionParagraphs;
+    public string solution = "";
+    [XmlElement]
+    public bool autoSubmit;
+\end{lstlisting}
+Alle mit '[XmlElement]' markierten Variablen sind unter demselben Namen in den XML-Dateien zu finden. Diese Variablen können dann direkt mithilfe des XML-Serialisierers von C\# aus der Datei gelesen werden. Die anderen Variablen werden dann von den aus der Datei gelesenen Variablen abgeleitet.\\
+\begin{lstlisting}[language=csh, caption={Laden der Daten mit dem XML-Serialisierer}]
+private static XmlSerializer serializer = new XmlSerializer(typeof(RiddleInfo));
+
+public static RiddleInfo loadFromXML(int id) {
+    RiddleInfo info = new RiddleInfo();
+    info.id = id;
+    XmlDocument xmldoc = new XmlDocument();
+   TextAsset textAsset = Resources.Load<TextAsset>($"RiddleAssets/{info.id.ToString("000")}/info");
+    xmldoc.LoadXml(textAsset.text);
+    using (XmlReader reader = new XmlNodeReader(xmldoc)) {
+        info = serializer.Deserialize(reader) as RiddleInfo;
+    }
+    ...
+\end{lstlisting}
+Die Variablen 'completed' und 'points' werden anschließend aus der SaveFile gelesen, da diese Variablen beinhalten, ob das Rätsel schonmal abgeschlossen wurde bzw. wie viele Punkte vom Rätsel noch erhalten werden können.\\
+Die Variable 'pointReduction' lässt sich aus 'maxPoints' und 'minPoints' berechnen, da immer fünfmal Punkte abgezogen werden sollen, bevor die minimalen Punkte erreicht sind.\\
+Für die string 'solution' und 'description' werden die string in den Arrays aneinandergehängt, wobei nach jedem string aus dem Array jeweils zwei Zeilenumbrüche folgen, um die Paragraphen zu trennen. Für die Beschreibung wird zudem noch eine Regex angewendet, da Text der in der XML-Datei zwischen zwei \$-Zeichen steht, in rot angezeigt werden soll:
+\begin{lstlisting}[language=csh, caption={Regex um Text zwischen \$-Zeichen rot zu färben}]
+temp = Regex.Replace(temp, @"\$([^$]+)\$", "<color=#b83e39>$1</color>");
+\end{lstlisting}
+Der Text der zwischen den \$-Zeichen stand steht im string dann zwischen zwei HTML color Tags, welche das Unity Text Objekt interpretieren kann.\\
+
+Zusätzlich zur obigen Ladefunktion gibt es noch eine gekürzte Variante dieser, welche weniger Daten lädt. Diese ist zB für die Rätselliste nützlich, da in dieser für alle Rätsel ID, Titel, verbleibende Punkte, maximale Punkte und der Abgeschlossen-Status benötigt werden. In dieser gekürzten Ladefunktion werden nur diese Daten geladen, damit nicht unnötig alle anderen Daten, die von der Rätselliste nicht benötigt werden geladen werden müssen, was je nach Gesamtanzahl der Rätsel für eine schnellere Ladezeit sorgt.
+
+\subsubsection{Rätselklassen}
+Neben den Daten existiert für jedes Rätsel eine Klasse, welche unter anderem die vorhandenen Assets lädt, so dass diese dann verwendet werden können.\\
+Die Klassen für die Rätsel erben dabei alle von der abstrakten Klasse Riddle.cs:
+\begin{lstlisting}[language=csh, caption={Riddle.cs base Klasse}]
+	public RiddleInfo info;
+    public Sprite resultAreaImage;
+    public Sprite solutionSprite;
+    public GameObject interactiveArea;
+
+    private static XmlSerializer serializer = new XmlSerializer(typeof(RiddleInfo));
+
+    virtual public void OnEnable() { }
+
+    public void init(int id) {
+        info = RiddleInfo.loadFromXML(id);
+        solutionSprite = Resources.Load<Sprite>($"RiddleAssets/{idToString(id)}/solution") as Sprite;
+        interactiveArea = Instantiate(Resources.Load<GameObject>($"RiddleAssets/{idToString(id)}/R{idToString(id)}")) as GameObject;
+        resultAreaImage = Resources.Load<Sprite>($"RiddleAssets/{idToString(id)}/result") as Sprite;
+    }
+
+    virtual public bool checkResult() { return false; }
+
+    virtual public bool isResultValid() { return false; }
+
+    public void reducePoints() {
+        info.points = Mathf.Clamp(info.minPoints, info.points - info.pointReduction, info.maxPoints);
+    }
+
+    public void Destroy() {
+        Destroy(interactiveArea);
+    }
+
+    private string idToString(int id) {
+        return id.ToString("000");
+    }
+\end{lstlisting}
+Diese Klasse muss von jeder Rätselklasse implementiert werden. In der OnEnable() Funktion muss immer zuerst "base.init(id)" aufgerufen werden, danach können weitere für das Rätsel benötigte Assets geladen werden.\\
+In der init() Funktion werden die Assets geladen, die jedes Rätsel benötigt: Die Infos aus der XML-Datei, das Bild für die Lösung, das Prefab für die rechte Seite und das Bild für die untere linke Ecke (falls nicht vorhanden steht hier null).\\
+Zudem muss jedes Rätsel die Funktionen checkResult() und isResultValid() implementieren. Erstere soll dabei true zurückgeben, wenn die richtige Lösung eingegeben wurde und isResultValid() muss true zurückgeben, wenn die eingegebene Lösung syntaktisch Korrekt ist und bestätigt werden könnte (nicht korrekt wäre zB bei einer Texteingabe mit 6 Zeichen nur 4 Zeichen einzugeben).\\
+
+Für ein einfaches Rätsel, mit nur einer Zahleneingabe als Lösung, sieht die Klasse dann wie folgt aus:
+\begin{lstlisting}[language=csh, caption={Klasse für Rätsel 002 die von Riddle.cs erbt}]
+public class R002 : Riddle {
+    public override void OnEnable() {
+        base.init(2);
+    }
+
+    public override bool checkResult() {
+        return interactiveArea.GetComponent<NumberInput>().GetInput() == 14;
+    }
+
+    public override bool isResultValid() {
+        return interactiveArea.GetComponent<NumberInput>().IsInputValid();
+    }
+}
+\end{lstlisting}
+
+\subsubsection{RiddleLoader Klasse zum Laden der Rätsel in die Szene}
+Um die Klassen der Rätsel in die Rätselszene zu laden wird der RiddleManager verwendet.
+Dieser hält in Variablen folgende Elemente aus der Szene:
+\begin{itemize}
+	\item \textbf{mainArea:} Das Canvas für die rechte Hälfte des Rätsels, in welches das Prefab geladen wird
+	\item \textbf{resultImage:} Das Bild in der unteren linken Ecke, in welches entweder in Hintergrund für die Ergebniseingabe kommt oder, falls diese nicht benötigt wird, ein Bild
+	\item \textbf{description:} Text Element für die Beschreibung
+	\item \textbf{solution:} Canvas des Popups in dem die Lösung angezeigt wird
+	\item \textbf{solutionText:} Text im Canvas für die Lösung, in welchen der Lösungstext geschrieben wird
+	\item \textbf{solutionImage:} Image Element im Canvas für die Lösung, in welchem das Bild für die Lösung angezeigt wird
+	\item \textbf{submitButton:} Button, mit welchem die Eingabe bestätigt wird und überprüft wird, ob das Rätsel richtig gelöst wurde
+\end{itemize}
+Zudem wird aus dem resultImage eine Instanz einer privaten Klasse angelegt, welche das wechseln zwischen Ergebniseingabe-Hintergrund und Rätselbild vereinfacht.\\
+
+Um Rätsel zu laden, bietet der RiddleManager die LoadRiddle Funktion, welcher die ID des zu ladenden Rätsels übergeben wird:
+
+\begin{lstlisting}[language=csh, caption={LoadRiddle() Methode des RätselManagers}]
+void LoadRiddle(int id) {
+        solution.enabled = false;
+        if (currentRiddle != null)
+            currentRiddle.Destroy();
+        currentRiddle = ScriptableObject.CreateInstance("R" + id.ToString("000")) as Riddle;
+        description.text = currentRiddle.info.description;
+        if (currentRiddle.info.autoSubmit)
+            submitButton.gameObject.SetActive(false);
+        else
+            submitButton.gameObject.SetActive(true);
+        if (currentRiddle.resultAreaImage != null)
+            resultArea.SetImage(currentRiddle.resultAreaImage);
+        else
+            resultArea.SetStandardImage();
+        RectTransform rectTransform = currentRiddle.interactiveArea.GetComponent<RectTransform>();
+        rectTransform.sizeDelta = mainArea.GetComponent<RectTransform>().rect.size;
+        rectTransform.position = Vector3.zero;
+        currentRiddle.interactiveArea.transform.SetParent(mainArea.transform, false);
+    }
+\end{lstlisting}
+Zuerst wird hier das Lösungspopup deaktiviert, falls dieses noch offen ist. Ist noch ein anderes Rätsel geladen, wird dieses ebenfalls gelöscht.\\
+Danach wird die statische Variable 'currentRiddle' auf die Klasse des Rätsels gesetzt, das geladen werden soll, damit andere Klassen Zugriff auf das aktuelle Rätsel haben.\\
+Dann werden die Elemente der Szene gesetzt: Der Beschreibungstext wird aktualisiert, falls das Rätsel automatisch bestätigt wird der Bestätigen-Button deaktiviert und falls ein Bild für die untere linke Ecke vorhanden ist, wird dieses gesetzt, ansonsten wird das Standard Bild gesetzt.\\
+Dann wird noch das Prefab in das Canvas der rechten Hälfte gelade. Dabei wird das Prefav auf die Größe des Canvas skaliert, mittels des sizeDeltas und dann in diesem zentriert, indem die Position auf die Mitte des Parents (0,0) gesetzt wird.\\
+Danach ist das Rätsel vollständig geladen und der Spieler kann es lösen.\\
+
+In der Update() Methode des RiddleManagers, welche jeden Frame aufgerufen wird, wird überprüft ob das momentane Ergebnis syntaktisch korrekt ist. Dazu wird die isResultValid() Funktion des aktuellen Rätsels verwendet. Solange die Lösung nicht syntaktisch korrek istt, wird der Bestätigen-Button ausgegraut und ist nicht klickbar.\\
+
+Des weiteren gibt es eine SubmitSolution() Funktion, welche nach klicken des Bestätigen-Button überprüft ob die aktuell eingegebene Lösung korrekt ist. Ist die Lösung korrekt wird die Erfolgsszene geladen, ansonsten die Szene für falsche Lösungen. Die Szenen werden dabei im Additiven Modus geladen (siehe \ref{Grundlagen:SceneManagement}) damit danach zum Rätsel zurückgekehrt werden kann. Zudem wird, bei einem richtigen Ergebnis, mit der ShowSolution() Funktion noch das Popup mit der Lösung angezeigt. Die ShowSolution() Funktion setzt dabei den Text und das Bild für die Lösung auf die Daten aus der Rätselklasse. Das Popup mit der Lösung ist dann zu sehen, sobald die geladene Erfolgsszene wieder verschwunden ist.
+\graphic{solutionPopup}{Popup das die Lösung anzeigt}
+
+Die Methode LoadMenu() lädt bei drücken des Menü Buttons die Szene für die Rätselauswahl.
+
+\subsection{Ergebnisszene}
+Wird diese Szene geladen, so wird zuerst der gesamte Bildschirm für ca 2 Sekunden dunkelgrau. Währenddessen wird einer von zwei Sounds abgespielt, je nachdem ob die Lösung korrekt war oder nicht.\\
+Danach wird die graue Fläche aus der Szene entfernt. Bei Erfolg ist dann die folgende Szene zu sehen:
+\graphic{riddleSuccess}{Szene bei korrekt gelöstem Rätsel}
+\begin{lstlisting}[language=csh, caption={Methode um Unity Texte hoch oder runter zu zählen}]
+ private IEnumerator count(int amount, bool up, Text toUpdate) {
+        float interval = 2f / amount;
+        for (int i = 0; i < amount; i++) {
+            if (up)
+                toUpdate.text = (Int32.Parse(toUpdate.text) + 1).ToString();
+            else
+                toUpdate.text = (Int32.Parse(toUpdate.text) - 1).ToString();
+            yield return new WaitForSeconds(interval);
+        }
+    }
+\end{lstlisting}
+Der obige Code wird verwendet um die Punktzahlen hoch oder runter zu zählen. Die Methode wird als Coroutine aufgerufen, da die Variablen langsam hoch bzw runter gezählt werden (für Coroutines siehe {\ref{Grundlagen:Coroutines}). Die Methode benötigt immer 2 Sekunden um die Punktzahlen hoch oder runter zu zählen, unabhängig davon, wie weit hoch oder runter gezählt wird. Lediglich die Geschwindigkeit in der die Zahlen sich ändern wird schneller bzw langsamer.\\
+
+Im Falle der richtigen Lösung (siehe obige Szene) werden dann die verdienten Punkte auf den Punktestand gezählt, während die verbleibenden Punkte herunter gezählt werden. Dafür wird die oben beschriebene count() Methode verwendet. Danach wird die Szene zerstört, wodurch die dahinter liegende Rätsel Szene wieder zu sehen ist, welche das Popup mit der Lösung beinhaltet.\\
+
+Wurde das Rätsel falsch gelöst, so ist der folgende Screen zu sehen:
+\graphic{riddleFailure}{Szene bei falsch gelöstem Rätsel}
+Bei falscher Lösung wird in dieser Szene mit obiger count() Methode die verbleibende Punktzahl verringert. Wie weit die Punktzahl verringert wird, hängt dabei vom Rätsel ab. Ist die Punktzahl bereits auf dem minimalen Punktestand für dieses Rätsel, so wird sie nich weiter verringert.
+\begin{lstlisting}[language=csh, caption={Methode für die Szene bei falschen Lösungen}]
+private IEnumerator ExecuteFailure() {
+        yield return new WaitForSeconds(2);
+        BackgroundFailure.enabled = true;
+        yield return new WaitForSeconds(1);
+        bool remainingAboveMin = Int32.Parse(RemainingPoints.text.Split('/')[0]) > RiddleManager.currentRiddle.info.minPoints;
+        if (remainingAboveMin)
+            StartCoroutine(count(RiddleManager.currentRiddle.info.pointReduction, false, RemainingPoints));
+        yield return new WaitForSeconds(5);
+        if (remainingAboveMin) {
+            int remaining = Int32.Parse(RemainingPoints.text.Split('/')[0]);
+            SaveDataManager.RiddleSaveData.UpdateRemainingPoints(RiddleManager.riddleId, remaining);
+            SaveDataManager.SaveGame();
+        }
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName("Riddle"));
+        SceneManager.UnloadSceneAsync("RiddleSolution");
+    }
+\end{lstlisting}
+Diese Methode realisiert die Funktion im Falle einer falschen Lösung. Wie oben beschrieben, wird zuerst für 2 Sekunden der graue Bildschirm angezeigt, bevor dann das Canvas mit obiger Szene für die falsche Lösung aktiviert wird. Nach einer weiteren Sekunde wird dann die count() Methode verwendet um die Punktzahl, falls noch möglich, zu verringern. Nach weiteren 5 Sekunden wird die neue Punktzahl noch im Savegame gespeichert und dann die Szene zerstört, wodurch die dahinter liegende Rätsel Szene wieder zu sehen ist.
+
+\subsection{Rätselauswahl}
+In dieser Szene findet sich eine Liste, die alle Rätsel beinhaltet. Hierüber kann jedes Rätsel ausgewählt und gespielt werden.
+\graphic{riddleList}{Rätselauswahl}
+In der Liste ist jeweils die Nummer des Rätsels zu sehen, der Name, die Punkte die noch verdient werden können, wenn das Rätsel gelöst wird und die maximale Punktzahl die möglich gewesen wäre. Wurde das Rätsel bereits gelöst, wird zudem ein Haken auf der rechten Seite angezeigt.\\
+Um die scrollbare Liste zu erzeugen, wird die in Unity vorhandene Scrollview verwendet.
+Fügt man diese in einer Szene hinzu, erhält man folgende Struktur:
+\graphic{scrollView}{Aufbau der in Unity vorhandenen Scrollview}
+Für die hier verwendete Liste wurde das 'Scrollbar Horizontal' Element entfernt, da die Liste nur vertikal gescrolled werden soll. Die Elemente, die in der Liste auftauschen sollen, müssen dann nur als Child Elemente des 'Content' Elements erstellt werden. Dafür wurde ein Prefab für ein Listen Element erstellt, welches die Texte für ID, Titel und Punkte sowie ein Bild für den Haken und den Hintergrund enthält. Dieses wird dann in der Start() Methode der Szene für jedes Rätsel initialisiert und als Child vom 'Content' Element eingefügt:
+\begin{lstlisting}[language=csh, caption={Start Methode der Rätsel Liste, welche die Listenelemente erstellt}]
+void Start() {
+        for (int i = 1; i <= RiddleInfo.RiddleAmount; i++) {
+            RiddleInfo.SimpleRiddleInfo info = RiddleInfo.loadSimpleInfoFromXML(i);
+            GameObject temp = Instantiate(listElement);
+            temp.GetComponent<Button>().onClick.AddListener(() => loadRiddleScene(info.id));
+            temp.transform.GetChild(0).GetComponent<Text>().text = info.id.ToString("000");
+            temp.transform.GetChild(1).GetComponent<Text>().text = info.title;
+            temp.transform.GetChild(2).GetComponent<Text>().text = info.points + "/" + info.maxPoints;
+            temp.transform.GetChild(3).GetComponent<Image>().enabled = info.completed;
+            temp.transform.SetParent(contentContainer);
+            temp.transform.localScale = Vector2.one;
+        }
+    }
+\end{lstlisting}
+Hier wird für jedes Rätsel zuerst die gekürzte Info aus der XML-Datei gelesen (siehe \ref{sub:RiddleInfo}). Die gekürzte Info enthält alle für die Liste notwendigen Daten.
+Dann wird eine Instanz des Listenelement-Prefabs erstellt, und diesem eine onClick() Funktion zugewiesen, welche beim Klick auf das Element dann die loadRiddleScene(id) Methode aufruft. Diese setzt im RiddleManager die ID für das zu ladende Rätsel und lädt dann die Rätselszene, in welcher der RiddleManager dann das Rätsel lädt.\\
+Dann werden noch die Daten für das Rätsel in die Texte geschrieben und das Bild des Hakens aktiviert bzw deaktiviert, je nachdem ob das Rätsel schon gelöst wurde. Am Ende wird dann noch der Parent auf das 'Content' Element gesetzt und die Größe des Objekts auf 1 gesetzt, um den kompletten Parent und damit die komplette Breite der Liste zu füllen.\\
+
+In der oberen linken Ecke der Szene ist zudem noch ein Zurück-Button zu finden, welcher die Hauptmenü Szene lädt.
+
+\subsection{Speicherdaten für die Rätsel}
+Damit der Fortschritt gespeichert bleibt, muss der Gesamtpunktestand in einem Savegame gespeichert werden. Zudem muss gespeichert werden, welche Rätsel gelöst wurden und wie viele Punkte bei jedem Rätsel noch erhalten werden können, wenn dieses gelöst wird.\\
+
+Die Speicherdaten werden in einem Binärformat gespeichert, um zu verhindern dass sie einfach vom Spieler manipuliert werden können.\\
+Dafür wird zuerst eine serialisierbare Klasse angelegt:
+\begin{lstlisting}[language=csh, caption={Serialisierbare Speicherdaten für die Rätsel}]
+[Serializable]
+public class SaveData {
+    [Serializable]
+    public class RiddleData {
+        public int RemainingPoints;
+		public bool completed;
+
+        public RiddleData(int r, bool c) {
+            RemainingPoints = r;
+            completed = c;
+        }
+    }
+
+    public int TotalPoints;
+
+    public Dictionary<int, RiddleData> RiddleDataDict = new Dictionary<int, RiddleData>();
+
+    public SaveData() {
+		TotalPoints = 0;
+        for (int i = 1; i <= RiddleInfo.RiddleAmount; i++) {
+            RiddleInfo.SimpleRiddleInfo info = RiddleInfo.loadSimpleInfoFromXML(i);
+            RiddleDataDict.Add(i, new RiddleData(info.maxPoints, false));
+        }
+    }
+\end{lstlisting}
+Hier wird in einem Dictionary für jede RätselID gespeichert, ob das Rätsel bereits abgeschlossen wurde und wie viele Punkte verbleiben. Beim Initialisieren werden dabei alle Rätsel auf nicht abgeschlossen gesetzt und der maximale Punktestand aus den XML-Dateien wird für die verbleibenden Punkte gesetzt.\\
+Die Klasse bietet folgende Methoden um die Speicherdaten zu lesen oder verändern:
+\begin{itemize}
+\item \textbf{bool IsCompleted(int id)} gibt true zurück wenn das Rätsel schon abgeschlossen wurde
+\item \textbf{void complete(int id)} speichert für die angegebene ID, dass das Rätsel abgeschlossen wurde
+\item \textbf{int GetRemainingPoints(int id)} gibt die verbleibenden Punkte für das Rätsel zurück
+\item \textbf{void UpdateRemainingPoints(int id, int points)} speichert die verbleibenden Punkte für das Rätsel
+\item \textbf{void UpdateTotalPoints(int points)} speichert einen neuen Gesamtpunktestand
+\end{itemize}\\
+
+Um die Speicherdaten zu speichern und laden wird die SaveDataManager Klasse verwendet.
+Diese besitzt eine statische Variable der SaveData Klasse, über welche alle anderen Klassen auf die Speicherdaten zugreifen können. Mithilfe der SaveGame() Methode werden diese Daten dann in einer Datei gespeichert:
+\begin{lstlisting}[language=csh, caption={Methode um SaveData in eine Datei zu speichern}]
+public static void SaveGame() {
+        if (!Directory.Exists(Directory.GetCurrentDirectory() + "/Saves"))
+            Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/Saves");
+        FileStream file = File.Create(RiddleSavePath);
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(file, RiddleSaveData);
+        file.Close();
+        Debug.Log("Game saved");
+    }
+\end{lstlisting}
+Zuerst wird überprüft, ob der 'Saves' Ordner bereits existiert, wenn nicht wird dieser angelegt. Dann wird eine neue Datei und ein BinaryFormatter angelegt. Mithilfe des BinaryFormatters werden die Daten dann in Binärdaten serialisiert und diese in die Datei geschrieben, welche danach geschlossen wird.\\
+
+Um Speicherdaten wieder aus der Datei zu laden, kann die LoadGame() Methode verwendet werden, welche wiederrum mithilfe eines BinaryFormatters die Daten aus der Datei liest, deserilisiert und in die statische Variable schreibt. Wird hier keine Datei gefunden, so wird eine neue Instanz der SaveData Klasse angelegt, welche in die Variable geschrieben wird.\\
+
+Des weiteren gibt es eine ResetData() Methode, welche die Speicherdatei löscht und die statische Variable auf eine neue Instanz der SaveData Klasse setzt.
+
+\subsection{Skripte für die Rätselprefabs}
+Für Rätsel, die mehr Interaktionsmöglichkeiten bieten, als nur einen Text oder eine Zahl als Ergebnis einzugeben, werden weitere Skripte benötigt. Diese können weitere Funktionen für die Rätsel implementieren, um zB Elemente im rechten Bereich mit der Maus verschieben zu können. In diesem Abschnitt werden alle zusätzlichen Skripte, die in den Prefabs der Rätsel verwendet werden, beschrieben.
+
+\subsubsection{Ergebnis Inputs}
+Diese Skripte werden von Rätseln verwendet, die als Lösung eine einfache Text oder Zahlen Eingabe haben. \\
+\begin{lstlisting}[language=csh, caption={Skript für einen zweistelligen Zahlen Input}]
+public class NumberInput : MonoBehaviour {
+    public InputField tens;
+    public InputField ones;
+
+    public bool IsInputValid() {
+        return ones.text.Length > 0 || tens.text.Length > 0;
+    }
+
+    public int GetInput() {
+        if (tens.text.Length == 0)
+            return int.Parse(ones.text);
+        if (ones.text.Length == 0)
+            return int.Parse(tens.text);
+        return int.Parse(tens.text) * 10 + int.Parse(ones.text);
+    }
+}
+\end{lstlisting}
+Der Zahleninput ist dabei auf maximal zwei Stellen beschränkt. Im Editor werden die zwei InputFelder aus der Szene für die Einer und Zehner Variablen zugewiesen. Diese InputFelder müssen im Editor auf nur Zahlen und maximal ein Zeichen begrenzt werden.\\
+Das Skript bietet dann eine Methode, die überprüft ob die Eingabe snytaktisch korrekt ist, was sie in diesem Fall ist, sobald eines der beiden Felder befüllt wurde. Eine Eingabe von 1 im Zehner Feld und nichts im Einer Feld wird hierbei als korrekt gewertet, da diese als eine Eins ausgewertet wird.\\
+Mit der GetInput() Methode kann die momentan eingegebene Zahl ausgelesen werden.\\
+
+Das Skript für den Textinput ist sehr ähnlich aufgebaut:
+\begin{lstlisting}[language=csh, caption={Skript für einen zweistelligen Zahlen Input}]
+public class TextInput : MonoBehaviour {
+    public InputField[] letters;
+
+    public bool IsInputValid() {
+        foreach (InputField i in letters) {
+            if (i.text.Length == 0)
+                return false;
+        }
+        return true;
+    }
+
+    public string GetInput() {
+        string s = "";
+        foreach (InputField i in letters)
+            s += i.text;
+        return s.ToLower();
+    }
+}
+\end{lstlisting}
+Hier muss für jeden Buchstaben ein einzelnes Input Feld angelegt werden, welche dann im InputField Array 'letters' gespeichert werden. Auch hier sollten die Input Felder auf Buchstaben und maximal ein Zeichen begrenzt werden. Der Text zählt als syntaktisch korrekt, sobald in jedem Feld ein Buchstabe steht.\\
+Die GrtInput() Methode liefert hier alle Buchstaben der InputFelder als string verkettet und in Kleinbuchstaben.
+
+\subsubsection{StaticSelection}
+Dieses Skript erlaubt es, aus mehreren Feldern eine bestimmte Anzahl zu selektieren.\\
+Dabei müssen folgende Variablen im Editor gesetzt werden:
+\begin{itemize}
+\item \textbf{public Button[] buttons} hier werden die Felder gespeichert, die selektiert werden können, die Felder müssen dabei Buttons sein, damit sie anklickbar sind. Diese Buttons benötigen als erstes Child Element ein Image, welches aktiviert wird, sobald das Feld ausgewählt ist
+\item \textbf{public Text counter} in diesen Text wird die Anzahl, an noch selektierbaren Feldern, geschrieben
+\item \textbf{public int maxAllowedSelections} hiermit wird angegeben wie viele Felder maximal gleichzeitig ausgewählt werden dürfen
+\end{itemize}
+In der Variable 'public List<int> selectedIndices' wird dann vom Skript gespeichert, welche Buttons aus dem Array momentan selektiert sind.\\
+\begin{lstlisting}[language=csh, caption={Start Methode des StaticSelection Skripts}]
+void Start() {
+        int x = 0;
+        foreach (Button b in buttons) {
+            int tempx = x;
+            b.onClick.AddListener(() => OnClick(tempx));
+            x++;
+        }
+    }
+\end{lstlisting}
+In der Start Methode wird für jedes Feld (welche Buttons sind) ein onClick Listener festgelegt. Das Feld ruft bei einem Klick dann die OnClick(int index) Funktion des Skripts, mit seinem Index im 'buttons' Array als Paremeter, auf.
+\begin{lstlisting}[language=csh, caption={OnClick Methode des StaticSelection Skripts}]
+public void OnClick(int index) {
+        Image selectedImage = buttons[index].transform.GetChild(0).GetComponent<Image>();
+        if (selectedIndices.Contains(index)) {
+            selectedAmount--;
+            selectedIndices.Remove(index);
+            selectedImage.enabled = false;
+        } else if (selectedAmount < maxAllowedSelections) {
+            selectedAmount++;
+            selectedIndices.Add(index);
+            selectedImage.enabled = true;
+        }
+    }
+\end{lstlisting}
+Ist der Index des angeklickten Felds bereits in der 'selectedIndices' Liste enthalten, ist das Feld bereits selektiert. Dann muss das Feld wieder deselektiert werden, dazu wird der Index aus der Liste entfernt und das Bild deaktiviert, das anzeigt dass das Feld selektiert wurde. Außerdem wird die Anzahl der momentan selektierten Felder verringert.\\
+Ist der Index hingegen nicht in der Liste enthalten, wird er zur Liste hinzugefügt, das Bild aktiviert und die Anzahl der selektierten Felder erhöht.\\
+
+Um zu überprüfen ob die Lösung korrekt ist, muss überprüft werden ob in der Liste alle Indizes der Felder enthalten sind, die für die korrekte Lösung selektiert sein müssen.\\
+
+Das Skript kommt zum Beispiel in Rätsel 3 zum Einsatz:
+\graphic{r003}{Rätsel 3}
+Hier müssen 2 der 9 Personen ausgewählt werden. Dabei ist jedes Personenfeld ein Button, welcher als Child das Bild des Kreises hat. Links findet sich der Text für den Counter, wie viele Felder noch angeklickt werden können. Das StaticSelection Skript ist dabei auf dem Hintergrund. Wird auf eine der Personen geklickt, so erscheint der Kreis um diese Person (solange noch ein Feld ausgewählt werden darf). Wird eine Person angeklickt, bei der der Kreis bereits sichtbar ist, so verschwindet dieser wieder.\\
+In der R003 Klasse, werden dann die folgenden Methoden verwendet, um das Ergebnis auszuwerten:
+\begin{lstlisting}[language=csh, caption={Methoden in der Klasse von Rätsel 3}]
+public override bool checkResult() {
+        List<int> selected = interactiveArea.GetComponent<StaticSelection>().selectedIndices;
+        return selected.Contains(1) && selected.Contains(2);
+    }
+
+    public override bool isResultValid() {
+        return interactiveArea.GetComponent<StaticSelection>().selectedIndices.Count == 2;
+    }
+\end{lstlisting}
+In checkResult(), die Methode die prüft, ob das Ergebnis korrekt ist, wird dann überprüft, ob die Buttons mit Index 1 und 2 (die Personen oben in der Mitte und oben links), angeklickt sind. Das wird gemacht, indem geprüft wird ob die beiden Indizes in der 'selectedIndices' Liste des Skript enthalten sind.\\
+Die Methode isResultValid(), die auf syntaktische Korrektheit testet, prüft nur ob zwei Personen ausgewählt wurden, also ob die Liste eine Länge von 2 hat.
+
+\subsubsection{DynamicSelection}
+Mit dem DynamicSelection Skript kann ein Bild, das einen Bereich selektiert (zB ein Kreis) überall in einem vorgegebenen Bereich platziert werden. Um den Kreis an einer Stelle zu platzieren muss dabei nur an diese Stelle geklickt werden.
+\begin{lstlisting}[language=csh, caption={DynamicSelection Skript}]
+    public Image marker;
+    private Vector2 areaMin;
+    private Vector2 areaMax;
+
+	void Start() {
+        Rect rect = GetComponent<RectTransform>().rect;
+        areaMin = transform.TransformPoint(new Vector2(rect.xMin, rect.yMin));
+        areaMax = transform.TransformPoint(new Vector2(rect.xMax, rect.yMax));
+    }
+
+    public override void OnPointerDown(PointerEventData eventData) {
+        float x = Input.mousePosition.x;
+        float y = Input.mousePosition.y;
+        if (x < areaMax.x && x > areaMin.x && y > areaMin.y && y < areaMax.y)
+            marker.transform.position = new Vector2(x, y);
+    }
+\end{lstlisting}
+Zuerst werden die Koordinaten des erlaubten Bereichs in zwei Vektoren gespeichert. Diese werden durch die Größe des Elements bestimmt. Das Skript muss also auf das Element gesetzt werden, in welchem der Marker platziert werden darf. \\
+Wird dann eine Stelle angeklickt, wird falls die Koordinaten im Bereich liegen, die Position des marker Images auf diese Stelle gesetzt.\\
+Um das Ergebnis zu überprüfen, kann dann eine Distanz zwischen der Position des Markers und der korrekten Position berechnet werden. Liegt diese unter einem Wert, so wird die Lösung als korrekt gewertet.\\
+
+Dieses Skript wird zB von Rätsel 20 verwendet:
+\graphic{r020}{Rätsel 20}
+Hier muss eine Wand markiert werden, die durchbrochen werden muss. Wird an eine Stelle im Labyrinth geklickt, wird der rote Kreis an dieser Stelle platziert. In der R020 Klasse wird dann das Ergebnis überprüft:
+\begin{lstlisting}[language=csh, caption={checkResult Methode in der Klasse von Rätsel 3}]
+public override bool checkResult() {
+        Image marker = interactiveArea.transform.GetChild(0).GetComponent<DynamicSelection>().marker;
+        return Vector2.Distance(marker.transform.localPosition, result) < 7;
+    }
+\end{lstlisting}
+In dieser Methode wird der Abstand der Position des Markers, aus dem DynamicSelection Skript, und der Position der korrekten Lösung berechnet (diese ist im Vector 'result' gespeichert). Ist dieser Abstand kleiner als 7 (ca. die halbe Größe des Kreises), so wird die Lösung als korrekt gewertet.\\
+Der Test auf syntaktische Korrektheit gibt hier immer true zurück, da der Kreis von Anfang an im Bild platziert ist und nur umplatziert wird.
+
+\subsubsection{ToggleButtonController}
+Mit diesem Skript können mehrere ToggleButtons gesteuert werden. Es kann verwendet werden wenn zB 2 von 4 Objekten ausgewählt werden sollen.\\
+Das Skript beinhaltet folgende Variablen:
+\begin{itemize}
+\item \textbf{public Sprite offSprite} der Sprite für nicht angeklickte Buttons
+\item \textbf{public Sprite onSprite} der Sprite für angeklickte Buttons
+\item \textbf{public Button[] buttons} ein Array mit allen Buttons
+\item \textbf{public bool[] buttonStates} ein Array, das bools enthält welche Buttons angeklickt sind (true) und welche nicht (false), das Array wird zu Beginn mit false initialisiert
+\end{itemize}
+
+Im Editor wird für jeden Button die OnClick Funktion gesetzt, welche dann die ChangeImage(int id) Funktion des Skript mit dem jeweiligen Index aufruft.
+\graphic{toggleButtonSetOnClick}{Setzen der OnClick Funktion im Editor}
+
+In der ChangeImage(int id) Funktion des Skripts wird dann der boolean an der entsprechenden Stelle im Array geändert und der Sprite des Buttons wird getauscht (von on zu off bzw von off zu on). Um das Ergebnis zu überprüfen, werden die Booleans aus dem Array verwendet, um zu bestimmen, ob die richtigen Buttons angeklickt sind.\\
+
+Rätsel 6 verwendet dieses Skript:
+\graphic{r006}{Rätsel 6}
+Hier muss ausgewählt werden, welche der Totems eine bestimmte Silhouette ergeben. Im Bild sind momentan Antwort B und C selektiert.
+\begin{lstlisting}[language=csh, caption={checkResult Methode in der Klasse von Rätsel 6}]
+public override bool checkResult() {
+        bool[] selected = interactiveArea.GetComponent<ToggleButtonController>().buttonStates;
+        return selected[0] && !selected[1] && selected[2] && selected[3] && !selected[4];
+    }
+\end{lstlisting}
+Um zu bestimmen, ob die Lösung richtig ist, wird geprüft indem getestet wird, ob die booleans für Buttons 0, 2 und 3 true sind (also diese Buttons gedrückt wurden) und die für Buttons 1 und 4 false sind (also diese Buttons nicht gedrückt sind). Ist das der Fall, ist die Lösung korrekt. Wurde ein falscher Button angeklickt oder ein Button vergessen anzuklicken, so wird hier false zurückgegeben.
+
+\begin{lstlisting}[language=csh, caption={isResultValid Methode in der Klasse von Rätsel 6}]
+    public override bool isResultValid() {
+        bool[] selected = interactiveArea.GetComponent<ToggleButtonController>().buttonStates;
+        foreach (bool b in selected) {
+            if (b)
+                return true;
+        }
+        return false;
+    }
+\end{lstlisting}
+Für die Überprüfung auf syntaktische Korrektheit wird hier über das Array iteriert und sobald ein boolean den Wert true hat, ist das Ergebnis syntaktisch korrekt, da dann mindestens ein Button angeklickt wurde.
+
+\subsubsection{SnapDragController}
+Der SnapDragController wird verwendet, wenn Objekte mit der Maus verschoben werden können sollen. Dabei können diese Objekte nur an bestimmten Position abgelegt werden. Wenn die Position bereits belegt ist oder die Maustaste losgelassen wird, während keine mögliche Position in der Nähe ist, springt das Objekt an seine Startposition zurück.\\
+Folgende Variablen müssen für dieses Skript im Editor gesetzt werden:
+\begin{itemize}
+\item \textbf{ public Image[] tileImages} in dieses Array müssen alle Image Objekte eingefügt werden, die verschiebbar sein sollen
+\item \textbf{public Vector2[] locations} hier müssen alle Positionen angegeben werden, an denen die Bilder abegelegt werden können (ohne die Startpositionen der Bilder)
+\item \textbf{public bool enableRotation} Wird dieser boolean auf true gesetzt, so können die Bilder durch einen Klick gedreht werden, steht hier false, so können die Bilder nicht gedreht werden
+\end{itemize}
+\begin{lstlisting}[language=csh, caption={Start Methode des SnapDragControllers}]
+public void Start() {
+        foreach (Vector2 v in locations)
+            possibleLocations.Add(new Location(v));
+        tiles = new Tile[tileImages.Length];
+        for (int i = 0; i < tileImages.Length; i++)
+            tiles[i] = new Tile(tileImages[i]);
+        Rect rect = GetComponent<RectTransform>().rect;
+        areaMin = transform.TransformPoint(new Vector2(rect.xMin, rect.yMin));
+        areaMax = transform.TransformPoint(new Vector2(rect.xMax, rect.yMax));
+    }
+\end{lstlisting}
+Zuerst werden aus den Vektoren für die möglichen Positionen, an denen die Bilder abgelegt werden, Objekte der Klasse Location erstellt. Diese Klasse beinhaltet neben dem Vektor für die Position noch einen Boolean, der angibt ob die Position bereits belegt ist. Die Locations werden dann in einer Liste gespeichert.\\
+Auch für die verschiebbaren Bilder wird jeweils ein Objekt erzeugt, hier von der Klasse Tile. In dieser Klasse wird zusätzlich zum Image noch die Startposition des Images sowie der Index der Location, die das Image momentan belegt, gespeichert.\\
+Dann wird hier, wie bei der DynamicSelection, noch die Größe des Bereichs, in welchem die Objekte verschoben werden dürfen, aus dem Element gelesen.\\
+
+Für jedes der Images wird im Editor ein EventTrigger für die Events 'Pointer Down' und 'Pointer Up' festgelegt, so dass die entsprechende Funktion im Skript mit dem Index des Images aufgerufen wird:
+\graphic{dragEventTrigger}{Im Editor gesetzte Event Trigger}
+
+\begin{lstlisting}[language=csh, caption={Start Methode des SnapDragControllers}]
+ public void OnPointerDown(int tile) {
+        if (!Input.GetMouseButtonDown(0))
+            return;
+        pointerDownTime = Time.time;
+        dragging = tile;
+        if (tiles[dragging].occupiedLocationIndex != -1)
+            possibleLocations[tiles[dragging].occupiedLocationIndex].occupied = false;
+        tiles[dragging].occupiedLocationIndex = -1;
+    }
+
+\end{lstlisting}
+Im Skript wird in der OnPointerDown zuerst überprüft, ob die gedrückte Maustaste die linke Maustaste, also Maustaste 0 ist. Die Zeit des Klicks wird gespeichert, um einen kurzen Klick (zum Drehen) von gedrückt halten (zum Bewegen) unterscheiden zu können. Dann wird dragging auf den Index des Tiles gesetzt, das momentan bewegt wird.\\
+Ist für das bewegte Tile momentan eine Location gespeichert (occupiedLocationIndex != -1), dann muss diese Location wieder als leer markiert werden. Dazu wird im Locations Array an der Stelle, die vorher vom Tile belegt wurde, occupied wieder auf false gesetzt und im bewegten Tile wird occupiedLocationIndex auf -1 gesetzt, um zu zeigen, dass dieses Tile momentan keine der möglichen Locations belegt.\\
+
+
+\subsubsection{UIElementDragger} %Weglassen?

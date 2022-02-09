@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <RiddleInfo>
     <id>21</id>
-    <title>Brücke über aufgewühlte Wasser"</title>
+    <title>Brücke über aufgewühlte Wasser</title>
     <maxPoints>35</maxPoints>
     <minPoints>5</minPoints>
     <descriptionParagraphs type="array">
-        <value>Ein Dreisprung Athlet hat sich entscheiden seiner Freundin einen besonderen Antrag zu machen, indem er auf schwimmenden Planken über den Fluss springt.</value>
+        <value>Ein Dreisprung Athlet hat sich entschieden seiner Freundin einen besonderen Antrag zu machen, indem er auf schwimmenden Planken über den Fluss springt.</value>
         <value>Bei seinem ersten "Hop" und dem zweiten "Step" kann er $entweder eine Planke nach vorne, links oder rechts gehen$, und dabei die Richtung ändern falls nötig. Aber beim letzten "Jump", muss er sich $in dieselbe Richtung bewegen, in die er sich beim "Step" bewegt hat, wobei er eine Planke überspringt und auf der übernächsten landet.$</value>
-        <value>Diese Abfolge wiederholt er solange, bis er die rosa Planke vor seiner Freundin, auf der anderen Seite, erreicht.</value>
+        <value>Diese Abfolge wiederholt er solange, bis er die rosa Planke, vor seiner Freundin auf der anderen Seite, erreicht.</value>
         <value>Wo sollte er starten?</value>
     </descriptionParagraphs>
     <solutionParagraphs>
