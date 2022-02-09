@@ -517,6 +517,8 @@ Folgende Variablen müssen für dieses Skript im Editor gesetzt werden:
 \item \textbf{public Vector2[] locations} hier müssen alle Positionen angegeben werden, an denen die Bilder abegelegt werden können (ohne die Startpositionen der Bilder)
 \item \textbf{public bool enableRotation} Wird dieser boolean auf true gesetzt, so können die Bilder durch einen Klick gedreht werden, steht hier false, so können die Bilder nicht gedreht werden
 \end{itemize}
+Für die Locations könnte man anstelle eines Vector2 Arrays auch ein GameObject Array verwenden. Damint könnten in der Szene leere GameObjects an allen Stellen angelegt werden, an die die Images gesetzt werden dürfen. Dann können die Koordinaten für die Punkte aus den GameObjects gelesen werden und nicht von Hand eingetragen werden. Für Rätsel die eventuell sehr viele mögliche Position haben, wäre dieser Ansatz sinnvoller, er würde aber mehr Objekte in der Szene benötigen.
+
 \begin{lstlisting}[language=csh, caption={Start Methode des SnapDragControllers}]
 public void Start() {
         foreach (Vector2 v in locations)
@@ -536,7 +538,7 @@ Dann wird hier, wie bei der DynamicSelection, noch die Größe des Bereichs, in 
 Für jedes der Images wird im Editor ein EventTrigger für die Events 'Pointer Down' und 'Pointer Up' festgelegt, so dass die entsprechende Funktion im Skript mit dem Index des Images aufgerufen wird:
 \graphic{dragEventTrigger}{Im Editor gesetzte Event Trigger}
 
-\begin{lstlisting}[language=csh, caption={Start Methode des SnapDragControllers}]
+\begin{lstlisting}[language=csh, caption={OnPointerDown Methode des SnapDragControllers}]
  public void OnPointerDown(int tile) {
         if (!Input.GetMouseButtonDown(0))
             return;
@@ -551,5 +553,149 @@ Für jedes der Images wird im Editor ein EventTrigger für die Events 'Pointer D
 Im Skript wird in der OnPointerDown zuerst überprüft, ob die gedrückte Maustaste die linke Maustaste, also Maustaste 0 ist. Die Zeit des Klicks wird gespeichert, um einen kurzen Klick (zum Drehen) von gedrückt halten (zum Bewegen) unterscheiden zu können. Dann wird dragging auf den Index des Tiles gesetzt, das momentan bewegt wird.\\
 Ist für das bewegte Tile momentan eine Location gespeichert (occupiedLocationIndex != -1), dann muss diese Location wieder als leer markiert werden. Dazu wird im Locations Array an der Stelle, die vorher vom Tile belegt wurde, occupied wieder auf false gesetzt und im bewegten Tile wird occupiedLocationIndex auf -1 gesetzt, um zu zeigen, dass dieses Tile momentan keine der möglichen Locations belegt.\\
 
+\begin{lstlisting}[language=csh, caption={Update Methode des SnapDragControllers}]
+void Update() {
+        if (dragging == -1)
+            return;
+        float x = Input.mousePosition.x;
+        float y = Input.mousePosition.y;
+        if (x < areaMax.x && x > areaMin.x && y > areaMin.y && y < areaMax.y)
+            tiles[dragging].image.transform.position = new Vector2(x, y);
+    }
+\end{lstlisting}
+Wenn gerade ein Tile bewegt wird (dragging != -1 ist) dann wird die Position des Images von diesem Tile auf die momentane Mausposition gesetzt. Ist die Mausposition außerhalb des erlaubten Bereichs, in dem das Tile bewegt werden darf, wird die Position nicht verändert und das Image bleibt an der vorherigen Stelle.\\
 
-\subsubsection{UIElementDragger} %Weglassen?
+\begin{lstlisting}[language=csh, caption={Ausschnitt der OnPointerUp Methode des SnapDragControllers}]
+public void OnPointerUp() {
+        // need to reset dragging first, else Update will set position while this function is executed
+        if (!Input.GetMouseButtonUp(0))
+            return;
+        int lastDrag = dragging;
+        dragging = -1;
+        if (enableRotation && Time.time - pointerDownTime < 0.2) {
+            tiles[lastDrag].image.transform.Rotate(0.0f, 0.0f, 90.0f, Space.Self);
+        }
+        ...
+\end{lstlisting}
+Wird die Maustaste dann wieder losgelassen, wird zuerst die dragging Variable auf -1 gesetzt, da während diese Methode ausgeführt wird, bereits die Update Funktion wieder aufgerufen könnte, welche das Tile bewegen würde. Um innerhalb dieser Methode trotzdem zu wissen, welches Tile bewegt wurde wird der Wert der dragging Variable vorher noch in einer lokalen Variable gespeichert.\\
+Ist Rotation im Skript aktiviert, so wird das Image um 90° nach rechts gedreht, falls zwischen PointerDown und PointerUp Zeit weniger als 0.2 Sekunden lagen.\\
+\begin{lstlisting}[language=csh, caption={Setzen der Position in der OnPointerUp Methode}]
+		...
+ 		float x = Input.mousePosition.x;
+        float y = Input.mousePosition.y;
+
+        if (!(x < areaMax.x && x > areaMin.x && y > areaMin.y && y < areaMax.y)) {
+            tiles[lastDrag].image.transform.position = tiles[lastDrag].basePos;
+        } else {
+            bool locationFound = false;
+            foreach (Location l in possibleLocations) {
+                if (!l.occupied && Vector2.Distance(l.position, transform.InverseTransformPoint(Input.mousePosition)) < 25) {
+                    tiles[lastDrag].image.transform.position = transform.TransformPoint(l.position);
+                    tiles[lastDrag].occupiedLocationIndex = possibleLocations.IndexOf(l);
+                    l.occupied = true;
+                    locationFound = true;
+                    break;
+                }
+            }
+            if (!locationFound)
+                tiles[lastDrag].image.transform.position = tiles[lastDrag].basePos;
+        }
+\end{lstlisting}
+In der zweiten Hälfte der Methode wird dann die Position, an die das Image gesetzt werden muss, bestimmt. Ist die Mausposition momentan außerhalb des erlaubten Bereichs, so wird das Image zurück an seine Startposition (Tile.basePos) gesetzt.\\
+Ansonsten werden alle möglichen Locations, an die das Tile platziert werden darf, getestet. Falls eine dieser Locations eine Distanz kleiner als 25 zur momentanen Position der Maus hat und sie noch nicht belegt ist, wird das Image an diese gesetzt. Dann wird im Tile noch der Index der Location die es jetzt belegt gesetzt und in der Location wird der occupied boolean auf true gesetzt.\\
+Wurde keine mögliche Location gefunden, so wird das Image an seine Startposition zurückgesetzt.\\
+
+Dieses Skript wird unter anderem von Rätsel 8 verwendet. In diesem müssen einzelne Platten zu einem Labyrinth zusammengesetzt werden:
+\graphic{r008}{Rätsel 8}
+Das Skript liegt hier auf dem Hintergrund und im Editor wurden die Images sowie die Locations als Variablen gesetzt:
+\graphic{SnapDragControllerVariables}{Skript im Editor}
+Auf den einzelnen Bildern müssen dann nur noch die EventTrigger für Pointer Down und Pointer Up wie oben beschrieben, gesetzt werden.\\
+Um in der Rätsel Klasse zu überprüfen, ob die Lösung syntaktisch korrekt ist, wird überprüft ob für alle Tiles der occupiedLocationIndex gesetzt ist, also nicht -1 ist. Das heißt damit das Rätsel bestätigt werden darf, müssen alle Tiles platziert werden, also nicht mehr auf ihrer Startposition liegen.\\
+\begin{lstlisting}[language=csh, caption={Überprüfen der Lösung eines SnapDragControllers}]
+public override bool checkResult() {
+        SnapDragController.Tile[] tiles = interactiveArea.transform.GetComponent<SnapDragController>().tiles;
+        for (int i = 0; i < result.Length; i++) {
+            if (tiles[i].occupiedLocationIndex != result[i])
+                return false;
+        }
+        return true;
+    }
+\end{lstlisting}
+Um zu prüfen ob die Lösung korrekt ist, wird für jedes Tile überprüft, ob es an der korrekten Location liegt, indem der Index der Location an der es liegt, mit dem Index der korrekten Location verglichen wird. Liegt ein Tile nicht an der richtigen Location, ist die Lösung falsch und false wird zurückgegeben.
+
+\subsubsection{UIElementDragger}
+Der UIElementDragger verhält sich sehr ähnlich zum SnapDragController, mit dem Unterschied, dass die Objekte hier überall im Bereich abgelegt werden können, nicht nur an festgelegt Stellen.\\
+Dieses Skript muss auf alle Elemente gesetzt werden, die bewegt werden sollen.\\
+\begin{lstlisting}[language=csh, caption={Berechnen der Breite des beweglichen Objekts und des Bereichs in dem es bewegt wird}]
+void Start() {
+        parent = transform.parent.gameObject;
+        Rect rect = parent.GetComponent<RectTransform>().rect;
+        parentMin = parent.transform.TransformPoint(new Vector2(rect.xMin, rect.yMin));
+        parentMax = parent.transform.TransformPoint(new Vector2(rect.xMax, rect.yMax));
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        Vector2 thisMax = transform.TransformPoint(new Vector2(rectTransform.rect.xMax, rectTransform.rect.yMax));
+        Vector2 thisMin = transform.TransformPoint(new Vector2(rectTransform.rect.xMin, rectTransform.rect.yMin));
+        width = thisMax.x - thisMin.x;
+        height = thisMax.y - thisMin.y;
+    }
+\end{lstlisting}
+In der Start Methode wird zuerst die minimale und maximale x und y Koordinate des parent Objekts berechnet und in den Vektoren parentMin und parentMax gespeichert.\\
+Dann wird noch die Höhe und Breite des (zu bewegenden) Objekts berechnet und gespeichert.\\
+\begin{lstlisting}[language=csh, caption={OnPointerDown Methode des UIElementDraggers}]
+public override void OnPointerDown(PointerEventData eventData) {
+        dragging = true;
+        offset = eventData.position - new Vector2(transform.position.x, transform.position.y);
+    }
+\end{lstlisting}
+Wird das Objekt angeklickt, wird diese Funktion aufgerufen, welche dann nur die dragging Variable auf true setzt und das Offset des Klicks zur Mitte des Objekts speichert. Dieses Offset wird benötigt, damit das Objekt, wenn man es an der linken Seite anklickt, nicht mit der Mitte an die Maus springt beim setzen der Position.\\
+In der OnPointerUp Methode wird dann lediglich der dragging Boolean wieder auf false gesetzt.\\
+
+In der Update Methode des Skript werden dann die Move und Rotate Methoden aufgerufen, hier wird zuerst die Move Methode beschrieben:
+\begin{lstlisting}[language=csh, caption={Methode zum Bewegen des Objekts im UIElementDraggers}]
+void Move() {
+        float x = Input.mousePosition.x - offset.x;
+        if (x + width / 2 > parentMax.x) {
+            x = parentMax.x - width / 2;
+        }
+        if (x - width / 2 < parentMin.x) {
+            x = parentMin.x + width / 2;
+        }
+        float y = Input.mousePosition.y - offset.y;
+        if (y + height / 2 > parentMax.y) {
+            y = parentMax.y - height / 2;
+        }
+        if (y - height / 2 < parentMin.y) {
+            y = parentMin.y + height / 2;
+        }
+        transform.position = new Vector2(x, y);
+    }
+\end{lstlisting}
+Die x und y Koordinaten des Klicks werden beide um das Offset verschoben, um die Koordinaten zu erhalten, an welche die Mitte des Objekts gesetzt werden muss, damit die Maus an derselben Stelle auf dem Objekts bleibt.\\
+Dann wird noch geprüft, ob das Objekt an der neuen Position über den erlauben Bereich herausragen würde. Das heißt wenn die Mitte des Objekts + die halbe Breite außerhalb des Bereichs wäre, wird der x Wert so gesetzt, dass das gesamte Objekt noch im Bereich liegt. ZB wäre der größtmögliche x Wert somit beim Rand des Bereichs - die halbe Breite des Objekts, dann liegt der rechte Rand des Objekts genau am Rand des Bereichs.\\
+
+\begin{lstlisting}[language=csh, caption={Methode zum Drehen des Objekts im UIElementDraggers}]
+void Rotate() {
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            transform.Rotate(0.0f, 0.0f, 90.0f, Space.Self);
+            float d = height;
+            height = width;
+            width = d;
+        }
+        if (Input.GetKeyDown(KeyCode.E)) {
+            transform.Rotate(0.0f, 0.0f, -90.0f, Space.Self);
+            float d = height;
+            height = width;
+            width = d;
+        }
+    }
+\end{lstlisting}
+Ist die Q Taste gedrückt, so wird das Objekt um 90° im Uhrzeigersinn gedreht. Nach dem Drehen müssen dann noch Breite und Höhe des Objekts vertauscht werden. \\
+Mit der E Taste wird das Objekt um 90° gegen den Uhrzeigersinn gedreht. Auch hier werden Breite und Höhe des Objekts vertauscht.\\
+
+Dieses Skript wird nur von Rätsel 1 verwendet, hier muss aus den Dreiecken ein K gebildet werden:
+\graphic{r001}{Rätsel 1}
+Der Bereich, in dem die Dreiecke bewegt werden dürfen, ist die weiße Fläche. Deshalb sind die Dreiecke alle child Elemente, des Canvas das genau die größe der weißen Fläche hat. Denn im Skript ist der Bereich, in dem die Objekte bewegt werden dürfen, auf das Parent Element begrenzt.\\
+Auf jedes der Dreiecke wird dann das UIElementDragger Skript gesetzt, Variablen müssen hier im Editor nicht gesetzt werden.\\
+
+Um in der Rätsel Klasse zu testen, ob die Lösung korrekt ist, wird zuerst überprüft ob alle Dreiecke die richtige Rotation haben. Sind alle Dreiecke richtig rotiert, wird für jedes Dreieck die Distanz zur korrekten Position berechnet. Ist dann die Summe aller dieser Distanzen kleiner als 30, so wird die Lösung als korrekt akzeptiert. Sind also zwei Dreiecke perfekt platziert, so darf das dritte Dreieck weiter von der perfekten Position weg sein.\\
+Als syntaktisch korrekt zählt das Rätsel immer, da die Dreiecke von Anfang an im erlaubten Bereich liegen und auch nur innerhalb von diesem bewegt werden können.
