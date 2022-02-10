@@ -27,15 +27,18 @@ public class lightningView : MonoBehaviour {
 
 	//Variabln for lightningView
 	private int numberLeft;
-	private int counterRound = 1;
+	private int counterRound = 0;
 	private int wrongChoice = 0;
 	private int lvlNumber = 10;
-	private float minDistance = 18f;
+	private float minDistance = 0f;
 	private bool hitPosition = false;
 	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
 
 	// Start is called before the first frame update
 	void Start() {
+		minDistance = spawnedObject.GetComponent<RectTransform>().rect.width / 2;
+		spawner.transform.localScale = scaleSize;
+		checkButton.interactable = false;
 		menu.onClick.AddListener(() => GoBack());
 		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
 		checkButton.onClick.AddListener(() => buttonClick());
@@ -94,13 +97,16 @@ public class lightningView : MonoBehaviour {
 		RectTransform spawnRect = spawner.GetComponent<RectTransform>();
 		float width = spawnRect.rect.width;
 		float height = spawnRect.rect.height;
-		float xPos = UnityEngine.Random.Range(((float)spawnRect.transform.position.x - (width - 39.3829f)/2), (float)spawnRect.transform.position.x + (width - 39.3829f)/2);
-		float yPos = UnityEngine.Random.Range(((float)spawnRect.transform.position.x - (height - 39.3829f)/2), (float)spawnRect.transform.position.x + (height - 39.3829f)/2);
+		// float xPos = UnityEngine.Random.Range(((float)spawnRect.transform.position.x - (width - 39.3829f)/2), (float)spawnRect.transform.position.x + (width - 39.383f)/2);
+		// float yPos = UnityEngine.Random.Range(((float)spawnRect.transform.position.x - (height - 39.3829f)/2), (float)spawnRect.transform.position.x + (height - 39.383f)/2);
+		float xPos = UnityEngine.Random.Range(-width/2 + minDistance, width/2 - minDistance);
+		float yPos = UnityEngine.Random.Range(-height/2 + minDistance, height/2 - minDistance);
 		Vector2 newPos = new Vector2(xPos, yPos);
+		Debug.Log("x:" + xPos);
 
 		if(firstNumber == 0){
 			allPositions.Add(newPos);
-			allObjects.transform.position = newPos;
+			allObjects.transform.localPosition = newPos;
 			return;
 		}
 
@@ -118,7 +124,7 @@ public class lightningView : MonoBehaviour {
 		}
 		if(hitPosition){
 			allPositions.Add(newPos);
-			allObjects.transform.position = newPos;
+			allObjects.transform.localPosition = newPos;
 
 		}
 		else{
@@ -134,9 +140,15 @@ public class lightningView : MonoBehaviour {
 	}
 
 	public void playGame(){
+		counterRound++;
+		if(counterRound > lvlNumber){
+			PlayerPrefs.SetInt("wrongAnswers", wrongChoice);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoice);
+		}
 		//change color to white
 		imageColor.color = new Color32(255, 255, 255, 255);
-		showLevel.text = "Level: " + counterRound + "/" + lvlNumber;
+		if(counterRound <= lvlNumber)	showLevel.text = "Level: " + counterRound + "/" + lvlNumber;
 		numberLeft = randomNumber();
 		Debug.Log(numberLeft);
 		solution.text = "";
@@ -150,19 +162,17 @@ public class lightningView : MonoBehaviour {
 		GameObject hideCircles = Instantiate(cover, spawnerCoverLeft.transform.position, Quaternion.identity);
 		hideCircles.transform.SetParent(spawnerCoverLeft.transform);
 		hideCircles.transform.localScale = scaleSize * (0.75f);
-
 		solution.interactable = true;
 	}
 
 	IEnumerator solutionWaiter(int sec){
 		solution.interactable = false;
-		if(counterRound < lvlNumber){
+		if(counterRound <= lvlNumber){
 			if(int.Parse(solution.text) == numberLeft){
 				//change color green
 				imageColor.color = new Color32(37, 250, 53, 255);
 				yield return new WaitForSeconds(sec);
 				deletObjects();
-				counterRound++;
 				playGame();
 
 			}
@@ -176,11 +186,6 @@ public class lightningView : MonoBehaviour {
 				solution.text = "";
 				hideCircle();
 			}
-		}
-		else{
-			PlayerPrefs.SetInt("wrongAnswers", wrongChoice);
-			SceneManager.LoadScene("LearnFinishScreen");
-			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoice);
 		}
 	}
 }

@@ -19,7 +19,7 @@ public class WordMix : MonoBehaviour
 	private string solution;
 	public Image imageColor;
 
-	private int lvlCount = 1;
+	private int lvlCount = 0;
 	private int lvlAmount = 10;
 	private int wrongChoices = 0;
 	private int randomNumber = 0;
@@ -44,13 +44,10 @@ public class WordMix : MonoBehaviour
 
 	}
 
-	void Upadte(){
-
-	}
-
 	public void EnableButton(){
 		if(String.IsNullOrEmpty(solutionChild.text)){
 			testWord.interactable = false;
+			solutionChild.interactable = true;
 		}
 		else{
 			testWord.interactable = true;
@@ -66,12 +63,12 @@ public class WordMix : MonoBehaviour
 
 
 	IEnumerator waiter(int sec){
-		if(lvlCount < lvlAmount){
+		solutionChild.interactable = false;
+		if(lvlCount <= lvlAmount){
 			if(solution.Equals(solutionChild.text)){
 				//change color green
 				imageColor.color = new Color32(37, 250, 53, 255);
 				yield return new WaitForSeconds(sec);
-				lvlCount++;
 				solutionChild.text = "";
 				PlayGame();
 			}
@@ -85,17 +82,18 @@ public class WordMix : MonoBehaviour
 				wrongChoices++;
 			}
 		}
-		else{
+	}
+
+	public void PlayGame(){
+		lvlCount++;
+		if(lvlCount > lvlAmount){
 			PlayerPrefs.SetInt("wrongAnswers", wrongChoices);
 			SceneManager.LoadScene("LearnFinishScreen");
 			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoices);
 		}
-	}
-
-	public void PlayGame(){
 		//change color to white
 		imageColor.color = new Color32(255, 255, 255, 255);
-		lvlNumber.text = "Level: " + lvlCount + "/" + lvlAmount;
+		if(lvlCount <= lvlAmount)	lvlNumber.text = "Level: " + lvlCount + "/" + lvlAmount;
 		GetWord();
 		wordLeft.text = mixedWord;
 	}
@@ -135,6 +133,31 @@ public class WordMix : MonoBehaviour
 			return -1;
 		}
 	}
+
+	// public string mixWord(string word){
+	// 	string newWord = "";
+	// 	int oldNumber = 0;
+	// 	int counter = 0;
+	// 	while(counter != word.Length){
+	// 		int randomPos = GetRandomNumbers(counter, word.Length);
+	// 		if(oldNumber != randomPos){
+	// 			oldNumber = randomPos;
+	// 			counter++;
+	// 			newWord += word[randomPos];
+
+	// 		}
+	// 	}
+	// 	return newWord;
+	// }
+
+	// public int GetRandomNumbers(int minNumber, int maxNumber){
+	// 	if(list.words.Length != 0){
+	// 		return UnityEngine.Random.Range(minNumber, maxNumber);
+	// 	}
+	// 	else{
+	// 		return -1;
+	// 	}
+	// }
 
 	public void ReadJsonFile(){
 		list = JsonUtility.FromJson<WordList>(textJson.text);

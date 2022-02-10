@@ -41,28 +41,28 @@ public class FinishScreen : MonoBehaviour
 	public void SpawnStars(){
 		Debug.Log("Bin in der Funktion");
 		head.text = ("Schade!");
-		TextfieldMistakes.text = ("Nächstes mal klappts!!!");
+		TextfieldMistakes.text = ("Nächstes Mal klappt's!");
 		if(mistakes <= 4){
 			SaveDataManager.RiddleSaveData.stars++;
 			Debug.Log("Erste IF");
 			spawnedStarLeft = Instantiate(star, LeftStarSpawn.transform.position, Quaternion.identity);
 			spawnedStarLeft.transform.SetParent(LeftStarSpawn.transform);
 			head.text = ("Glückwunsch!");
-			TextfieldMistakes.text = ("Nur " + mistakes + " Fehler");
+			TextfieldMistakes.text = ("Nur " + mistakes + " Fehler!");
 			if(mistakes <= 2){
 				SaveDataManager.RiddleSaveData.stars++;
 				Debug.Log("Zweite IF");
 				spawnedStarCenter = Instantiate(star, CenterStarSpawn.transform.position, Quaternion.identity);
 				spawnedStarCenter.transform.SetParent(CenterStarSpawn.transform);
 				head.text = ("Glückwunsch!");
-				TextfieldMistakes.text = ("Nur " + mistakes + " Fehler");
+				TextfieldMistakes.text = ("Nur " + mistakes + " Fehler!");
 				if(mistakes == 0){
 					SaveDataManager.RiddleSaveData.stars++;
 					Debug.Log("Dritte IF");
 					spawnedStarRight = Instantiate(star, RightStarSpawn.transform.position, Quaternion.identity);
 					spawnedStarRight.transform.SetParent(RightStarSpawn.transform);
 					head.text = ("Glückwunsch!");
-					TextfieldMistakes.text = ("Super alles Richtig!!!");
+					TextfieldMistakes.text = ("Super, alles richtig!!!");
 				}
 			}
 		}
