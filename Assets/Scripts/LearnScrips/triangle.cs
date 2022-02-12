@@ -60,7 +60,7 @@ public class Triangle : MonoBehaviour
 	}
 
 	void Update(){
-				bool enabel = false;
+		bool enabel = false;
 		for (int i = 0; i < triangleSize - 1; i++){
 			for (int j = 0; j < jaggedInputs[i].Length; j++) {
 				if(string.IsNullOrEmpty(jaggedInputs[i][j].text)){

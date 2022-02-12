@@ -1,0 +1,445 @@
+% \graphic{riddleScene}{Szenenaufbau für Rätsel}
+% Text für das Design der Lernspiel szenen von der ersten bis zur letzten.
+% Liste mit allen Szenen machen, von den Grundrechenarten bis zum endscreen
+\subsection{Szene - Menü}
+
+%TODO Variablen in den Skripten Checken
+\subsubsection{Menü - Design}
+\graphic{menuLearning}{Auswahl der Level}
+
+In der Abbildung 5.15 ist die Auswahl der sechs unterschiedlichen level zu sehen. Die Szene besteht aus einem zurück Button und sechs weiteren für die Lernspiele. Mit dem zurück Button kommt man wieder in das Hauptmenü. Die restlichen Buttons leiten den Nutzer ein Menü weiter. In dem nächsten Menü werden die Alternativen und die Schwierigkeiten des Spiels festgelegt. Die Buttons wurden im Programm Inkscape vector graphics erstellt. Damit die Beiden Teile des Projektes zusammenpassen wurde ein Einheitliches Design überlegt. Diese unterscheidet sich in den Farben und in den Buttons. In dieser Szene wurden für jeden Button ein PNG entworfen. Wie dies im Programm Inkscape aussieht, ist in der Abbildung 5.16 zu sehen. In diesem Programm wurden die Buttons für die Szenen entworfen.\\
+\graphic{InkscapeButtonGreen}{Button Design} 
+Der Button besteht aus mehrern Objekten, diese sind in der Abbildung 5.17 zu sehen. Für den Hintergrund des Buttons wurden drei Rechtecke erzeugt, ein Weißes, ein Dunkelgüßnes und ein Hellgrünes. Diese werden immer Kleiner und übereinander gelegt. Von allen Rechteecken werden die Kanten abgerundet. Als letztes kommen noch zwei Textfelder, jedes der Textfelder ist unterschiedlich gestalltet, so das am Ende die gewünschte Schrifft rauskommt. 
+\graphic{InkscapeButtonSingleTiles}{Button einzelteile}
+Nachdem die Designs für die Buttons fertiggestellt wurden, werden diese auf den einzelnen Unity Button gezogen und ändert somit sein Design. Dies ist in der Abbildung 5.18 zu sehen.
+In dieser Abbildung, markiert ein grüner Pfeil die stelle in die das Image des Buttons ausgewählt wird.
+\grapic{buttonImgChange}{Button Image ändern}
+
+\subsubsection{Menü - Skript}
+
+In diesem Abschnitt wird das Skript erklärt, welches die Auswahl der Level verwaltet.
+Das Skript wird hierfür in kleine Teile zerlegt und diese werden dann einzelnd erklärt.\\
+
+\begin{lstlisting}[language=csh, caption={MenuPickLevel.cs Klasse Menü Imports}]
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System;
+\end{lstlisting}
+
+Ganz oben im Skript werden verschiedene Bibliotheken eingebunden. Diese werden für die Skripte in den Nachfolgenden Abschnitten sehr ähnlich sein oder sich gar nicht unterscheiden. Mithilfe des Befehls using werden Bibliotheken von C# und Unity importiert. Diese werden benötigt, um zum Beispiel Arrays zu erstellen und verwalten zu können. Mit den Bibliotheken von Unity, kann man auf die Objekte in Unity per Skript zugreifen und diese verwalten oder bearbeiten.\\
+
+\begin{lstlisting}[language=csh, caption={MenuPickLevel.cs Klasse Menü Variablen}]
+public class MenuPickLevel : MonoBehaviour
+{
+	//Buttons
+	// public Button back;
+	// public Button quantities;
+	// public Button mathOperations;
+	// public Button triangle;
+	// public Button lightnigView;
+	// public Button pattern;
+	// public Button mixedWords;
+	public Button[] buttonsMenu = new Button[7];
+
+	public enum LvlType{
+		BACK = 1,
+		QUANTITIES = 2,
+		MATHOPERATIONS = 3,
+		TRIANGLE = 4,
+		LIGHTNIGVIEW = 5,
+		PATTER = 6,
+		MIXEDWORDS = 7
+	}
+	//const int BACK = 1;
+	//const int QUANTITIES = 2;
+	//const int TRIANGLE = 3;
+	//const int MATHOPERATIONS = 4;
+	//const int LIGHTNIGVIEW = 5;
+	//const int PATTER = 6;
+	//const int MIXEDWORDS = 7;
+
+	public static int loadButtonsPrefab = 0;
+\end{lstlisting}
+
+Nachdem alle notwenigen Bibliotheken eingebunden wurden, wird die Klasse deklariert. Die Klasse bekommt hinten MonoBehaviour angehängt, dies ermöglicht uns unteranderem Funktionen wie void start() und void() update zu nutzen. Wenn ein Skript diese Funktionen nicht benötigt, weil es zum Beispiel nur etwas ausrechen muss, so kann das MonoBehaviour dahinter weggelassen werden.\\
+In den darauf Folgenden Zeilen werden die Variablen deklariert die für das Skript notwendig sind. Zu erst werden die Buttons deklariert. Der auskommentierte Code stellt eine alternative Lösung dar. In Unity können Buttons in das Skript eingefügt werden, dies kann man in der Abbildung 5.16 sehen. Dadruch können wir im Code dann auf das Objekt des jeweiligen Buttons zugreifen und mit diesen arbeiten. Es gibt zwei möglichkeiten mehrere Buttons zu implementieren. Entweder man deklariert die anzahl an Buttons selbst oder man nutzt ein Array dafür. Beides ist in den folgenden Abbildungen zu sehen.
+\graphic{buttonZuweisen}{Buttons in Unity einzeln zuweisen}
+\graphic{buttonsIntoArray}{Buttons in Unity in Array einfügen}
+In c# gibt es standartmäßig nicht die möglchkeit ein Const array zu erstellen. Für jeden Button wird in diesem Skript eine Konstante benötigt, den diese soll dem nachfolgenden Skript weiterleitet welcher Button genau gedrückt wurde. Dies ist wichtig, da die Level unterschiedliche Varianten und Schwierikeitsgrade beinhalten und dementsprechend unterschiedliche Buttons auftauchen sollen. Um ein Array zu deklarieren was ähnlich zu einer Konstanten Variablen funktioniert, kann man ein array das readonly ist verwenden oder man nutz eine Enumeration. Eine Enumeration ist eine Reihe bennanter Konstanten, das heißt, alle Konstanten die von Hand einzeln erzeugt wurden, können in die Enumeration eingespeichert werden. Da diese Lösung weniger Code benötigt und für mehrer Buttons effektiver ist, wurde diese Möglichkeit auch umgesetzt. In der Menü Szene sind beide Möglichkeiten im Code geschrieben, aber die Umsetzung alle Buttons und Konstanten einzeln zu deklarieren wurde auskommentiert.\\
+Als letztes wird eine static variable deklariert, diese bekommt später den wert einer Konstanten zugewiesen. In der nächsten Szene kann dann auf diese zugegriffen werden und somit ist dem nachfolgenden Skript bewusst welche Buttons für die Nächstes Szene geladen werden müssen. In Unity gibt es unterschiedliche möglichkeiten um Werte zwischen Skripten transferieren zu können. Einmal wären das static Variablen. Unity selbst biete aber auch die Möglchkeit einen Wert in eine Varibale in einem File zu speichern, dafür wird der PlayerPrefs.setInt/String/Float("variablen name", variablen wert); verwendet. Diese Variante wird in diesem Skript nicht verwendet, da nur die Information aus dem alten Skript benötigt wird und diese nur für diese beiden Skripte notwendig ist. Wenn die Information für mehrer Skripte notwendig wäre, könnte man diese durch den PlayerPrefs befehl speichern.\\
+
+\begin{lstlisting}[language=csh, caption={MenuPickLevel.cs Klasse Menü start Funktion}]
+	void Start()
+	{
+		Debug.Log(buttonsMenu.Length);
+		for (int i = 0; i < buttonsMenu.Length; i++){
+			int temp = i;
+			buttonsMenu[temp].onClick.AddListener(() => loadAdvancedOptions((LvlType)temp + 1));
+		}
+
+		// back.onClick.AddListener(() => loadAdvancedOptions(BACK));
+		// quantities.onClick.AddListener(() => loadAdvancedOptions(QUANTITIES));
+		// mathOperations.onClick.AddListener(() => loadAdvancedOptions(MATHOPERATIONS));
+		// triangle.onClick.AddListener(() => loadAdvancedOptions(TRIANGLE));
+		// lightnigView.onClick.AddListener(() => loadAdvancedOptions(LIGHTNIGVIEW));
+		// pattern.onClick.AddListener(() => loadAdvancedOptions(PATTER));
+		// mixedWords.onClick.AddListener(() => loadAdvancedOptions(MIXEDWORDS));
+	}
+\end{lstlisting}
+In der Start werden jedem Button ein Listener hinzugefügt, es gibt auch hier wieder die möglichkeit dies für jeden Button einzeln zu erledigen oder mithilfe eines Arrays und der Enumeration dies in einer For-Schleife durchzuführen.\\
+Die Schleife startet bei 0 und läuft bis sie durch alle Buttons durch iteriert hat. Dabei kann es zu einem Problem kommen, das die Variable i gefanngen nimmt. Das bedeutet, egal welcher Button gedrückt wird es lädt die letzt Möglichkeit der Iteration, also würde das für uns so aussehen, das jeder Button in dem gleichen Level endet. Um diese Problem zu verhindern, wird eine Temporäre Variabel temp deklariert, die den Wert von i zugewiesen bekommt. Jetzt wird jedem Button aus dem Array an der Position temp ein onClick event hinzugefügt, welches die Möglichkeit biete, wenn der Button gedrückt wurde etwas oder eine Funktion auszuführen. In diesem fall wird die AddLister Funktion aufgerufen. Mit den leeren Klammern und dem Pfeil (() =>) wird eine Funktion deklariert die ausgeführt wird wenn der Button gedrückt wurde. In diesem Fall wird die Funktion die uns die Szene mit den jeweiligen Varianzen an Modi und Schwierigkeiten lädt. Hierbei wird der Integer Wert aus temp verwendet, dieser muss in den Enumerations Typen umgewandelt werden, diese umwandlung wird Casten genannte. Dabei wird vor die Variable der gewünschte Typ in Klammern geschrieben (LvlTyp). Danach wird die Variable Temp + 1 verwendet, das hat den Grund, dass später mit dieser Variablen gearbeitet wird und das Skript für das erweiterte Menü diese Variable ab der Stelle eins bearbeitet. In einer früheren Version, gab es in dieser Szene einen Menü Button der die Stelle 0 belegt hat und später entfernt wurde. Die Skripte funktionieren aber ohne diesen Button ohne Probleme, deshalb wurde es nicht angepasst.\\
+
+\begin{lstlisting}[language=csh, caption={MenuPickLevel.cs Klasse Menü loadAdvancedOptions Funktion}]
+	public void loadAdvancedOptions(LvlType choice){
+		switch (choice)
+		{
+			case LvlType.BACK:
+				loadButtonsPrefab = (int)LvlType.BACK;
+				SceneManager.LoadScene("MainMenu");
+				break;
+			case LvlType.QUANTITIES:
+				loadButtonsPrefab = (int)LvlType.QUANTITIES;
+				SceneManager.LoadScene("MenuLearingAdvancedOptions");
+				break;
+			case LvlType.MATHOPERATIONS:
+				loadButtonsPrefab = (int)LvlType.MATHOPERATIONS;
+				SceneManager.LoadScene("MenuLearingAdvancedOptions");
+				break;
+			case LvlType.TRIANGLE:
+				loadButtonsPrefab = (int)LvlType.TRIANGLE;
+				SceneManager.LoadScene("MenuLearingAdvancedOptions");
+				break;
+			case LvlType.LIGHTNIGVIEW:
+				loadButtonsPrefab = (int)LvlType.LIGHTNIGVIEW;
+				SceneManager.LoadScene("MenuLearingAdvancedOptions");
+				break;
+			case LvlType.PATTER:
+				loadButtonsPrefab = (int)LvlType.PATTER;
+				SceneManager.LoadScene("MenuLearingAdvancedOptions");
+				break;
+			case LvlType.MIXEDWORDS:
+				loadButtonsPrefab = (int)LvlType.MIXEDWORDS;
+				SceneManager.LoadScene("MenuLearingAdvancedOptions");
+				break;
+
+			default:
+				break;
+		}
+	}
+\end{lstlisting}
+
+In Zeile 46 beginnt die Funktion die die nächste Szene lädt. Die szene unterscheidet mit einem switch-case statement, welcher Button gedrückt wurde und speichert den passenden wert in die static Variable ein. Der Wert aus der Enumeration wird hierbei in einen Integer Wert umgewandelt. Danach wird die nächste Szene geladen. Der Zurück Button leitet den Nutzer zum Hauptmenü zurück und die anderen Buttons laden die neue Szene, diese wäre das erweiterte Menü. Das erwiterte Menü ist die gleiche Szene für alle Buttons, da diese sich nur in der Anzahl an Auswahlmöglichkeiten unterscheidet. Dies wird aber im nächsten Abschnitt genauer erläutert.\\
+In dieser Szene ist aber noch anzumerken, das es einen Fehler gabe bei den Konstanten, so dass im Erweiterten Menü zweimal das Selbe Level geladen wurde, wie dieser genau zu stande kam und wie er gelöst wurde wird aber im nächsten Abschnitt genauer erläutert.
+
+\subsection{Szene - Erweitertes Menü}
+\subsubsection{Erweitertes Menü - Design}
+In diesem Abschnitt, wird das Design des erwitertetn Menüs erklärt. In diesem Menü gibt es wieder einen zurück Button, der in das vorherige Menü zurück leitet. Auf der Linken seite des Menüs werden die Alternativen Spielmodi angezeigt und auf der rechten Seite die Schwierigkeiten. Zu sehen ist dies in der Abbildung 5.20. Die Alternativen sind nicht für jedes Level vorhanden oder gleich, wenn es keine zur auswahl gibt, ist die Linke hälfte einfach Leer. Für die Beiden Seiten wurden auch wieder mehrere Buttons Designs angefertigt.
+\graphic{basicOperatorsAdvanced}{Auswahl der einzelnen Optionen eines Levels}
+Um das Ausgewählte Spiel starten zu können müssen auf beiden Seiten eine Option gewählt werden. solange nicht auf beiden seiten ein Button ausgewählt wurde ist der Start Button deaktiviert. Wenn ein Button auf einer seite Ausgewählt wurde wird dieser Deaktiviert und kann nicht wiederholt ausgewählt werden, sobald eine andere Alternative ausgewält wird, wird diese Deaktiviert und die andere wieder aktiviert. So wird verhindert, das nie mehr als eine Möglichkeit aktiviert sein kann. Wenn ein Level ohne Alternative ausgewählt wurde, muss nur eine Schwierigkeit ausgewählt werden um das Spiel zu starten. In der Abbildung 5.21 ist eine Auswahl zu sehen, der Start Button ist hier noch Deaktiviert, weil keine Schwierigkeit gewält wurde. 
+\graphic{basicOperatorsAdvancedSingleChoice}{Einzelne Auswahl}
+Nachdem auf jeder Seite ein Button gewählt wurde, ist der Start Button nicht mehr Deaktiviert und der Spieler kann das Spiel starten.
+\graphic{basicOperatorsAdvancedFinish}{Auswahlbedingung um das Level zu laden}
+\subsubsection{Erweitertes Menü - Skript}
+In diesem Abschnitt, wir das Skript erklärt, da die Imports die Selben sind, werden diese nicht erneut erklärt.
+\begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs Variable Deklaration}]
+public class MenuPickLevelAdvanced : MonoBehaviour
+{
+
+	//Buttons
+	public Button back;
+	public Button start;
+
+	public List <Button> leftSideList = new List<Button>();
+	private List<Button> rightSideList = new List<Button>();
+
+	public GameObject buttonPref;
+	public GameObject spawnerLeft;
+	public GameObject spawnerRight;
+	private GameObject spawnedObject;
+
+	public Sprite[] quantitiesModes = new Sprite[2];
+	public Sprite[] mathModes = new Sprite[4];
+	public Sprite[] difficulty = new Sprite[3];
+
+	public static int maxNumberStatic = 0;
+	public static int lvlAmmountStatic = 0;
+	public static int fourChoices = 0;
+	public static int wallSize = 0;
+
+	private int loadButtonsNumber = 0;
+	private bool leftSide = false;
+	private bool rightSide = false;
+	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
+\end{lstlisting}
+%TODO Variablen in den Skripten Checken
+Die Klasse beinhaltet mehr Variablen und Objekte, in diesem Fall wurde Zwei Buttons deklariert da diese in der Szene immer vorkommen. Die Buttons für die Linke und rechte Seite werden in Listen gespeichert, also nicht in Unity festgelegt. Um mehrere Buttons per Skript zu spawnen, werden nach den Listen Objekte mit einem Prefab eines Buttons und den beiden Bereichen hier spawnerLeft und spawnerRight deklariert. Diese drei sind Public, da sie in Unity den Objekten zugewiesen werden. Das Objekte spawnedObject, wird hier deklariert und kann private bleiben, da wir es nur im Skript verwenden. Der gebrauch wird in den Unteren Funktionen erklärt.\\
+Da die Buttons für die Alternativen und die Schwierigkeit unterschiedlich aussehen, werden zunächst drei Sprite Arrays erzeugt, in diese Werden die Bilder der vorgefertigten Buttons gezogen. So können wir auf die Bilder in der richtigen Reihnfolge später zugreifen und diese verwenden.\\
+Als nächstes, benötigen wir wieder static Variablen, diese speichern die Werte mit denen das Level Initalisiert wird. Die maxNumberStatic speichert die Zahl ein die Maximal später random generiert werden kann. Je nach Schwierigkeit ist diese Größer oder kleiner. Die lvlAmmountStatic legt fest, wie viele Level das Kind spielen muss bevor er es abgeschlossen hat. Die fourChoices Variable speicher die Linke auswahl ein. Der Name ist ein wenig Irreführend, da es nur einspeichern soll welcher Button Links ausgewählt wurde. Das sind die möglichkeiten im Spiel größer,kleiner, gleich oder bei den Grundrechenarten. Also Speichert diese die Zahlen von eins bis 4 ein. Die wallSize ist nur für die Rechenmauer notwendig, je nach der Schwierigkeit, ist die mauer unten drei, vier oder fünf steine groß.\\
+Als letztes werden noch vier private Variablen benötigt. Die Variable loadButtonsNumber wird die static Variable aus der Vorherigen Szene bekommen. Die beiden Boolean Variablen werden benötigt, um die Linke und Rechte seite der Buttons zu überprüfen. Da die Buttons wenn sie in einem Canvas erzeugt werden kleinerskaliert werden, müssen diese mithilfe des Vektors wieder auf die Originalgröße Skaliert werden.\\
+\begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs Start Funktion}]
+	void Start()
+	{
+		loadButtonsNumber = MenuPickLevel.loadButtonsPrefab;
+		back.onClick.AddListener(() => GoBack());
+		start.onClick.AddListener(() => LoadGame());
+		SpawnButtonsRight();
+		if(loadButtonsNumber == 2 || loadButtonsNumber == 3){
+			SpawnButtonsLeft();
+		}
+		else{
+			leftSide = true;
+		}
+	}
+\end{lstlisting}
+Die start Funktion wird sobald die Szene geladen wird aufgerufen, diese speichert einmal den Wert der static Variablen aus dem vorherigen Skript in eine Variable, da die Variable Public war kann mit dem Namen des Skriptes und dem namen der Variablen auf diese zugegriffen werden.
+Danach bekommen die Buttons um zurück zu gehen und um das level zu starten ihre Funktion zugewiesen. Da die Buttons auf der Rechtenseite immer gleich sind, werden diese als nächstes erzeugt, dies wird in der Funktion SpawnButtonsRight erledigt. Danach muss für die Linke seite überprüft werden, ob es überhaupt alternativen gibt, wenn dies nicht der Fall wäre würde der Boolean für die Linke seite auf true gesetzt werden. Um zu überprüfen welche Alterantiven wir benötigen wird die loadButtonsNumber überprüft. Wenn diese den Wert 2 oder 3 zugewiesen bekam, haben wir entweder das Spiel größer, kleiner, gleich oder die Grundrechenarten. Wenn eine dieser beiden Möglichkeiten besteht, werden die Buttons auf der Linken seite erzeugt.\\
+\begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs Update Funktion}]
+	void Update(){
+		if(!leftSide || !rightSide){
+			start.interactable = false;
+		}
+		if(leftSide && rightSide){
+			start.interactable = true;
+		}
+	}
+\end{lstlisting}
+Die Update Funktion von Unity wird jeden Frame aufgerufen und überprüft nur ob die Booleans für die Linke und Rechte seite true sind oder ob noch eine Seite nicht ausgewählt wurde. Wenn auf beiden Seiten etwas ausgewählt wurde, kann das Spiel gestartet werden, wenn eine der beiden Variablen false ist, ist der start Button deaktiviert. Um einen Button zu aktivieren oder zu deaktivieren wird die Variable interactable des Buttons auf false oder true gesetzt. Je nachdem ist der Button im Spiel dann ausgegraut oder eben nicht.\\
+\begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs GoBack Funktion}]
+	public void GoBack(){
+		MenuPickLevel.loadButtonsPrefab = 0;
+		SceneManager.LoadScene("MenuLearning");
+	}
+\end{lstlisting}
+Die GoBack funktion wird aufgerufen wenn der zurück Button gedrückt wurde. in dieser wird die Static Variabel aus dem Vorherigen Skript wieder auf 0 gesetzt, damit es zu keinen Fehler in der Levelauswahl kommt, da diese sonst den vorherigen Wert weiterhin besitzen würde. Danach wird mithilfe des aufrufes SceneManager.LoadScene("MenuLearning") die Menü Auswahl szene aufgerufen.
+\begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs LoadGame Funktion}]
+	public void LoadGame(){
+		switch (loadButtonsNumber)
+		{
+			case 2:
+				SceneManager.LoadScene("CompareQuantities");
+				break;
+			case 3:
+				SceneManager.LoadScene("basicOperations");
+				break;
+			case 4:
+				SceneManager.LoadScene("triangle");
+				break;
+			case 5:
+				SceneManager.LoadScene("lightningView");
+				break;
+			case 6:
+				SceneManager.LoadScene("finishPattern");
+				break;
+			case 7:
+				SceneManager.LoadScene("MixedWords");
+				break;
+			default:
+				break;
+		}
+	}
+\end{lstlisting}
+Die Funktion LoadGame kontrolliert mithilfe eines switch-case-Statements, welcher Button in der Szene davor gedrückt wurde und dann die Passende Szene.\\
+Das Problem was nach der Verbesserung des ersten Skripts aufgetreten ist, war das die Szene mit den Grundrechenarten die Zahl 4 zugewiesen bekommen sollte, diese war aber der dritte Fall im switch-case-statement und somit wurde in dieser Szene immer die Rechenmauer geladen. Die Zahlen wurden dann im Skript davor angepasst und die Grundrechenarten bekamen die nummer drei. Was in der Funktion SpawnButtonsLeft zu Problemen führte.\\
+\begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs SafeOptionsRight Funktion}]
+	public void SafeOptionsRight(int whichButton){
+		for (int i = 0; i < rightSideList.Count; i++){
+			if(i != whichButton){
+				rightSideList[i].interactable = true;
+				continue;
+			}
+			rightSide = true;
+			rightSideList[i].interactable = false;
+		}
+		switch (whichButton)
+		{
+			case 0:
+				lvlAmmountStatic = 10;
+				maxNumberStatic = 10;
+				wallSize = 3;
+				break;
+			case 1:
+				lvlAmmountStatic = 15;
+				maxNumberStatic = 15;
+				wallSize = 4;
+				break;
+			case 2:
+				lvlAmmountStatic = 20;
+				maxNumberStatic = 20;
+				wallSize = 5;
+				break;
+			default:
+				break;
+		}
+	}
+\end{lstlisting}
+In dieser Funktion wird die Auswahl der Schwierigkeit des Levels gespeichert. Diese bekommt eine zahl zwischen null und zwei zugewiesen. In einer for-schleife wird dann überprüft welcher Button gedrückt wurde. Wenn ein Button der ungleich i gedrückt wurde, wird dieser aktiviert und die Schleife springt einen durchgant weiter. Wenn i die gleiche Zahl wie die Variable whichButton ist, wird der Boolean auf true gesetzt und der aktuell gedrückte Button wird deaktiviert.\\
+Nachdem die Schleife durch gelaufen ist, wird mithilfe eines switch-case-statements überprüfut welcher der drei Buttons ausgewählt wurde und je nachdem eine Level anzahl, eine maximale Random Nummer und die Mauer größe gespeichert.\\
+\begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs SafeOptionsLeft Funktion}]
+	public void SafeOptionsLeft(int whichButton){
+		for (int i = 0; i < leftSideList.Count; i++){
+			if(i != whichButton){
+				leftSideList[i].interactable = true;
+				continue;
+			}
+			leftSide = true;
+			leftSideList[i].interactable = false;
+		}
+		if(loadButtonsNumber == 2){
+			setQuantitiesOptions(whichButton);
+		}
+		else if(loadButtonsNumber == 3){
+			setMathOptions(whichButton);
+		}
+
+	}
+\end{lstlisting}
+Die Funktion SafeOptionsLeft soll speichern welche der Alternativen links gespeichert wurde. Also wird einmal wie in der Funktion SafeOptionsRight mithilfe einer For-Schleife kontrolliert welcher Button gedrückt wurde und dieser wird dann Deaktiviert. Die Boolean Variable für Links wird dann auch auf True gesetzt. Da es in zwei Leveln Alternativen gibt, wird überprüft welches Level gewählt wurde. Im Falle der Zahl zwei wird die Funktion aufgerufen die Speichern soll ob die Kinder Objekte oder Zahlen vergleichen sollen. Im Falle der drei wird die Funktion aufgerufen die Speicher welche der vier Grundrechenarten das Kind spielen möchte. 
+\begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs setQuantitiesOptions Funktion}]
+	public void setQuantitiesOptions(int whichButton){
+		switch (whichButton)
+		{
+			case 0:
+				fourChoices = 1;
+				break;
+			case 1:
+				fourChoices = 2;
+				break;
+			default:
+				break;
+		}
+	}
+\end{lstlisting}
+Diese Funktion überprüft mithilfe eines switch-case-statements welcher der Beiden Varianten ausgewählt wurde und speichert diese in die Variable fourChoices. Durch diese weiß das Spiel größer, kleiner, gleich ob sie Zahlen oder Objekte anzeigen soll.
+\begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs setMathOptions Funktion}]
+	public void setMathOptions(int whichButton){
+		switch (whichButton)
+		{
+			case 0:
+				fourChoices = 1;
+				break;
+			case 1:
+				fourChoices = 2;
+				break;
+			case 2:
+				fourChoices = 3;
+				break;
+			case 3:
+				fourChoices = 4;
+				break;
+			default:
+				break;
+		}
+	}
+\end{lstlisting}
+Dieses Skript arbeiten gleich wie das Skript davor, es überprüft welche der vier Grundrechenarten ausgewählt werden sollten und speicher diese ab, damit das Skript der Grundrechenarten weiß ob das Kind addieren, subtrahieren, multiplizieren oder dividieren möchte.
+\begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs SpawnButtonsLeft Funktion}]
+	public void SpawnButtonsLeft(){
+		int size = 0;
+		if(loadButtonsNumber == 3) size = 4;
+		else size = 2;
+		for (int i = 0; i < size; i++){
+			int copy = i;
+			spawnedObject = Instantiate(buttonPref, spawnerLeft.transform.position, Quaternion.identity);
+			spawnedObject.name += i;
+			spawnedObject.transform.SetParent(spawnerLeft.transform);
+			spawnedObject.transform.localScale = scaleSize;
+			spawnedObject.GetComponent<Image>().preserveAspect = true;
+			leftSideList.Add(spawnedObject.GetComponent<Button>());
+			leftSideList[i].onClick.AddListener(() => SafeOptionsLeft(copy));
+			if(size == 2){
+				leftSideList[i].GetComponentInChildren<Image>().sprite = quantitiesModes[i];
+				// leftSideList[i].GetComponentInChildren<Image>().preserveAspect = true;
+				continue;
+			}
+			else if(size == 4){
+				leftSideList[i].GetComponentInChildren<Image>().sprite = mathModes[i];
+			}
+		}
+	}
+\end{lstlisting}
+In diesem Skript kam es zu einem Problem, nachdem das erste Menü Skript angepasst wurde. Dieses Skript läuft mit einer For-Schleife durch und erzeugt je nachdem welche Zahl in der Variablen loadButtonsNumber steht die richtige anzahl an Buttons. Für das Spiel größer, kleiner, gleich erzeugt es zwei Buttons und für die Grundrechenarten vier. Da aber die Grundrechenarten die Nummer drei bekamen wurde ein Button zu wenig erzeugt. Um dies zu verhindern, wird am anfang einmal überprüft ob die loadButtonsNumber zu diesem Zeitpunkt eine drei beinhaltet und wenn ja wird die größe auf 4 gesetzt, wenn das nicht der fall ist wird diese auf zwei gesetzt. Somit werden genung Buttons für die Alternativen erzeugt.\\
+Die For-Schleife muss auch hier wieder eine temporäre Variable erzeugen diesesmal wurde sie copy genannt. Um objekte durch ein Skript zu erzeugen wird in das Objekt spawnedObject mithilfe der Instantiate Mehtode, dies ist eine Methode um ein Objekt zu Spawnen der Button erzeugt. Die Instantiate methode bekomme ein GameObjekt das sie spawnen soll in diesem Fall unser Button Prefab, dann benötigit sie eine position, das wäre die Position unseres Spawners auf der Linken seite. Diese bekommen wir durch den aufruf spawnerLeft.transform.position, dieser gibt die Position unser GameObjekts auf der Linken seite zurück und an diese Stelle soll der Button erzeugt werden. Da sie keine Rotation benötigt wird als letzer Übergabewert Quaternion.identity verwendet. Hierbei wird die das Objekt nicht Rotiert.\\
+Damit in Unity die Objekte in der Hierarchy unterscheidbar waren, bekamen sie den namen plus i.\\
+Um die Buttons richtig anzuordnen wurde ein Overlay mit Verticalen und Horizontalen Layoutgroups angelegt. In der Abbildung 5.23 ist diese zu sehen. Das Objekt Choices bekam eine bekam eine Horizontale Layout Gruppe, die Objekte leftSite und rightSite bekamen eine Vertikale Layout Gruppe. 
+%TODO Maybe noch ein Bild
+Damit die Buttons in diesen Objekten zu sehen sind, werden dem spawnedObjekt ein Eltern Objekt zugewiesen. Um dies zu erreichen wird spawnedObject.transform.SetParent aufgerufen. Da nach wird das Objekt an der Richtigen stelle angezeigt, aber nicht in der Richtigen größe. Unity Skaliert das Objekt kleiner, da es hierbei dei Größe des Objektes nimmt in dem das neue Objekt erzeugt wird. Damit das Objekt die Originalgröße behält wird für das erzeugte Objekt die Skalierung auf die Originale Größe gestzt. Auch dies ist mithilfe des .transfom.localScale befehls möglich.\\
+Bilder in Unity werden unscharf dargestellt. Dies kann verhindert werden wenn die Option preserveAspect auf true gesetzt wird. Auch dies wird für jedes erzeugte Objekt in dieser Funktion erledigt.\\
+Nachdem alle Buttons für die Linke seite Erzeugt wurden, werden diese in die liste LeftSideList gespeichert und bekommen danach den Listener zugewiesen. Dieser ruft dann die Funktion auf die Speicher welche Alterantive des Spieles gespeichert werden soll.\\
+Nachdem die Buttons Links erzeugt wurden muss die Funktion in einer If und else if abfrage überprüfen welche Bilder den Buttons zugewiesen werden sollen, sonst würde auf den Button gar nichts stehen. Wenn die Variable size die Zahl zwei beinhaltet wird auf den Button Links in den Komponenten Image das passende Bild aus dem Array gespeicher. Der Befehl  leftSideList[i].GetComponentInChildren<Image>().sprite = quantitiesModes[i]; nimmt den Komponenten des Buttons aus der Liste leftSideListe und fügt das Bild aus dem Array an der Stelle i ein.\\
+Für die Grunrechenarten wird das selbe angewandt, in dem falle, das die Variable size gleich vier ist.
+\graphic{LayoutMenuAdvanced}{Layout Erweitertes Menü}
+\begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs SpawnButtonsRight Funktion}]
+	public void SpawnButtonsRight(){
+		for (int i = 0; i < 3; i++){
+			int copy = i;
+			spawnedObject = Instantiate(buttonPref, spawnerRight.transform.position, Quaternion.identity);
+			spawnedObject.name += i;
+			spawnedObject.transform.SetParent(spawnerRight.transform);
+			spawnedObject.transform.localScale = scaleSize;
+			spawnedObject.GetComponent<Image>().preserveAspect = true;
+			rightSideList.Add(spawnedObject.GetComponent<Button>());
+			rightSideList[i].onClick.AddListener(() => SafeOptionsRight(copy));
+			rightSideList[i].GetComponentInChildren<Image>().sprite = difficulty[i];
+			// rightSideList[i].GetComponentInChildren<Image>().preserveAspect = true;
+		}
+	}
+\end{lstlisting}
+Die Funktion SpawnButtonsRight, arbeite gleich wie die SpawnButtonsLeft Funktion, nur das in diesem Fall immer drei Buttons gespawnt werden auf die Richtige größe Skaliert werden und in eine Liste eingefügt werden. Diesen werden danach dann die Bilder der unterschiedlichen Schwierkeitsgrade hinzugefügt.
+\subsection{Szene - Grundrechenarten}
+\subsubsection{Grundrechenarten - Design}
+\graphic{addition}{Grundrechenarten - Addition}
+In der Szene der Grundrechenarten gibt es ein Textfeld, dieses wurde mit einem Grünen Pfeil markiert. In diesem Steht der Operator, also ob das Kind Addieren, Subtrahieren, Multiplizieren oder Dividieren soll. Die Szene kann mit dem Menü Button oben Links verlassen werden. Die Überschrift der Szene sagt dem Kind das es die Zahl ausrechnen soll. Ganz rechts oben Steht das Aktuelle Level und wie viele es insegsamt gibt. Diese wird sobald das Kind eine Rechnung richtig hat um eins hochgezählt. In der Mitte der Szene steht Links die erste Zahl dann der Operatore, dann die zweite Zahl. Danach kommt das gleichheitszeichen und ein Eingabefeld für die Lösung des Nutzers. Dieses Feld wird grün umrandet wenn die Lösung richtig ist und rot wenn diese Falsch ist. Nach einer falschen Eingabe wird das eingabe Feld wieder geleert. In der Abbildung 5.24 und 5.25 ist der grüne und Rote Rand zu sehen. Dieser wird in diesem Fall aus der Szene größer, kleiner, gleich sein, ist aber in den Szenen in denen er verwendet wird gleich. 
+\graphic{rightChoiceQuantities}{Grüner Rahmen}
+\graphic{wrongChoiceQuantites}{Roter Rahmen}
+Der Button Testen löst die Funktion aus die Kontrolliert ob richtig gerechnet wurde. Dieser ist Deaktiviert solange keine Zahl eingeben wurde und wird aktiviert sobald eine Zahl darin steht.
+\subsubsection{Grundrechenarten - Skript}
+\begin{lstlisting}[language=csh, caption={MathOperations.cs SpawnButtonsRight Funktion}]
+public class MathOperations : MonoBehaviour
+{
+
+	public Text TextNumberLeft;
+	public Text TextNumberRight;
+	public Text operatorSymbole;
+	public Text showLevelNumber;
+
+	public InputField solutionNumber;
+
+	public Button checkButton;
+	public Button menu;
+
+	public Image imageColor;
+
+	private int leftNumber;
+	private int rightNumber;
+	private int solution;
+	private int maxRandomNumber = 10;
+	private int minRandomNumber = 0;
+	private int lvlNumber = 10;
+	private int countLvl = 0;
+	//add = 1, sub = 2, mult = 3, div = 4
+	private int gameMode = 3;
+	private int wrongSolution = 0;
+\end{lstlisting}
+\subsection{Szene - Mengen vergleichen}
+\subsubsection{Mengen vergleichen - Design}
+\subsubsection{Mengen vergleichen - Skript}
+\subsection{Szene - Rechenmauer}
+\subsubsection{Rechenmauer - Design}
+\subsubsection{Rechenmauer - Skript}
+\subsection{Szene - Blitzblick}
+\subsubsection{Blitzblick - Design}
+\subsubsection{Blitzblick - Skript}
+\subsection{Szene - Vervollständigen die Reihe}
+\subsubsection{Vervollständigen die Reihe - Design}
+\subsubsection{Vervollständigen die Reihe - Skript}
+\subsection{Szene - Wortsalat}
+\subsubsection{Wortsalat - Design}
+\subsubsection{Wortsalat - Skript}
+%TODO json file auch zeigen und erklären
+\subsection{Szene - Nach Abschluss des Levels}
+\subsubsection{Nach Abschluss des Levels - Design}
+\subsubsection{Nach Abschluss des Levels - Skript}
+\subsection{Speichern und Laden der Sterne}

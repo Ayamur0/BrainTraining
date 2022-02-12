@@ -40,7 +40,7 @@ public class MenuPickLevelAdvanced : MonoBehaviour
 		back.onClick.AddListener(() => GoBack());
 		start.onClick.AddListener(() => LoadGame());
 		SpawnButtonsRight();
-		if(loadButtonsNumber == 2 || loadButtonsNumber == 4){
+		if(loadButtonsNumber == 2 || loadButtonsNumber == 3){
 			SpawnButtonsLeft();
 		}
 		else{
@@ -70,10 +70,10 @@ public class MenuPickLevelAdvanced : MonoBehaviour
 				SceneManager.LoadScene("CompareQuantities");
 				break;
 			case 3:
-				SceneManager.LoadScene("triangle");
+				SceneManager.LoadScene("basicOperations");
 				break;
 			case 4:
-				SceneManager.LoadScene("basicOperations");
+				SceneManager.LoadScene("triangle");
 				break;
 			case 5:
 				SceneManager.LoadScene("lightningView");
@@ -132,7 +132,7 @@ public class MenuPickLevelAdvanced : MonoBehaviour
 		if(loadButtonsNumber == 2){
 			setQuantitiesOptions(whichButton);
 		}
-		else if(loadButtonsNumber == 4){
+		else if(loadButtonsNumber == 3){
 			setMathOptions(whichButton);
 		}
 
@@ -173,7 +173,10 @@ public class MenuPickLevelAdvanced : MonoBehaviour
 	}
 
 	public void SpawnButtonsLeft(){
-		for (int i = 0; i < loadButtonsNumber; i++){
+		int size = 0;
+		if(loadButtonsNumber == 3) size = 4;
+		else size = 2;
+		for (int i = 0; i < size; i++){
 			int copy = i;
 			spawnedObject = Instantiate(buttonPref, spawnerLeft.transform.position, Quaternion.identity);
 			spawnedObject.name += i;
@@ -182,12 +185,12 @@ public class MenuPickLevelAdvanced : MonoBehaviour
 			spawnedObject.GetComponent<Image>().preserveAspect = true;
 			leftSideList.Add(spawnedObject.GetComponent<Button>());
 			leftSideList[i].onClick.AddListener(() => SafeOptionsLeft(copy));
-			if(loadButtonsNumber == 2){
+			if(size == 2){
 				leftSideList[i].GetComponentInChildren<Image>().sprite = quantitiesModes[i];
 				// leftSideList[i].GetComponentInChildren<Image>().preserveAspect = true;
 				continue;
 			}
-			else if(loadButtonsNumber == 4){
+			else if(size == 4){
 				leftSideList[i].GetComponentInChildren<Image>().sprite = mathModes[i];
 			}
 		}
