@@ -170,7 +170,6 @@ public class Triangle : MonoBehaviour
 				jaggedInputs[i][j] =spawnedObject.GetComponent<InputField>();
 			}
 		}
-
 	}
 
 	public void GenerateNumbers(){
@@ -189,7 +188,6 @@ public class Triangle : MonoBehaviour
 		spawnedObject.transform.SetParent(rightFirework.transform);
 		spawnedObject.transform.localScale = scaleSize;
 		Debug.Log("Firework");
-
 	}
 
 	public void DeleteFirework(){

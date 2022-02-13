@@ -751,6 +751,231 @@ Die Rechenmauer kann in drei verschiedenen Varianten gespielt werden. Je nach de
 Wenn der Schüler/die Schülerinn die Pyramiede komplett richtig gelöst hat, wird das anhand des Feuerwerkts das um den Test Button auftaucht angezeigt. Die Pyramiede wird geleehrt und eine eine neue Unterste Reihe wird erzeugt. Das Feuerwerk wird auch in dem Spiel \textit{Führe die Reihe fort} angewendet und ist in Abbildung 5.31 zu sehen.
 \graphic{finisheTriangle}{Feuerwerkt nach richtigem Lösen}
 \subsubsection{Rechenmauer - Skript}
+\begin{lstlisting}[language=csh, caption={Triangle.cs Variablen Deklaration}]
+public class Triangle : MonoBehaviour
+{
+
+	public GameObject brick;
+
+	//rows of the triangle
+	public GameObject triangleGameObject;
+
+	public Text lvlText;
+
+
+	private GameObject spawnedObject;
+
+	public GameObject leftFirework;
+	public GameObject rightFirework;
+
+	public GameObject fireworkPrefab;
+
+	//3 = bottom 3 bricks, 4 = bottom 4 bricks, 5 = bottom 5 bricks
+	private int triangleSize = 3;
+
+	private int[][] jaggedSolution = new int[5][];
+
+	private InputField[][] jaggedInputs = new InputField[5][];
+
+	private int[] bottomNumbers;
+
+	public Button testSolution;
+	public Button menu;
+
+	private int lvlCounter = 0;
+	private int wrongChoice = 0;
+	private int lvlNumber = 10;
+	private int maxNumber = 0;
+	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
+\end{lstlisting}
+Im Skript der Rechenmauer, benötigen wir eine Variable für das Prefab des einzelnen Steines. Die Rechenmauer wird in einem \textit{Layout Group} gespawnt, diese befindet sich in einem leeren Objekt. Es gibt auch hier wieder ein Textfeld um das aktuelle Level anzuzeigen und ein Objekt in das die Blöcke erzeugt werden. Für das Feuerwerk wird auch ein Objekt und zwei Positionen benötigt. Für die einzelnen Reihen gibt es 2 Dimensionale Arrays um die Lösung zu berechnen und um die Eingaben zu speichern. In der Szene gibt es zwei Buttons. Zum Abschluss benötigen wir noch ein paar private Varibalen die um das Level auszuführen notwendig sind. Diese wären die einen Zähler für das Level, einen Zähler für die Fehler. Die Anzahl an Level, die Maximal größte Zahl und einen Vektor um die Steine zur Originalgröße zu skalieren.\\
+\begin{lstlisting}[language=csh, caption={Triangle.cs Start-Funktion}]
+	void Start()
+	{
+		menu.onClick.AddListener(() => GoBack());
+		maxNumber = MenuPickLevelAdvanced.maxNumberStatic;
+		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
+		triangleSize = MenuPickLevelAdvanced.wallSize;
+		testSolution.interactable = false;
+		testSolution.onClick.AddListener(() => CheckSolution());
+		jaggedInputs[0] = new InputField[1];
+		jaggedInputs[1] = new InputField[2];
+		jaggedSolution[0] = new int[1];
+		jaggedSolution[1] = new int[2];
+		GenerateSolutionArray();
+		SpawnPyramidRows();
+		PlayGame();
+	}
+\end{lstlisting}
+Die \textit{Start} Funktion, weißt den Buttons den listener zu und deaktiviert den Test Button. Die Spitze und die zwei Felder der Mauer die unter dem obersten Stein liegen, werden immer erzeugt, da diese immer verwendet werden. Die 2-Dimensionalen Arrays werden an der ersten und zweiten Stelle in der Richtigen größe Initalisiert. Danach wird die Funktion \textit{GenerateSolutionArray()} aufgerufen, diese initailiser die restlichen Ebenen des Lösungsarray und des Eingabearrays. Nachdem das Lösungsarray generiert wurde, werden die Reihen der Pyramide in die Szene geladen. Am schluss wird die Funktion \textit{PlayGame()} aufgerufen, diese startet das Spiel für die Kinder.\\
+\begin{lstlisting}[language=csh, caption={Triangle.cs Update-Funktion}]
+	void Update(){
+		bool enabel = false;
+		for (int i = 0; i < triangleSize - 1; i++){
+			for (int j = 0; j < jaggedInputs[i].Length; j++) {
+				if(string.IsNullOrEmpty(jaggedInputs[i][j].text)){
+					enabel = true;
+					testSolution.interactable = false;
+
+				}
+			}
+		}
+		if(!enabel){
+			testSolution.interactable = true;
+		}
+	}
+\end{lstlisting}
+In dem Skript für die Rechenmauer und in der in dem das Kind die Reihe verfolständigen muss, wird die \textit{Update()} Funktion genutz um zu überprüfen ob alle Eingabefelder gefüllt sind. Wenn eins der Felder leer ist, wird der Testbutton nicht aktiviert. In anderen Szenen wurde dies mit der Funktion \textit{onValueChanged} gelöst, aber um mehrer Felder zu überprüfen ist die Variante in der \textit{Update} Funktion angenehmer. In diesem Skript, läuft in der Updatefunktion eine doppelte \textit{For}-Schleife durch, diese läuft für jede Zeile die länge ab und kontrolliert ob eines der felder leer ist. Wenn ein Feld leer ist, wird die \texit{boolean} Variable auf true gesetzt, solange diese nicht false ist, wird der Test Button nicht aktiviert.\\
+Die Funktion für den Menü Button wird wieder nicht erklärt.\\
+\begin{lstlisting}[language=csh, caption={Triangle.cs GenerateSolutionArray-Funktion}]
+	public void GenerateSolutionArray(){
+		if(triangleSize >= 3){
+			jaggedSolution[2] = new int[3];
+			jaggedInputs[2] = new InputField[3];
+			if(triangleSize >= 4){
+				jaggedSolution[3] = new int[4];
+				jaggedInputs[3] = new InputField[4];
+				if(triangleSize == 5){
+					jaggedSolution[4] = new int[5];
+					jaggedInputs[4] = new InputField[5];
+				}
+			}
+		}
+	}
+\end{lstlisting}
+In dieser Funktion wird kontrolliert, welche größe die Unterste Reihe der Pyramiede hat, je nach der Größe werden die einzelnen Ebenen des 2-Dimensionales Arrays mit der passenden Größer deklariert. Zeitgleich wird das Array für die Eingaben des Kindes erzeugt, somit sind die beiden Array gleich groß.\\
+\begin{lstlisting}[language=csh, caption={Triangle.cs ShowBottomLineNumbers-Funktion}]
+	public void ShowBottomLineNumbers(){
+		for (int i = 0; i < bottomNumbers.Length; i++){
+			if(triangleSize == 3){
+				jaggedSolution[2][i] = bottomNumbers[i];
+				jaggedInputs[2][i].text = bottomNumbers[i].ToString();
+				jaggedInputs[2][i].interactable = false;
+			}
+			else if(triangleSize == 4){
+				jaggedSolution[3][i] = bottomNumbers[i];
+				jaggedInputs[3][i].text = bottomNumbers[i].ToString();
+				jaggedInputs[3][i].interactable = false;
+			}
+			else if(triangleSize == 5){
+				jaggedSolution[4][i] = bottomNumbers[i];
+				jaggedInputs[4][i].text = bottomNumbers[i].ToString();
+				jaggedInputs[4][i].interactable = false;
+			}
+		}
+\end{lstlisting}
+In dieser Funktion, wird die die unterste Reihe gefüllt. Je nach größe der Untersten Reihe, gibt drei \textit{If}-Statements, diese Überprüfen in der \textit{For}-Schleife, wie groß die Unterstereihe ist und füllt in diese aus einem Array das für die Unterste Reihe Zufällige Zahlen generiert an die passende Stelle ein. Die Funktion dafür wird später erklärt. Die Nummer aus dem Array, wird auch sofort in das Eingabearray eingefügt, da diese Reihe für Kinder nicht bearbeitbar ist, aber die Kontrolle zwischen dem Eingabearray und dem Lösungsarray so einfacher ist. Jedes feld aus dem Eingabearray in dem eine Zahl aus der Untersten reihe steht, wird deaktiviert.\\
+\begin{lstlisting}[language=csh, caption={Triangle.cs FillSolutionArray-Funktion}]
+	public void FillSolutionArray(){
+		for (int i = triangleSize - 2; i >= 0; i--){
+			for (int j = 0; j < jaggedSolution[i].Length; j++){
+				jaggedSolution[i][j] = jaggedSolution[i + 1][j] + jaggedSolution[i + 1][j + 1];
+			}
+		}
+	}
+\end{lstlisting}
+In dieser Funktion werden die Lösungen berechnet und an die richtige Position gespeichert. Dafür werden zwei \textit{For}-Schleifen benötigt. Um die Lösung zu berechnen, werden zwei nebeneinader Liegende Felder verwendet. Die äußere \textit{For}-Schleife zählt die Variable i nach unten, die inner zählt nach oben. Dies wurde so implementiert, da wir die Pyramide von unten nach oben berechnen müssen. Deswegen wurde i mit der Pyramiedengröße - 2 belegt. Weil die schleife bis zr Zahl null durchlaufen muss und weil die unterste Reihe schon gefüllt ist. Die zweiten schleife, geht in den einzelnen Reihen einfach durch und berechnet die Lösungen.\\
+Die Funktion die für den Test Button aufgerufen wird, ist eine Zeile, diese startet die \textit{Coroutine} um die Ergebnisse zu überprüfen.\\
+\begin{lstlisting}[language=csh, caption={Triangle.cs PlayGame-Funktion}]
+	public void PlayGame(){
+		lvlCounter++;
+		if(lvlCounter > lvlNumber){
+			PlayerPrefs.SetInt("wrongAnswers", wrongChoice);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoice);
+		}
+		if(lvlCounter != 1){
+			Debug.Log("hier war ich");
+			ClearArray();
+		}
+		if(lvlCounter <= lvlNumber)	lvlText.text = "Level: " + lvlCounter + "/" + lvlNumber;
+		GenerateNumbers();
+		ShowBottomLineNumbers();
+		FillSolutionArray();
+	}
+\end{lstlisting}
+Diese Funktion zählt einen Zähler nach oben um zu sehen, welches Level das Kind spielt um die Szene nach abschluss des Spieles zu laden. Wenn der Zähler größer als die Zahl eins ist, wird die Mauer mit jedem aufruf der \textit{PlayGame}-Funktion geleehrt. Wenn der Zähler kleiner als die maximale Anzahl an leveln ist, wird das Textfeld aktualisiert, die Zufälligen Zahlen werden erzeugt. Danach wird die unterste Reihe gefüllt und das Lösungsarray berechnet.\\ 
+\begin{lstlisting}[language=csh, caption={Triangle.cs ClearArray-Funktion}]
+	public void ClearArray(){
+		for (int i = 0; i < triangleSize - 1; i++){
+			for (int j = 0; j < jaggedInputs[i].Length; j++) {
+				jaggedInputs[i][j].text = "";
+				jaggedInputs[i][j].interactable = true;
+			}
+		}
+	}
+\end{lstlisting}
+Um das Array zu leeren, wird mithilfe einer doppelten \textit{For}-Schleife, jedes Feld der Mauer durchgegangen, diese werden geleehrt und wieder aktieviert, sodass das Kind diese wieder füllen kann.\\
+\begin{lstlisting}[language=csh, caption={Triangle.cs SpawnPyramidRows-Funktion}]
+	public void SpawnPyramidRows(){
+		for (int i = 0; i < triangleSize; i++){
+			for (int j = 0; j < i + 1; j++){
+				spawnedObject = Instantiate(brick, triangleGameObject.transform.position, Quaternion.identity);
+				spawnedObject.name += i;
+				spawnedObject.transform.SetParent(triangleGameObject.transform.GetChild(i));
+				spawnedObject.transform.localScale = scaleSize;
+				jaggedInputs[i][j] =spawnedObject.GetComponent<InputField>();
+			}
+		}
+	}
+\end{lstlisting}
+Um die reihen der mauer zu erzeugen, wird wieder eine doppelte \textit{For}-Schleife benötigt. Diese läuft die variable \textit{triangleSize} durch und füllt in jedes freie Feld der \textit{Layout Group} einen Stein ein. Das erzeugen des Mauer läuft nach dem gleichen Prinzip ab, nachdem die Objekte bei den Mengenvergleichen oder bei dem Spiel Blitzblick erzeugt werden. Erst werden diese Instantiated, dafür wird das GameObject des Steines beötigt. Danach brauchen wir ein Feld in das wir den Stein setzten sollen, Die Rotation ist in diesem Fall wieder unwichti. Die Objekte bekommen für die Hirachy einen namen und werden an die passende Kinderposition gesetzt. Da die Steine zu klein Skaliert werden, wird die Skalierung auf eins zurückgesetzt. Als letztes, werden die Prefabs der Eingabefelder in das Array aus Eingabefeldern eingefügt.\\
+\begin{lstlisting}[language=csh, caption={Triangle.cs GenerateNumbers-Funktion}]
+	public void GenerateNumbers(){
+		bottomNumbers = new int[triangleSize];
+		for (int i = 0; i < bottomNumbers.Length; i++) {
+			bottomNumbers[i] = UnityEngine.Random.Range(0, maxNumber);
+			jaggedSolution[triangleSize - 1][i] = bottomNumbers[i];
+		}
+	}
+\end{lstlisting}
+Diese Funktion, deklariert die größe eines normalen Arrays, diese beinhaltet die größe der untersten reihe. In einer \textit{For}-Schleife, wird für jedes Feld in diesem Array eine zufällige Zahl mit der \textit{UnitEngine.Random.Range}-Funktion generiert. Diese wird in die unterste Reihe des Arrays, das alle Lösungen speichert eingefügt.\\
+\begin{lstlisting}[language=csh, caption={Triangle.cs SpawnFirework-Funktion}]
+	public void SpawnFirework(){
+		spawnedObject = Instantiate(fireworkPrefab, leftFirework.transform.position, leftFirework.transform.rotation);
+		spawnedObject.transform.SetParent(leftFirework.transform);
+		spawnedObject.transform.localScale = scaleSize;
+		spawnedObject = Instantiate(fireworkPrefab, rightFirework.transform.position, rightFirework.transform.rotation);
+		spawnedObject.transform.SetParent(rightFirework.transform);
+		spawnedObject.transform.localScale = scaleSize;
+		Debug.Log("Firework");
+	}
+\end{lstlisting}
+Um das Feuerwerkt zu erzeugen, was angezeigt werden soll wenn das Kind die komplette Mauer richtig gerechnet hat, werden für beide seiten die Prefabs geladen. Diese bekommen die Postiion von dem Objekt links und rechts. Damit das Feuerwerkt rotiert ist, wird als letzte Übergabe der \textit{Instantiate} Funktion die Rotation der Zielobjekte übergeben. Die Feuerewerke werden auch auf die Orignalgröße skaliert.\\
+\begin{lstlisting}[language=csh, caption={Triangle.cs DeleteFirework-Funktion}]
+	public void DeleteFirework(){
+		Destroy(leftFirework.transform.GetChild(0).gameObject);
+		Destroy(rightFirework.transform.GetChild(0).gameObject);
+	}
+\end{lstlisting}
+Damit das Feuerwerk nach der einen Sekunde wieder verschwiendet, wird die Funktion \textit{DeleteFirework} aufgerufen, diese löscht aus den beiden eigentlich leeren objekten \textit{leftFirework} und \textit{rightFirework} die Prefabs der Feuerwerke gelöscht.\\
+\begin{lstlisting}[language=csh, caption={Triangle.cs Waiter-Funktion}]
+	IEnumerator Waiter(int sec){
+		bool finished = false;
+		if(lvlCounter <= lvlNumber){
+			for (int i = triangleSize - 2; i >= 0; i--){
+				for (int j = 0; j < jaggedSolution[i].Length; j++){
+					if(jaggedSolution[i][j] == int.Parse(jaggedInputs[i][j].text)){
+						jaggedInputs[i][j].interactable = false;
+						continue;
+					}
+					else{
+						jaggedInputs[i][j].text = "";
+						wrongChoice++;
+						finished = true;
+					}
+				}
+			}
+			if(!finished){
+				SpawnFirework();
+				yield return new WaitForSeconds(sec);
+				DeleteFirework();
+				PlayGame();
+			}
+		}
+	}
+\end{lstlisting}
+Hier wird überprüft, ob die Mauer komplett richtig gerechnet wurde. Dafür wird eine \textit{Boolean} Variable benötigt, diese ist standartmäßig mit false implementiert. Nachdem die Funktion geteste hat, ob das Kind noch nicht alle Level gespielt hat, wird mit einer doppelten \textit{For}-Schleife überprüft, ob die Eingabe des Kindes die gleiche ist, wie die Zahlen in dem Lösungsarray. Wenn ein Ergebnis richtig ist, wird das Eingabefeld deaktiviert und die Schleife springt ein durchgang weiter. Wenn eine der Eingabe nicht richtig ist, wird das Feld geleehrt, der Fehlerzähler wird eins nachoben gezählt und die Variabel \textit{finished} wird auf true gesetzt. Wenn die Variabel false ist, wurde die gesamte Mauer gelöst, also wird das Feuerwerk mit dem Aufruf der Funktion \textit{SpawnFirework()} erzeugt. Dann wartet das Skript mithilfe des \textit{yield return new WaitForSeconds(sec)} eine Sekunde, danach wird das Feuerwerkt mit der \textit{DeleteFirework()} gelöscht. Als letztes wird die \textit{PlayGame()} aufgerufen und damit eine neue Mauer generiert.\\
 \subsection{Szene - Blitzblick}
 \subsubsection{Blitzblick - Design}
 \subsubsection{Blitzblick - Skript}
