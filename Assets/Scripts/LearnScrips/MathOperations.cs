@@ -124,7 +124,6 @@ public class MathOperations : MonoBehaviour
 	public void SetNumbersLeftAndRight(int left, int right){
 			TextNumberLeft.text = left.ToString();
 			TextNumberRight.text = right.ToString();
-
 	}
 
 	public void buttonClick(){
@@ -159,6 +158,7 @@ public class MathOperations : MonoBehaviour
 	}
 
 	IEnumerator waiterDiv(int sec){
+		solutionNumber.interactable = false;
 		if(countLvl <= lvlNumber){
 			if(int.Parse(solutionNumber.text) == leftNumber){
 				//change color green

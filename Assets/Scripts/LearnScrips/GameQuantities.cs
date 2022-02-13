@@ -136,34 +136,6 @@ public class GameQuantities : MonoBehaviour {
 		TextfieldRight.text = secondNumber.ToString();
 	}
 
-	public int getAndSetCounterRound {
-		get {
-			return counterRound;
-		}
-
-		set {
-			counterRound = value;
-		}
-	}
-
-	public int getAndSetWrongChoice {
-		get {
-			return counterWrongChoice;
-		}
-		set {
-			counterWrongChoice = value;
-		}
-	}
-
-	public int getAndSetLvlNumber{
-		get {
-			return lvlNumber;
-		}
-		set {
-			lvlNumber = value;
-		}
-	}
-
 	IEnumerator waiter(int sec, char symbol){
 		if(counterRound <= lvlNumber ){
 			if(symbol.Equals('<')){

@@ -34,14 +34,6 @@ Ganz oben im Skript werden verschiedene Bibliotheken eingebunden. Diese werden f
 \begin{lstlisting}[language=csh, caption={MenuPickLevel.cs Klasse Menü Variablen}]
 public class MenuPickLevel : MonoBehaviour
 {
-	//Buttons
-	// public Button back;
-	// public Button quantities;
-	// public Button mathOperations;
-	// public Button triangle;
-	// public Button lightnigView;
-	// public Button pattern;
-	// public Button mixedWords;
 	public Button[] buttonsMenu = new Button[7];
 
 	public enum LvlType{
@@ -53,13 +45,6 @@ public class MenuPickLevel : MonoBehaviour
 		PATTER = 6,
 		MIXEDWORDS = 7
 	}
-	//const int BACK = 1;
-	//const int QUANTITIES = 2;
-	//const int TRIANGLE = 3;
-	//const int MATHOPERATIONS = 4;
-	//const int LIGHTNIGVIEW = 5;
-	//const int PATTER = 6;
-	//const int MIXEDWORDS = 7;
 
 	public static int loadButtonsPrefab = 0;
 \end{lstlisting}
@@ -79,14 +64,6 @@ Als letztes wird eine static variable deklariert, diese bekommt später den wert
 			int temp = i;
 			buttonsMenu[temp].onClick.AddListener(() => loadAdvancedOptions((LvlType)temp + 1));
 		}
-
-		// back.onClick.AddListener(() => loadAdvancedOptions(BACK));
-		// quantities.onClick.AddListener(() => loadAdvancedOptions(QUANTITIES));
-		// mathOperations.onClick.AddListener(() => loadAdvancedOptions(MATHOPERATIONS));
-		// triangle.onClick.AddListener(() => loadAdvancedOptions(TRIANGLE));
-		// lightnigView.onClick.AddListener(() => loadAdvancedOptions(LIGHTNIGVIEW));
-		// pattern.onClick.AddListener(() => loadAdvancedOptions(PATTER));
-		// mixedWords.onClick.AddListener(() => loadAdvancedOptions(MIXEDWORDS));
 	}
 \end{lstlisting}
 In der Start werden jedem Button ein Listener hinzugefügt, es gibt auch hier wieder die möglichkeit dies für jeden Button einzeln zu erledigen oder mithilfe eines Arrays und der Enumeration dies in einer For-Schleife durchzuführen.\\
@@ -396,7 +373,7 @@ In der Szene der Grundrechenarten gibt es ein Textfeld, dieses wurde mit einem G
 \graphic{wrongChoiceQuantites}{Roter Rahmen}
 Der Button Testen löst die Funktion aus die Kontrolliert ob richtig gerechnet wurde. Dieser ist Deaktiviert solange keine Zahl eingeben wurde und wird aktiviert sobald eine Zahl darin steht.
 \subsubsection{Grundrechenarten - Skript}
-\begin{lstlisting}[language=csh, caption={MathOperations.cs SpawnButtonsRight Funktion}]
+\begin{lstlisting}[language=csh, caption={MathOperations.cs Variablen Deklaration}]
 public class MathOperations : MonoBehaviour
 {
 
@@ -423,11 +400,356 @@ public class MathOperations : MonoBehaviour
 	private int gameMode = 3;
 	private int wrongSolution = 0;
 \end{lstlisting}
+In dem Skript für die Szene, werden zuerst vier Public Textfelder Deklariert, diese zeigen verschiedene Informationen an. Einmal das Aktuelle Level und wie viele es insgesamt gibt. Dann zeigt eins der Textfelder den Operator an den mit dem das Kind rechenen soll. Die letzten zwei Textfelder zeigen die Zahlen an die addiert, subtrahiert, multipliziert oder dividert werden sollten. In dieser Szene benötigt der Schüler/die Schülerinn ein Input Feld in das seine/ihre Lösung geschrieben werden kann. Das Skript bekommt auch zwei Buttons zugewiesen, einen der in das erste Menü zurück führt und einen der das Ergebniss überprüft. Um den Kontrollramen zu erzeugen wird ein Objekt vom Typ Image benötigt, dieses liegt hinter dem Input Feld und ist ein wenig größer als das Input Feld selbst. Als letztes benötigt das Skript noch ein Paar variablen um die Zahlen links und rechts zu speichern. Das Skript benötigt eine Variable die das ergebniss der Rechnung speichert. Desweiteren sind zwei Variablen deklariert um die Zufällig generierten Zahlen zu begrenzen. Es gibt eine Variabel die die maximale Anzahl an level festlegt und einen Zähler der nach oben gezählt wird. Es gibt noch zwei letzte Variablen im Skript, die eine legt den Modus fest, also ob addiert, subtrahiert, multipliziert oder dividiert wird. Die andere zählt die anzahl an Fehler die das Kind macht.\\
+\begin{lstlisting}[language=csh, caption={MathOperations.cs Start Funktion}]
+	void Start()
+	{
+		menu.onClick.AddListener(() => GoBack());
+		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
+		gameMode = MenuPickLevelAdvanced.fourChoices;
+		checkButton.onClick.AddListener(() => buttonClick());
+		checkButton.interactable = false;
+		solutionNumber.onValueChanged.AddListener(delegate {EnableButton(); });
+		PlayGame(gameMode);
+	}
+\end{lstlisting}
+In der Start Funktion der Szene, werden am Anfang ein Listener für den Menü Button und einen für den Test Button zu gewiesen. In dieser Szene werden aus den Static Variablen des Menüs davor der Spielmodus gespeichert. So weiß das Skript nun ob es Addieren, Subtrahieren, Multiplizieren oder Dividieren laden soll. Der Button zum Testen wird am Anfang deaktiviert, da wenn das Eingabe Feld leer ist und der Button gedrückt wird die Szene einfriert. Damit dieser verhindert wird, wird der Button beim Start der Szene deaktiviert. Wenn das Kind eine Zahl in das Eingabe Feld eingibt, wird der Button aktiviert. Dies ist mit der onValueChange funktion für das Eingabe Feld möglich, diese bekommt einen Listener der die Funktion EnableButton aufruft und denn Button dann Aktiviert oder Deaktiviert. Als letztes ruft die Startfunktion die Funktion PlayGame aufgerufen. Diese wird mit dem übergabeparameter des Gamemodes aufgerufen.\\
+\begin{lstlisting}[language=csh, caption={MathOperations.cs EnableButton Funktion}]
+	public void EnableButton(){
+		if(string.IsNullOrEmpty(solutionNumber.text)){
+			checkButton.interactable = false;
+			solutionNumber.interactable = true;
+		}
+		else{
+			checkButton.interactable = true;
+		}
+	}
+\end{lstlisting}
+Die EnableButton funktion überpüft bei jeder änderung des Wertes ob das Input feld leer ist oder nicht. Dies erfolgt mit der IsNullOrEmpt abfrage, da aber eine Integer Zahl eingegeben wird, muss diese mit \textit{string.} in einen String umgewandelt werden. Wenn das Feld leer ist, wird der button deaktiviert und das Eingabefeld aktiviert, so das der Schüler/die Schülerinn eine Eingabe tätigen kann. Wenn das Feld gefüllt ist, wird der Testbutton aktiviert. Damit in den jeweiligen Szenen keine Falsche eingabe gemacht werden kann, also bei den Mathematischen Spielen kein Text und bei dem Deutschen Spiel keine Zahl eingegeben werden kann, wird in Unity die Eingabe auf den jeweiligen Wert festgelegt, dies ist in Abbildung 5.27 zu sehen.
+\graphic{inputType}{Festlegen welcher Wert in das Input feld geschrieben werden darf}
+Der Code der Funktion die in das Menü zurück kehrt wird nicht eingefügt, da etwas in dieser Art schon erklärt wurde. Dieser setzt die statischen Variablen auf den Ursprungswert zurück und lädt die Menü Szene.\\
+\begin{lstlisting}[language=csh, caption={MathOperations.cs PlayGame Funktion}]
+public void PlayGame(int gameMode){
+		countLvl++;
+		if(countLvl > lvlNumber){
+			PlayerPrefs.SetInt("wrongAnswers", wrongSolution);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongSolution);
+		}
+		//change color to white
+		imageColor.color = new Color32(255, 255, 255, 255);
+
+		if(countLvl <= lvlNumber)	showLevelNumber.text = "Level: " + countLvl + "/" + lvlNumber;
+		solutionNumber.text = "";
+		if(gameMode == 4){
+			operatorSymbole.text = "/";
+			minRandomNumber = 1;
+			leftNumber = RandomNumbers(minRandomNumber, maxRandomNumber);
+			rightNumber = RandomNumbers(minRandomNumber, maxRandomNumber);
+			solution = leftNumber * rightNumber;
+			SetNumbersLeftAndRight(solution, rightNumber);
+			return;
+		}
+		else if(gameMode == 2){
+			minRandomNumber = 0;
+			leftNumber = RandomNumbers(minRandomNumber, maxRandomNumber);
+			rightNumber = RandomNumbers(minRandomNumber, maxRandomNumber);
+			if(leftNumber < rightNumber){
+				Debug.Log(" leftNumber: " + leftNumber + " rightNumber: " + rightNumber + "zweite If");
+				SetNumbersLeftAndRight(rightNumber, leftNumber);
+				solution = rightNumber - leftNumber;
+			}
+			else{
+				Debug.Log(" leftNumber: " + leftNumber + " rightNumber: " + rightNumber + "zweite If");
+				SetNumbersLeftAndRight(leftNumber, rightNumber);
+				solution = leftNumber - rightNumber;
+			}
+			operatorSymbole.text = "-";
+			return;
+		}
+		else{
+			minRandomNumber = 0;
+			leftNumber = RandomNumbers(minRandomNumber, maxRandomNumber);
+			rightNumber = RandomNumbers(minRandomNumber, maxRandomNumber);
+			SetNumbersLeftAndRight(leftNumber, rightNumber);
+			if(gameMode == 1){
+				operatorSymbole.text = "+";
+				solution = leftNumber + rightNumber;
+			}
+			else{
+				operatorSymbole.text = "*";
+				solution = leftNumber * rightNumber;
+			}
+			return;
+		}
+	}
+\end{lstlisting}
+Die \textit{PlayGame} Funktion, zählt den Zähler für die Anzahl der Level jeden Aufruf um eins nach oben. Das Skript teste dann, ob der Counter über der Anzahl zu spielenden Level ist , wenn dies der Fall ist wird in einer Datei die Anzahl an Fehler gespeichert und die Szene die den EndScreen lädt geladen. In diesem Fall Speichern wir die Anzahl der Fehler nicht in eine Static Variable, weil bei der Implementierung am Anfang das die dem Entwickler einzige bekannte möglichkeit war und in diesem Fall die Variable aus dem File genutzt werden kann. Das hat den Vorteil, das das Skript für die Szene nach abschließen eines Levels keine Static Variable deklariert werden muss sonder die aus der Datei verwendet werden kann.\\
+Das Skript muss den Rahmen des Eingabefeldes beim Aufruf der \textit{PlayGame} Funktion wieder auf die Farbe weiß setzten. Das Skript setzt die Anzahl an Level in das passende Textfeld, solange der Zähler nicht größer als die maximale Anzahl an Leveln ist. Bei jedem Aufruf der Funktion wird das Eingabe Feld geleert, sodass keine Zahl in dem Feld steht.\\
+Für jede art der Grundrechenarten werden andere Vorbereitungen benötigt, um eine Korrekte Rechnung zu erstellen. Wenn das Kind Dividieren soll, muss das Operator Textfeld das Symbold \textit{/} anzeigen. Damit eine Division entseht, die Mathematisch korrekt ist, wird die möglichste kleinste Zahl die Zufällig generiert werden kann auf eins gesetzt. Nachdem dieser Fall verhindert wird, werden zwei Zahlen für das Linke und Rechte Textfeld generiert und die Solution wird durch eine Multiplikation berechnet, der Grund dafür ist, dass wenn eine Zahl durch eine Multiplikation erzeugt wird und diese durch eine der Beiden zufälligen Zahlen dividiert wird, auf jeden Fall keine Dezimalzahl als Ergebniss herrauskommt. Daher wird das Ergebnis der Rechnung in das linke Feld und eine die rechte Zahlen in das Rechte Feld geschrieben. Das Ergebnis ist in diesem Fall dann immer die Zahl die für die Linke Seite erzeugt wurde.\\
+Im Falle einer Subtraktion werden wieder zufällige Zahlen erzeugt, dieses mal ist die kleinste Mögliche Zahl allerdings eine null. Damit das Ergebnis keine negativen Zahlen werden können, wird überprüft welche Zahl die größere ist, diese wird in die Linke seite geschrieben und die kleiner in die Rechte Seite. Je nachdem welcher Fall eintritt wird die Richtige Lösung berechnet.\\
+Für den Fall der Addition und Muliplikation, können beide Zahlen unbesorgt für die Linke und Rechte Seite erzeugt werden. Hierbei sollte überpüft werden, ist im Feld für den Operator ein plus oder ein stern zu sehen  und wie die Lösung berechnet werden muss.\\
+\begin{lstlisting}[language=csh, caption={MathOperations.cs RandomNumber Funktion}]
+	public int RandomNumbers(int minRandomNumber, int maxRandomNumber){
+		return UnityEngine.Random.Range(minRandomNumber, maxRandomNumber);
+	}
+\end{lstlisting}
+In dieser Funktion wird eine zufällige Zahl mithilfe der von Unity bereitgestellten Funktion generiert. Die Funktion erzeugt eine Zufällige Zahl in der Reichweite einer kleinstmöglichen Zahl und einer Maximalen Zahl.\\
+\begin{lstlisting}[language=csh, caption={MathOperations.cs SetTextLeftAndRight Funktion}]
+	public void SetNumbersLeftAndRight(int left, int right){
+			TextNumberLeft.text = left.ToString();
+			TextNumberRight.text = right.ToString();
+	}
+\end{lstlisting}
+Diese Funktion setzt die zwei übergebenen Zahlen auf in die Linke und Rechte seite der Textfelder. Indem wir von dem Objekt \textit{Textfield} die Komponente \textit{.text} aufrufen, können wir in diese die Integer Zahl nachdem wir sie in einen String umgewandelt haben einspeichern.\\
+\begin{lstlisting}[language=csh, caption={MathOperations.cs ButtonClick Funktion}]
+	public void buttonClick(){
+		checkButton.interactable = false;
+		if(gameMode == 4){
+			StartCoroutine(waiterDiv(1));
+		}
+		else{
+			StartCoroutine(waiter(1));
+		}
+	}
+\end{lstlisting}
+Wenn der Test Button gedrückt wurde, wird je nach Game mode eine \textit{Coroutine} aufgerufen, diese wird verwendet um zwischen den Leveln eine Sekunde zu warten und dem Kind zu zeigen sein Ergebnis ist Falsch oder Richtig. Da die Division anders überprüft werden muss als die andern drei Rechenarten bekam diese eine eigenen \textit{Coroutine}.\\
+\begin{lstlisting}[language=csh, caption={MathOperations.cs waiter Funktion}]
+	IEnumerator waiter(int sec){
+		solutionNumber.interactable = false;
+		if(countLvl <= lvlNumber){
+			if(int.Parse(solutionNumber.text) == solution){
+				//change color green
+				imageColor.color = new Color32(37, 250, 53, 255);
+				yield return new WaitForSeconds(sec);
+				PlayGame(gameMode);
+			}
+			else{
+				wrongSolution++;
+				//change color red
+				imageColor.color = new Color32(251, 37, 37, 255);
+				yield return new WaitForSeconds(sec);
+				//change color to white
+				imageColor.color = new Color32(255, 255, 255, 255);
+				solutionNumber.text = "";
+			}
+		}
+	}
+\end{lstlisting}
+Dies ist die \textit{Coroutine} für alle Grundrechenarten außer der Division. Die beiden Funktionen sind sich aber sehr ähnlich daher wird nur eine erklärt. Als erstes wird das Eingabefeld deaktiviert, da schnell schreibene Kinder währen die Lösung anzeigt, das das Ergebnis falsch ist schon die Richtige Zahl eingeben können ohne zu warten bis dieser Ablauf einmal durchlaufen ist. Danach wird überprüft, ob das Kind überhaupt noch Level zuspielen hat. Wenn ja wird das Ergebnis mit der Eingabe verglichen, wenn diese gleich ist wird der Rahmen der Eingabefeldes für eine Sekunde Grün danach wird das nächste Level geladen. Wenn das Kind falsch gerechnet hat, wird der Zähler für die Fehler hochgezählt und die Farbe des Rahmes wird für eine Sekunde Rot, danach wird dieser wieder weiß gefärbt. Die Farbe eines Objektes kann geändert werden, indem von dem Objekt der Komponente \textit{.color} aufgerufen wird une eine neue Farbe zugewiesen bekommt wie zum Beispiel \textit{new Color32(255, 255, 255, 255);} für die Weiße Farbe. Das Eingabefeld wird geleehrt aber keine neue Rechnung geladen.\\
+Der Unterschied zur Divisions überprüfung ist, in der Abfrage ob die Eingabe das gleich wie die Lösung ist, wird getestet ob die Eingabe das gleiche wie die Zahl die für das Linke Feld generiert wurde.
 \subsection{Szene - Mengen vergleichen}
 \subsubsection{Mengen vergleichen - Design}
+\graphic{quantitiesObjects}{größer, kleiner, gleich}
+In dieser Szene gibt es zwei Möglichkeiten das Spiel zu Spielen, entweder in den Feldern Links und Rechts, stehen Zahlen. Diese werden in der Mitte des Weißen Vierecks angezeigt, oder in den vierecken werden Objekte angezeigt, diese werden mithilfe einer \textit{Layout Group} in Vier reihen eingefügt. Der Header der Szene beinhaltet einen Menü Button eine kleine Aufgabenstellung und die Levelanzeige. In der Mitte der Szene befindet sich ein leeres Viereck, dieses zeigt an welcher der unteren Buttons gedrückt wurde und ob die Lösung richtig oder Falsch ist. Dies ist wieder mit einem Grünen oder Roten Rahmen umgesetzt. Ganz unten in der Szene gibt es drei verschiedene Buttons für die jeweilige option größer, kleiner oder gleich. Die Buttons werden nach dem Auswählen einer option deaktiviert, bis das nächste level geladen hat oder bis das Kind erneut versuchen kann die richtig zu bestimmten. Die Buttons mussten Deaktivert werden, da bei der Richtigen Lösung auf den Richtigen Button zehn mal gedrückt werden könnte und somit das Spiel nach einer Runde beendet wurde.\\
 \subsubsection{Mengen vergleichen - Skript}
+\begin{lstlisting}[language=csh, caption={GameQuantities.cs Variablen Deklaration}]
+public class GameQuantities : MonoBehaviour {
+	//the Textfields I fill
+	public Text TextfieldLeft;
+	public Text TextfieldRight;
+	public Text TextfieldLevel;
+	public Text Symbol;
+
+	//collider for Objects
+	public Collider2D spawnerLeftCollider;
+	public Collider2D spawnerRightCollider;
+
+	//my Gameobjects to compare Quantities
+	public GameObject objectLeft;
+	public GameObject objectRight;
+	public GameObject spawnerLeft;
+	public GameObject spawnerRight;
+	private GameObject spawnedObject;
+
+	//array with gameObjects
+	private List<GameObject> alleQuantitiesObjects = new List<GameObject>(40);
+
+	public Image imageColor;
+
+	//Buttons
+	public Button lessBtn;
+	public Button equalsBtn;
+	public Button greaterBtn;
+	public Button menu;
+
+	//variables for compare Quantities
+	private int numberLeft = 0;
+	private int numberRight = 0;
+	private int randomNumber = 0;
+	private int counterRound = 0;
+	private int counterWrongChoice = 0;
+	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
+
+	//number of lvls
+	private int lvlNumber = 10;
+	private int maxNumber = 0;
+
+	//1 für mit objekten, 2 für mit zahlen
+	private int lvlChoice = 1;
+\end{lstlisting}
+In dieser Szenen werden viele Varibalen benötigt, diese einzeln zu erklären dauert zu lange. Die Szene benötigt, zwei Textfelder für die Zahlen Links und rechts, in diesen Vierecken exsitieren auch zwei leere Felder die als Spawner für die Objekte dienen. Eine Varibale ist für das Zeichen des vergleiches. Das Skript benötigt vier Buttons , eine Liste für die erzeugten Objekte. Um die Zahlen, Objekte und den Spielmodus zu vergleichen werden variabelen deklariert die in den einzelnen Funktionen verwendet werden. Da auch in dieser Szene die erzeugten Objekte wieder zu klein erzeugt werden, wird ein weitere Vector benötigt, der diese auf die Originalgröße zurückskaliert.\\
+\begin{lstlisting}[language=csh, caption={GameQuantities.cs Start Funktion}]
+	void Start() {
+		menu.onClick.AddListener(() => GoBack());
+		maxNumber = MenuPickLevelAdvanced.maxNumberStatic;
+		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
+		lvlChoice = MenuPickLevelAdvanced.fourChoices;
+		lessBtn.onClick.AddListener(() => SetSymbol('<'));
+		equalsBtn.onClick.AddListener(() => SetSymbol('='));
+		Debug.Log("Lvl Ammount: " + lvlNumber);
+		greaterBtn.onClick.AddListener(() => SetSymbol('>'));
+		PlayGame();
+	}
+\end{lstlisting}
+Die \textit{Start} Funktion erzeugt wieder für den jeweiligen Button einen Listener. Für die Buttons mit der Auswahl der drei zeichen, wird eine Funktion aufgerufen die das Aktuelle Symbol in das Textfeld in der Mitte setzt. Die statischen Varibalen aus dem Menü davor werden wieder für die Anzahl an leveln verwendet und um zu kontrollieren ob Zahlen oder Objekte erzeugt werden.\\
+
+Die Funktion für das um in das Menü zurück zu gehen wurde in den vorherigen Kapiteln schon erklärt.\\
+
+\begin{lstlisting}[language=csh, caption={GameQuantities.cs SetSymbol Funktion}]
+	public void SetSymbol(char symbol){
+		lessBtn.interactable = false;
+		equalsBtn.interactable = false;
+		greaterBtn.interactable = false;
+		Symbol.text = symbol.ToString();
+		StartCoroutine(waiter(1, symbol));
+	}
+\end{lstlisting}
+Die Funktion bekomme das Zeichen kleiner, gleich oder größer übergeben. Sobald einer der drei Buttons gedrückt wurde, werden alle drei Buttons deaktiviert, das Textfeld gesetzt und die \textit{Coroutine} zur überprüfung des ergebnisses aufgerufen.\\
+\begin{lstlisting}[language=csh, caption={GameQuantities.cs PlayGame Funktion}]
+	public void PlayGame() {
+		counterRound++;
+		if(counterRound > lvlNumber){
+			PlayerPrefs.SetInt("wrongAnswers", counterWrongChoice);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + counterWrongChoice);
+		}
+		Debug.Log("Round: " + counterRound);
+		lessBtn.interactable = true;
+		equalsBtn.interactable = true;
+		greaterBtn.interactable = true;
+		//change color to white
+		imageColor.color = new Color32(255, 255, 255, 255);
+		if(counterRound <= lvlNumber)	SetLevelText();
+		Symbol.text = "";
+		if (lvlChoice == 2) {
+			numberLeft = GenerateNumber(maxNumber);
+			numberRight = GenerateNumber(maxNumber);
+			SetTextLeftAndRight(numberLeft, numberRight);
+		} else if (lvlChoice == 1) {
+			numberLeft = GenerateNumber(16);
+			numberRight = GenerateNumber(16);
+			SpawnQuantitiesObjects(numberLeft, spawnerLeft, objectLeft);
+			SpawnQuantitiesObjects(numberRight, spawnerRight, objectRight);
+		}
+	}
+\end{lstlisting}
+Die \textit{PlayGame} Funktion, zählt wieder für jeden Aufruf den Level Zähler nach oben und überprüft ob genug level gespielt wurden. Wenn das nicht der Fall ist, wird die Aktuelle Level Zahl angezeigt werden und die Buttons werden wieder aktiviert. Die Funktion ändert die Rahmen Farbe auf weiß und leert das Feld mit dem Symbol wieder. Je nachdem welcher Modus gewählt wurde, werden die zwei zufällig generierten Zahlen als Zahl in die Felder geschrieben oder es werden maximal 16 Objekte für jede seite erzeugt und angezeigt.\\
+\begin{lstlisting}[language=csh, caption={GameQuantities.cs SpawnQuantitiesObjects Funktion}]
+	public void SpawnQuantitiesObjects(int number, GameObject spawner, GameObject side) {
+		for (int i = 0; i < number; i++) {
+			spawnedObject = Instantiate(side, spawner.transform.position, Quaternion.identity);
+			spawnedObject.name += i;
+			spawnedObject.transform.SetParent(spawner.transform.GetChild(i / 4));
+			spawnedObject.transform.localScale = scaleSize;
+			alleQuantitiesObjects.Add(spawnedObject);
+		}
+	}
+\end{lstlisting}
+Die Funktion bekommt als übergabe eine zahl, einen der beiden Bereiche in denen die Objekte erzeugt werden sollen und das Objekt das erzeugt werden soll, da dieses für Links ein anderes als für Rechts ist. Das Skript läuft eine \textit{For}-Schleife durch, die die gewünschte Zahl an Objekten erzeugen soll. Da in dieser Szene in jeder der Reihen nur vier Objekte passen, wird in die \textit{Layout-Group} an der stelle i / 4 das Objekt gesetzt, so wird nach vier Objekten die nächste Reihe verwendet. Am Schluss der Funktion werden die Objekte in eine Liste gespeichert.\\
+\begin{lstlisting}[language=csh, caption={GameQuantities.cs Delete Funktion}]
+	public void DeleteObjects() {
+		foreach (GameObject child in alleQuantitiesObjects) {
+			Destroy(child);
+		}
+	}
+\end{lstlisting}
+Die Objekte die in die Liste gespeichert werden werden nach dem Lösen eines Levels wieder gelöscht. Die funktion iteriert mit einer \textit{foreach}-Schleife durch alle Objekte der Liste und löscht diese aus der Szene. Somit werden nicht nur immer mehr Objekte erzeugt.\\
+
+Die nächsten drei Funktionen des Skriptes würden nur wieder zeigen wie die Zufallszahlen erzeugt werden und wie die Textfelder der Levelanzahl und die die Zahlen anzeigt werden sollen.\\
+
+\begin{lstlisting}[language=csh, caption={GameQuantities.cs waiter Funktion}]
+IEnumerator waiter(int sec, char symbol){
+		if(counterRound <= lvlNumber ){
+			if(symbol.Equals('<')){
+				Symbol.text = '<'.ToString();
+				if (numberLeft < numberRight) {
+					Debug.Log("Richtig");
+					//change color green
+					imageColor.color = new Color32(37, 250, 53, 255);
+					yield return new WaitForSeconds(sec);
+					DeleteObjects();
+					PlayGame();
+				} else {
+					counterWrongChoice++;
+					//change color red
+					imageColor.color = new Color32(251, 37, 37, 255);
+					yield return new WaitForSeconds(sec);
+					EnableButtons();
+					imageColor.color = new Color32(255, 255, 255, 255);
+					Symbol.text = "";
+					Debug.Log("Nicht richtig");
+				}
+			}
+			if(symbol.Equals('=')){
+				Symbol.text = '='.ToString();
+				if (numberLeft == numberRight) {
+					Debug.Log("Richtig");
+					//change color green
+					imageColor.color = new Color32(37, 250, 53, 255);
+					yield return new WaitForSeconds(sec);
+					DeleteObjects();
+					PlayGame();
+				} else {
+					counterWrongChoice++;
+					//change color red
+					imageColor.color = new Color32(251, 37, 37, 255);
+					yield return new WaitForSeconds(sec);
+					EnableButtons();
+					imageColor.color = new Color32(255, 255, 255, 255);
+					Symbol.text = "";
+					Debug.Log("Nicht richtig");
+				}
+			}
+			if(symbol.Equals('>')){
+				Symbol.text = '>'.ToString();
+				if (numberLeft > numberRight) {
+					Debug.Log("Richtig");
+					//change color green
+					imageColor.color = new Color32(37, 250, 53, 255);
+					yield return new WaitForSeconds(sec);
+					DeleteObjects();
+					PlayGame();
+				} else {
+					counterWrongChoice++;
+					//change color red
+					imageColor.color = new Color32(251, 37, 37, 255);
+					yield return new WaitForSeconds(sec);
+					EnableButtons();
+					imageColor.color = new Color32(255, 255, 255, 255);
+					Symbol.text = "";
+					Debug.Log("Nicht richtig");
+				}
+			}
+		}
+	}
+\end{lstlisting}
+Die \textit{Coroutine} ist dafür zuständig zu überprüfen ob die zahl im Linken feld kleiner, gleich oder größer der Zahl im rechten Feld ist. Die Funktion überprüft zuerst welches Symbol ausgewählt wurde indem es das eingespeicherte Symbold mit den drei Möglichkeiten abgleicht. Danach wird geprüft ob das Symbol für die jeweiligen erzeugten Zahlen korrekt ist. Wenn dies der Fall ist, wird der Rahmen des Symbol Feldes grün und nach einer Sekunde weiß. Danach werden die Objekte gelöscht und eine neue Runde wird geladen. Wenn das Kind die falsche Wahl getroffen hat, wir das Feld Rot und die Fehleranzahl um eins hochgezählt. nach einer Sekunde werden die Buttons wieder aktiviert und die Farbe des Rahmens zurück gesetzt. Das Symbold feld wird wieder geelerht und das Kind kann erneut versuchen das Problem zu lösen.\\
+\begin{lstlisting}[language=csh, caption={GameQuantities.cs EnableButtons Funktion}]
+	public void EnableButtons(){
+		lessBtn.interactable = true;
+		equalsBtn.interactable = true;
+		greaterBtn.interactable = true;
+	}
+\end{lstlisting}
+Diese Funktion aktiviert alle drei Buttons und wird aufgerufen nachdem das Kind den Falschen Button ausgewählt hat.
 \subsection{Szene - Rechenmauer}
 \subsubsection{Rechenmauer - Design}
+\graphic{bottom5Tiles}{Rechenmauer mit fünf Steinen unten}
+Die Rechenmauer kann in drei verschiedenen Varianten gespielt werden. Je nach dem Schwierigkeitsgrad, wird diese mit fünf, vier oder drei Steinen in der Untersten Reihe erzeugt. Im Header ist die Szene wie die Anderen aufgebaut. In der Mitte wird die Mauer angezeigt, für diese wurde ein Prefab eines Steines angelegt, dieses wird dann mithilfe einer \textif{Layout Group} an die richtige Position gesetzt. Die Felder die die Unterste Reihe bilden, werden deaktiviert, damit der Nutzer diese nicht verändern kann. Wenn das Kind Felder den Test Button drückt, werden die Richtigen Felder auch deaktiviert, damit diese nicht wieder verfälscht werden können. Die Falschen Steine werden geleert und das Kind muss die Lösung erneut eintragen. Dies ist in der Abbildung 5.30 zu sehen.\\
+\graphic{rechenmauerRichtigUndFalsch}{ Richtig und falsch gelöste Steine}
+Wenn der Schüler/die Schülerinn die Pyramiede komplett richtig gelöst hat, wird das anhand des Feuerwerkts das um den Test Button auftaucht angezeigt. Die Pyramiede wird geleehrt und eine eine neue Unterste Reihe wird erzeugt. Das Feuerwerk wird auch in dem Spiel \textit{Führe die Reihe fort} angewendet und ist in Abbildung 5.31 zu sehen.
+\graphic{finisheTriangle}{Feuerwerkt nach richtigem Lösen}
 \subsubsection{Rechenmauer - Skript}
 \subsection{Szene - Blitzblick}
 \subsubsection{Blitzblick - Design}
