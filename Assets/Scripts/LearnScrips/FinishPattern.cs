@@ -26,10 +26,6 @@ public class FinishPattern : MonoBehaviour {
 	//int solutions
 	private int[] solutionsNumbers = new int[5];
 
-	//int inputNumbers
-	// private int[] inputNumbersArray = new int[5];
-
-
 	//Button test
 	public Button checkSolution;
 	public Button menu;
@@ -93,7 +89,7 @@ public class FinishPattern : MonoBehaviour {
 			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongAnswers);
 		}
 		ResetInputFields();
-		if(lvlCounter <= lvlNumber)	SetLvlText();
+		if(lvlCounter <= lvlNumber)	lvlText.text = "Level: " + lvlCounter + "/" + lvlNumber;;
 		randomNumber = RandomBeginningNumber(maxNumbers);
 		FirstRandomNumber = RandomPatternNumbers();
 		SecondRandomNumber = RandomPatternNumbers();
@@ -159,10 +155,6 @@ public class FinishPattern : MonoBehaviour {
 				PlayGame();
 			}
 		}
-	}
-
-	public void SetLvlText(){
-		lvlText.text = "Level: " + lvlCounter + "/" + lvlNumber;
 	}
 
 	public void ResetInputFields(){

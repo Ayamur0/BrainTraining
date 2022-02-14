@@ -978,10 +978,329 @@ Damit das Feuerwerk nach der einen Sekunde wieder verschwindet, wird die Funktio
 Hier wird überprüft, ob die Mauer komplett richtig gerechnet wurde. Dafür wird eine \textit{Boolean} Variable benötigt, diese ist standardmäßig mit false implementiert. Nachdem die Funktion getestet hat, ob das Kind noch nicht alle Level gespielt hat, wird mit einer doppelten \textit{For}-Schleife überprüft, ob die Eingabe des Kindes die gleiche ist, wie die Zahlen in dem Lösungsarray. Wenn ein Ergebnis richtig ist, wird das Eingabefeld deaktiviert und die Schleife springt ein Durchgang weiter. Wenn eine der Eingabe nicht richtig ist, wird das Feld geleert, der Fehlerzähler wird eins nach oben gezählt und die Variabel \textit{finished} wird auf true gesetzt. Wenn die Variabel false ist, wurde die gesamte Mauer gelöst, also wird das Feuerwerk mit dem Aufruf der Funktion \textit{SpawnFirework()} erzeugt. Dann wartet das Skript mithilfe des \textit{yield return new WaitForSeconds(sec)} eine Sekunde, danach wird das Feuerwerk mit der \textit{DeleteFirework()} gelöscht. Als Letztes wird die \textit{PlayGame()} aufgerufen und damit eine neue Mauer generiert.\\
 \subsection{Szene - Blitzblick}
 \subsubsection{Blitzblick - Design}
+\graphic{lightningViewWithoutCover}{Blitzblick ohne Vorhang}
+\graphic{lightningViewCover} Blitzblick mit Vorhang}
+Die Szene ist hier in zwei Bildern gezeigt. In der Abbildung 5.32 ist die Szene ohne den Vorhang zu sehen und in der Abbildung 5.33 mit dem Vorhang. Das Spiel Blitzblick, zeigt dem Schüler/der Schülerin, eine anzahl an Objekten und verdeckt diese danach. Das Kind, müss dann sehr schnell sehen, wie viele der Objekte angezeigt wurden und diese in ein Textfeld eingeben. Wenn das Kind den Testbutton auswählt wird die Zahl überprüft und wenn es richtig lag wird eine neue runde geladen. Wenn das Kind die falsche anzahl angiebt, bekommt es die Objekte nocheinmal für eine Sekunde zu sehen. Die zeit wie lange die Objekte zu sehen sind, wird nicht verringert oder ehrhöht, da eine sekunde für die vorhergesene Anzahl an Objekten schon schwer ist.\\
+Die Szene hat einen Header wie jede andere, in diesem ist ein Menü Button, eine überschrift und die Levelanzahl zu sehen. In der Mitte der Szene ist das Feld indem die Objekte auftauchen, dieses wird von einem grünen Vorhang verdeckt. Rechts davon ist das Eingabefeld für den Nutzer. Ganz unten in der Szene ist der Button zum testen seiner lösung. Dieser ist solange keine Zahl eingegeben wurde deaktiviert. In dieser Szene wird dem Schüler/der Schülerin durch einen grünen Rahmen angezeigt ob die Lösung richtig oder falsch ist.\\
 \subsubsection{Blitzblick - Skript}
+\begin{lstlisting}[language=csh, caption={lightningView.cs Variablen Deklaration}]
+public class lightningView : MonoBehaviour {
+
+	public Text showLevel;
+
+	public InputField solution;
+
+	public Image imageColor;
+
+	public GameObject spawnedObject;
+	public GameObject spawner;
+	public GameObject cover;
+	private GameObject allObjects;
+
+	public GameObject spawnerCoverLeft;
+
+	public Button checkButton;
+	public Button menu;
+
+	private List<Vector2> allPositions = new List<Vector2>(10);
+
+	//Variabln for lightningView
+	private int numberLeft;
+	private int counterRound = 0;
+	private int wrongChoice = 0;
+	private int lvlNumber = 10;
+	private float minDistance = 0f;
+	private bool hitPosition = false;
+	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
+\end{lstlisting}
+Für dieses Spiel benötigen wir wieder ein Textfeld um das Level anzuzeigen. Die Szene benötigt, auch ein Eingabefeld und ein Objekt um die Farbe des Rahmens zu ändern. Da in diesem Skript wieder Objekte erzeugt werden, wird ein Bereich in denen diese auftauchen sollen festglegt. In Unity wurde ein Prefab der Objekte vorbereitet. Damit der Vorhang über den Objekten zu sehen ist, wird dieser auch durch ein Prefab geladen. In diesem Skript werden die Objekte an zufälligen Postiionen erzeugt, damit diese nicht aufeinander liegen, wird die position in eine Vektor Liste eingespeichert. Um das Spiel zu Managen, werden ein paar \textit{private} Attribute benötigt. Um zu unterscheiden wie groß die Minimal Distanz sein soll, wurde eine Variable deklariert. Um eine Überschneidung zu finden, benötigti das Skript eine Boolean variable. Die Objekte werden auch in diesem Fall wieder zu klein Skaliert, deswegen wird wieder ein Vektor mit der standartgröße festgelegt\\
+\begin{lstlisting}[language=csh, caption={lightningView.cs Start-Funktion}]
+	void Start() {
+		minDistance = spawnedObject.GetComponent<RectTransform>().rect.width / 2;
+		spawner.transform.localScale = scaleSize;
+		checkButton.interactable = false;
+		menu.onClick.AddListener(() => GoBack());
+		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
+		checkButton.onClick.AddListener(() => buttonClick());
+		solution.onValueChanged.AddListener(delegate {EnableButton(); });
+		playGame();
+	}
+\end{lstlisting}
+Diese \textit{Start} Funktion, legt als erstes die Minimale Distanz fest, die ein Objekt zu einem anderen Objekt besitzen darf. Diese wird wie folgt berechnet. Das Skript holt sich von dem Prefab Objekt \textit{spawnedObject} ein Rechteck. Der befehlt \textit{.GetComponent<RectTransform>().rect.width} sucht sich aus dem Prefab das rechteck und nimmt von diesem die Breite. Die Minimale Distanz zwischen den Objekten ist die hälfte des bekommenen Rechtecks. Danach wird der Bereich für die Objekte auf die Originalgröße skaliert, da dieser nicht mit Skaliert wurde. Das heißt im Vollbildmodus wurde dieser nicht größer. Der Testbutton wird wieder Deaktiviert. In dieser Szene werden von den Statischen Variablen, nur die Levelanzahl verwendet. Das Feld der Objekte, kann nur eine gewisse Anzahl an Objekten beinhalten und diese Zahl darf auch für die Kinder nicht zu groß werden. Um zu überprüfen ob das Kind etwas in das Eingabefeld eingegeben hat, wird die \textit{onValueChange} Methode verwendet. Als letztes wird die \textit{playGame()} aufgerufen.\\
+Die nächsten zwei Funktionen des Skriptes, laden das Menü und Aktivieren oder Deaktiviern den Test Button, diese sind ähnlich und werden deswegen nicht mehr genauer erläutert.\\
+\begin{lstlisting}[language=csh, caption={lightningView.cs buttonClick-Funktion}]
+	public void buttonClick(){
+		checkButton.interactable = false;
+		foreach (Transform child in spawnerCoverLeft.transform) {
+			Destroy(child.gameObject);
+		}
+		StartCoroutine(solutionWaiter(1));
+	}
+\end{lstlisting}
+Diese Funktion wird beim aufruf des Test Buttons durchlaufen, da in dieser Szene über den Objekten ein Vorhang schwebt, wird dieser einmal gelöscht und die \textit{Coroutine} die die Lösung überprüft wird aufgerufen.\\
+Auch die Funktion für die Zufallszahlen wird nicht genauer erklärt. In diesem Spiel, wurde die Maximale Zahl auf die zehn gesetzt. Da mehr Objekte das Feld nicht beinhalten können und Kinder nicht zu viele Objekte in so kurzer Zeit erkennen können.\\
+\begin{lstlisting}[language=csh, caption={hideCircle.cs buttonClick-Funktion}]
+	public void hideCircle(){
+		StartCoroutine(waiter(1));
+	}
+	
+	IEnumerator waiter(int sec){
+		solution.interactable = false;
+		yield return new WaitForSeconds(sec);
+		GameObject hideCircles = Instantiate(cover, spawnerCoverLeft.transform.position, Quaternion.identity);
+		hideCircles.transform.SetParent(spawnerCoverLeft.transform);
+		hideCircles.transform.localScale = scaleSize * (0.75f);
+		solution.interactable = true;
+	}
+\end{lstlisting}
+Um den Vorhang nicht direkt am anfang zu erzeugen, wird eine weiter \textit{Coroutine} geladen, diese deaktiviert das Eingabefeld für den Nutzer solange bis der Vorhang aufgetaucht ist, dies hat den Vorteil, dass der Nutzer nicht schon direkt die Zahl eintragen kann sonder wirklich eine Sekunde warten muss. Danach wird wie in anderen Szenen das Objekt erzeugt. Da der Vorhang aber erst zu klein war und in der Originalengröße zu groß ist, wird diese mit 0.75 multipliziert.\\
+\begin{lstlisting}[language=csh, caption={hideCircle.cs setObjects-Funktion}]
+	public void setObjects(){
+		Debug.Log(numberLeft);
+		for (int i = 0; i < numberLeft; i++) {
+			allObjects = Instantiate(spawnedObject, spawner.transform.position, Quaternion.identity);
+			allObjects.name += i;
+			allObjects.transform.SetParent(spawner.transform);
+			allObjects.transform.localScale = scaleSize;
+			ChangePosition(i);
+		}
+	}
+\end{lstlisting}
+Hier werden für die zufällig generierete Zahl die Objekte mithilfe einer \textit{For}-Schleife generiert. Diese werden auf die Normale größe skaliert und danach wird die Funktion \textit{ChangePosition(i)} aufgerufen.\\
+\begin{lstlisting}[language=csh, caption={hideCircle.cs ChangePosition-Funktion}]
+	public void ChangePosition(int firstNumber){
+		RectTransform spawnRect = spawner.GetComponent<RectTransform>();
+		float width = spawnRect.rect.width;
+		float height = spawnRect.rect.height;
+		float xPos = UnityEngine.Random.Range(-width/2 + minDistance, width/2 - minDistance);
+		float yPos = UnityEngine.Random.Range(-height/2 + minDistance, height/2 - minDistance);
+		Vector2 newPos = new Vector2(xPos, yPos);
+		Debug.Log("x:" + xPos);
+
+		if(firstNumber == 0){
+			allPositions.Add(newPos);
+			allObjects.transform.localPosition = newPos;
+			return;
+		}
+
+
+		for (int i = 0; i < allPositions.Count; i++){
+			float distance = Vector2.Distance(new Vector2(allPositions[i].x, allPositions[i].y), new Vector2(newPos.x, newPos.y));
+			if(distance >= minDistance){
+				hitPosition = true;
+			}
+			else{
+				hitPosition = false;
+				break;
+			}
+
+		}
+		if(hitPosition){
+			allPositions.Add(newPos);
+			allObjects.transform.localPosition = newPos;
+
+		}
+		else{
+			ChangePosition(firstNumber);
+		}
+
+	}
+\end{lstlisting}
+Hier wird eine zufällige Position in dem Rechteck \textit{spawner} erzeugt. Dafür, bekommt ein Objekt \textit{RectTransform} das Rechteck des \textit{spawner}. Von diesem Objekt, werden die breite und höhe in Variablen gespeicehrt. Dann wird für die X-Position und Y-Position eine Random Zahl erzeugt. Die X-Position wird aus der Breite berechnet. Die kleinste mögliche Zahl befindet sich an der Stelle \textit{-width/2 + minDistance}, die maximale Zahle befindet sich an der Stelle \textit{width/2 - minDistance}. Es muss die negative breite geteilt durch zwei sein, da das Skript vom Mittelpunkt des Objektes ausgeht, also muss erst die breite geteilt werden und danach ist die negative zahl davon ganz links. Damit das Objekt nicht auf dem Rand des Rechtecks spawned, wird die minimale Distanz der Objekte daraufgerechnet. Für den ganz rechten Rand des Rechtecks, wird die positive breite geteilt und minus die minimale Distanz gerechnet. Für die Y-Position, wird die gleiche Rechnung benötigt. Nur das ansatt der breite die höhre des Rechtecks verwendet wird. Nachdem die beiden Positionen zufällig erzeugt wurden, werden diese in einen Vektor gespeichert. Wenn die Übergabe variable eine null ist, also wenn die \textit{For}-Schleife bei dem ersten durchlaufen ist, wird die Position die im Vektor \textit{newPos} gespeichert wurde in eine Liste gespeichert. Danach wird das Objekt an diese position bewegt und die Funktion mithilfe des Befehelt \textit{return} verlassen.\\
+Wenn das nicht der erste druchlauf ist, wird mithilfe einer \textit{For}-Schleife, für das Aktuelle Objekt zuerst die Distanz zwischen allen Objekten und der neuen Position berechnet. Die Methode \textit{.Distance} bekommt zwei Vektoren, mit den X und Y werden der Position übergeben und berechnet einen Vektor der die Distanz beinhaltet. Wenn die Distanz dann größer oder gleich unsere minimal Distanz ist, wurde eine Position gefunden, die genutzt werden kann um das Objekt zu platzieren. Wenn das nicht der fall ist, wird die Boolean Variable auf false gesetzt und die Schleife verlassen. In deisem fall wird durch eine Abfrage die Funktion \textit{ChangePosition(firstNumber)} erneut aufgerufen. Wenn die Variable \textit{hitPosition} true ist, wird die neu gefundene Position in die Liste gespeichert und das Objekt an die besagte Position bewegt.\\
+Die Funktion die die Objekte wieder löscht, ist die Selbe, die die Objekte in dem Spiel größer,kleiner, gleich löscht. Diese geht mithilfe einer \textit{foreach}-Schleife alle Objekte durch und löscht diese.\\
+\begin{lstlisting}[language=csh, caption={hideCircle.cs playGame-Funktion}]
+	public void playGame(){
+		counterRound++;
+		if(counterRound > lvlNumber){
+			PlayerPrefs.SetInt("wrongAnswers", wrongChoice);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongChoice);
+		}
+		//change color to white
+		imageColor.color = new Color32(255, 255, 255, 255);
+		if(counterRound <= lvlNumber)	showLevel.text = "Level: " + counterRound + "/" + lvlNumber;
+		numberLeft = randomNumber();
+		Debug.Log(numberLeft);
+		solution.text = "";
+		setObjects();
+		hideCircle();
+	}
+\end{lstlisting}
+Die Funktion \textit{playGame} arbeit ähnlich zu den anderen, zuerst wird der Level zähler hochgezählt und geteste, ob das Kind noch level spielen sollte. Wenn nicht wird die Szene für den Abschluss geladen. Die Farbe des Rahmens wird wieder auf weiß gesetzt und ein neues level wird generiert. Dafür muss das Eingabefeld geleert werden und neue Objekte zufällig erzeugt werden. Als abschluss, muss der Vorhang wieder auftauchen.\\
+\begin{lstlisting}[language=csh, caption={hideCircle.cs solutionWaiter-Funktion}]
+	IEnumerator solutionWaiter(int sec){
+		solution.interactable = false;
+		if(counterRound <= lvlNumber){
+			if(int.Parse(solution.text) == numberLeft){
+				//change color green
+				imageColor.color = new Color32(37, 250, 53, 255);
+				yield return new WaitForSeconds(sec);
+				deletObjects();
+				playGame();
+
+			}
+			else{
+				//change color red
+				imageColor.color = new Color32(251, 37, 37, 255);
+				yield return new WaitForSeconds(sec);
+				wrongChoice++;
+				//change color to white
+				imageColor.color = new Color32(255, 255, 255, 255);
+				solution.text = "";
+				hideCircle();
+			}
+		}
+	}
+\end{lstlisting}
+Diese \textit{Coroutine} deaktiviert das Eingabefeld und überprüft ob die eingebene Zahl die selbe ist, wie die zufällig generierte. Wenn das der Fall ist, wird der Rahmen grün und nach einer Sekunde werden die Objekte gelöscht und eine neue Runde mit der \textit{playGame()} Funktion gestartet. Wenn das Kind falsch liegt, wird der Rahmen für eine Sekunde rot und danach wieder Weiß, das eingabefeld wird geleert und die Objekte werden wieder versteckt.
 \subsection{Szene - Vervollständigen die Reihe}
 \subsubsection{Vervollständigen die Reihe - Design}
+\graphic{finishPattern}{Verfolständige die Reihe}
+In dieser Szene muss das Kind eine vorgegebene Reihe erkennen und fortführen. Den Kindern werden fünf Zahlen vorgegeben und aus dieser Reihe müssen sie die Schritte die die Zahlen machen erkennen und anwenden. Die Szene hat einen Header der gleich aufgebaut ist wie in den anderen Szenen. In der Mitte der Szene befinden sich insgesamt zehn feldern, in der Oberen Reihe, sind dies fünf Textfelder. Diese zeigen die Reihe an. In der unteren reihe, befinden sich fünf Textfelder die den Platzhalter Zahl haben. In diese können die Kinder ihre Zahlen eingeben. Der Testbutton wird auch in dieser Szene erst aktiviert, wenn alle Eingabefelder eine Zahl beinhalten. Diese Felder können keine anderen Zeichen als Zahlen enthalten. Dem Schüler/der Schülerinn, wird auch in dieser Szene anhand eines Feuerwekes gezeigt, ob es alle Felder richtig ausgefüllt hat. In Abbildung 5.31 ist das erwähnte Feuerwekt zu sehen. Das Spiel wurde so implementiert, das eine Zufällige Zahl erzeugt wird und mit zwei weiteren Zufallszahlen die Reihe fortgesetzt wird. Es wurde sich gegen noch mehr zufallszahlen entschieden, damit die Schüler/Schülerinnen keine zu Komplexen reihen bekommen. Es wurde aber so implementiert, das in den Unterschiedlichen Schwierigkeitsgraden die anfangszahl größer werden kann und auch die Zahlen die die Reihe Fortzusetzten werden größer.
 \subsubsection{Vervollständigen die Reihe - Skript}
+\begin{lstlisting}[language=csh, caption={hideCircle.cs Variablen Deklaration}]
+public class FinishPattern : MonoBehaviour {
+
+	public Text lvlText;
+
+	//random Numbers
+	private int randomNumber;
+	private int FirstRandomNumber;
+	private int SecondRandomNumber;
+
+	//lvl variabls
+	private int lvlNumber = 10;
+	private int wrongAnswers;
+	private int lvlCounter = 0;
+	private int maxNumbers = 20;
+
+	//int start start pattern
+	private int[] patternNumbers = new int[5];
+
+	//int solutions
+	private int[] solutionsNumbers = new int[5];
+
+
+	//Button test
+	public Button checkSolution;
+	public Button menu;
+
+	//Firework
+	private GameObject spawnedObject;
+	public GameObject leftFirework;
+	public GameObject rightFirework;
+	public GameObject fireworkPrefab;
+
+	public InputField[] arrayInputs = new InputField[5];
+	public Text[] arrayTextFields = new Text[5];
+\end{lstlisting}
+Für diese Spiel werden mehrer zufällige Zahlen benötigt. Eine um die Reihe zu starten und zwei um die Reihe Fortzusetzten.  Es werden auch wieder Variablen benötigt, um das Spiel laufen zu lassen. Wie die Level anzahl, die Fehleranzahl die Anzahl an leveln und die Maximale größte Zahl. Für die Reihe und die Lösungen werden zwei Arrays deklariert. Diese bekommen die größe Fünf. Die Szene benötigt zwei Objekte für die Buttons und die Objekte für das Feuerwerk. In dieser Szene wurden anfangs, die Objekte für die Eingaben des Kinder und die Textfelder Einzelnd deklariert, in der aktuellsten Umsetzung wurden auch dafür zwei Arrays deklariert. Diese sind Public und somit können die einzelnen Objekte in Unity in das Skript von Hand eingefügt werden. Wie dies abläuft, ist in Abbildung 5.19 zu sehen.\\
+\begin{lstlisting}[language=csh, caption={hideCircle.cs Start-Funktion}]
+	void Start() {
+		menu.onClick.AddListener(() => GoBack());
+		lvlNumber = MenuPickLevelAdvanced.lvlAmmountStatic;
+		maxNumbers = MenuPickLevelAdvanced.maxNumberStatic;
+		checkSolution.interactable = false;
+		checkSolution.onClick.AddListener(() => clickButton());
+		for (int i = 0; i < arrayInputs.Length; i++){
+			arrayInputs[i].onValueChanged.AddListener(delegate { EnableButton(); });
+		}
+		PlayGame();
+	}
+\end{lstlisting}
+In der \textit{Start}-Funktion werden die Listener für die Buttons deklariert. Die größt mögliche Nummer die Zufällig erzeugt werden kann wird festgelegt und die Anzahl an leveln wird auch festgelegt. Der Test Button wird Deaktiviert. Um eine andere Art der Überprüfung ob ein Eingabefeld leer ist zu verwenden, wurde jedem der Eingabefelder über die Methode \textit{onValueChanged} ein Listener hinzugefügt. Diese Art ist zwar schon bekannt wurde in diesem Teil des Projektes aber noch nicht mit einem Array aus Objekten verwendet. Als letztes wurde die Funktion die das Spiel startet und immer wieder neu erzeugt aufgerufen, die \textit{PlayGame}-Funktion.\\
+\begin{lstlisting}[language=csh, caption={hideCircle.cs EnableButton-Funktion}]
+	public void EnableButton() {
+		if (string.IsNullOrEmpty(arrayInputs[0].text) || string.IsNullOrEmpty(arrayInputs[1].text) || string.IsNullOrEmpty(arrayInputs[2].text) || string.IsNullOrEmpty(arrayInputs[3].text) || string.IsNullOrEmpty(arrayInputs[4].text)) {
+			checkSolution.interactable = false;
+		} else {
+			checkSolution.interactable = true;
+		}
+	}
+\end{lstlisting}
+Hier ist die Funktion zu sehen, die den Testbutton Aktiviert oder Deaktiviert. Da es mehrer Felder sind, können diese entweder mithilfe einer \textit{For}-Schleife abgefragt werden, diese würde dann durch alle Eingabefelder iterieren und überprüfen ob an dieser stelle eine Eingabe ist, wenn ja könnte nach der gesamten überprüfung der Testbutton aktiviert werden, wenn nicht dann würde dieser Deaktiviert bleiben. Da es aber mit der Schleife mehr Code wäre, wurde in einem \textit{If}-Statement mithilfe der Oder-Verknüpfung überprüft ob eines der Felder leer ist. Wenn ja wird der Button nicht aktiviert oder erneut Deaktiviert, fals das Kind die Eingabe aus einem der Felder löscht. Wenn alle Felder gefüllt sind wird in einer \textit{else} der Button aktiviert.\\
+Die nächsten vier Funktionen des Skriptes, werden nicht gezeigt, diese werden einmal aufgerufen, wenn der Menü Knopf gedrückt wird und wenn der Test Knopf gedrückt wurde. Diese Laden die Menü szene und starten die Abfrage ob die Eingegebene Lösung des Kindes richtig ist. Die letzten zwei Funktionen sind für die zufällige Zahlen zuständig, die erste der beide, erzeugt eine Zufällige Zahl zwischen null und der maximal möglichen Zahl. Die andere wird später zwei Mal aufgerufen um die Zahlen für das Muster zu erzeugen. Diese werden zwischen eins und der maximal möglichsten Zahl erzeugt. Der Grund dafür war, es wäre für die Kinder langweilig, wenn die Reihe sich um null erhöht. \\
+\begin{lstlisting}[language=csh, caption={hideCircle.cs PlayGame-Funktion}]
+	public void PlayGame() {
+		lvlCounter++;
+		if(lvlCounter > lvlNumber){
+			PlayerPrefs.SetInt("wrongAnswers", wrongAnswers);
+			SceneManager.LoadScene("LearnFinishScreen");
+			Debug.Log("Game Vorbei \n" + "Anzahl Fehler: " + wrongAnswers);
+		}
+		ResetInputFields();
+		if(lvlCounter <= lvlNumber)	lvlText.text = "Level: " + lvlCounter + "/" + lvlNumber;;
+		randomNumber = RandomBeginningNumber(maxNumbers);
+		FirstRandomNumber = RandomPatternNumbers();
+		SecondRandomNumber = RandomPatternNumbers();
+		SetStartPattern();
+		SetSolution();
+		SetPattern();
+	}
+\end{lstlisting}
+Diese Funktion ist wieder ähnlich zu den anderne, sie überprüft wie viele Level noch gespielt werden müssen und beendet das Spiel oder setzt es fort. Wenn das Kind noch spielen soll, wird der Text um das Level anzuzeigen aktualisiert. Die eingabe Felder werden zurückgesetzt und die zufälligen Zahlen werden erzeugt und in die dazugehörige Variable gespeichert. Danach wird das Muster erzeugt und die darausfolgende Lösung berechnet. Als letztes wird das Muster nur noch in die Textfelder geschrieben.\\
+\begin{lstlisting}[language=csh, caption={hideCircle.cs SetStartPattern- und SetSolution-Funktion}]
+	public void SetStartPattern() {
+		patternNumbers[0] = randomNumber;
+		patternNumbers[1] = patternNumbers[0] + FirstRandomNumber;
+		patternNumbers[2] = patternNumbers[1] + SecondRandomNumber;
+		patternNumbers[3] = patternNumbers[2] + FirstRandomNumber;
+		patternNumbers[4] = patternNumbers[3] + SecondRandomNumber;
+	}
+
+	public void SetSolution() {
+		solutionsNumbers[0] = patternNumbers[4] + FirstRandomNumber;
+		solutionsNumbers[1] = solutionsNumbers[0] + SecondRandomNumber;
+		solutionsNumbers[2] = solutionsNumbers[1] + FirstRandomNumber;
+		solutionsNumbers[3] = solutionsNumbers[2] + SecondRandomNumber;
+		solutionsNumbers[4] = solutionsNumbers[3] + FirstRandomNumber;
+	}
+\end{lstlisting}
+Diese Funktionen könnten auch in einer funktion stattfinden, wurde aber für die Übersichtlichkeit in zwei unterschiedlichen Implementiert. Die \textit{SetStartPattern}-Funktion, speichert an die erste stelle die Start Zahl ein. Danach wird mithilfe der zwei andern Zufallszahlen hier \textit{FirstRandomNumber} und \textit{SecondRandomNumber} genannt berechnet. Zuerst wird die erste Zahl darauf addiert, danach die zweite und so weiter. Nachdem das Muster berechnet wurde wird die Funktion \textit{SetSolution} aufgerufen, diese brechenet die Lösung die das Kind eintippen sollte. Dafür wird die letzte Zahl des Musters verwendet, auf diese wird die erste Zufallszahl addiert und danach auf das Ergebnis die zweite Zahl addiert. Das wird solange wiederholt, bis das Array gefüllt ist.\\
+\begin{lstlisting}[language=csh, caption={hideCircle.cs SetPattern-Funktion}]
+	public void SetPattern() {
+		for (int i = 0; i < arrayInputs.Length; i++){
+			arrayTextFields[i].text = patternNumbers[i].ToString();
+		}
+	}
+\end{lstlisting}
+Diese Funktion iteriert mit einer \textit{For}-Schleife durch das Textfeld Array und weißt jedem der Felder die passende Nummer zu. Die Integerzahl wird auch hier wieder in einen String umgewandelt.\\
+Die Funktionen um das Feuerwerk zu erzeugen und zu löschen, sind die selben wie in dem Skript für die Rechenmauer.\\ %TODO nenne wo diese stehen
+\begin{lstlisting}[language=csh, caption={hideCircle.cs Solution-Funktion}]
+	IEnumerator Solution(int sec){
+		bool skip = false;
+		if (lvlCounter <= lvlNumber) {
+			for (int i = 0; i < 5; i++) {
+				if (solutionsNumbers[i] == int.Parse(arrayInputs[i].text)) {
+					arrayInputs[i].interactable = false;
+					continue;
+				}
+				else{
+					skip = true;
+					wrongAnswers++;
+					arrayInputs[i].text = "";
+				}
+			}
+			if (!skip) {
+				SpawnFirework();
+				yield return new WaitForSeconds(sec);
+				DeleteFirework();
+				PlayGame();
+			}
+		}
+	}
+\end{lstlisting}
+Diese Funktion überprüft die Lösungen des Kindes. Dafür wird eine Boolean Variable benötigt. Danach wird mit einer \textit{For}-Schleife durch fünf Schritte Iteriert. Da die Arrays eine feste größe besitzen ist es möglich dort die fünf fest vorzugeben. In diesem Fall kann auch die Größe des eingabearrays oder des lösungsarrays verwendet werden. In der Schleife, werden die Eingaben des Schülers/der Schülerinn mit denen aus dem Lösungsarray verglichen, sobald eine Zahl gleich ist, wird die Boolean Variable auf true gesetzt und die schleife springt eine Iteration weiter. Wenn eine Eingabe nicht mit der Lösung übereinstimmt, wird die Boolean Variable auf true gesetzt und der Zähler für die Fehler wird um eins erhöht. Das dazugehörige Eingabefeld wird geleert, somit sollte das Kind wissen, das dieses Feld nicht richtig gelöst war. Wenn die Variable \textit{skipt} am ende der Schleife den wert false hat, sind alle Eingabefelder richtig gelöst. Daraufhin wird mithilfe der Funktion \textit{SpawnFirework} das Feuerwerk für den Nutzer erzeugt. Nach einer Sekunde wird dieses durch die Funktion \textit{DeleteFirework} wieder gelöscht. Als letzter Schritt des Skriptes wird die Funktion \textit{PlayGame} aufgerufen. \\
+\begin{lstlisting}[language=csh, caption={hideCircle.cs ResetInputFields-Funktion}]
+	public void ResetInputFields(){
+		for (int i = 0; i < arrayInputs.Length; i++){
+			arrayInputs[i].text = "";
+			arrayInputs[i].interactable = true;
+		}
+	}
+\end{lstlisting}
+Diese Funktion löscht nach erfolgreichen Lösens der Reihe die eingabe aus alle Eingabefeldern. Das wird mit einer \textit{For}-Schleife gelöst. Diese leert das Eingabefeld und aktiviert es für den Nutzer wieder.
 \subsection{Szene - Wortsalat}
 \subsubsection{Wortsalat - Design}
 \subsubsection{Wortsalat - Skript}
