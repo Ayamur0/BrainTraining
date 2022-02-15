@@ -14,7 +14,6 @@ public class WordMix : MonoBehaviour
 
 	public InputField solutionChild;
 
-	// Start is called before the first frame update
 	private string mixedWord;
 	private string solution;
 	public Image imageColor;
@@ -62,28 +61,6 @@ public class WordMix : MonoBehaviour
 	}
 
 
-	IEnumerator waiter(int sec){
-		solutionChild.interactable = false;
-		if(lvlCount <= lvlAmount){
-			if(solution.Equals(solutionChild.text)){
-				//change color green
-				imageColor.color = new Color32(37, 250, 53, 255);
-				yield return new WaitForSeconds(sec);
-				solutionChild.text = "";
-				PlayGame();
-			}
-			else{
-				//change color red
-				imageColor.color = new Color32(251, 37, 37, 255);
-				yield return new WaitForSeconds(sec);
-				//change color to white
-				imageColor.color = new Color32(255, 255, 255, 255);
-				solutionChild.text = "";
-				wrongChoices++;
-			}
-		}
-	}
-
 	public void PlayGame(){
 		lvlCount++;
 		if(lvlCount > lvlAmount){
@@ -102,7 +79,6 @@ public class WordMix : MonoBehaviour
 		randomNumber = GetRandomNumbers();
 		Debug.Log("random Number: " + randomNumber);
 		Debug.Log("lenght list: " + list.words.Length);
-		copyArray();
 		solution = list.words.GetValue(randomNumber).ToString();
 		solutionChild.characterLimit = solution.Length;
 		mixedWord = mixWord(solution);
@@ -134,47 +110,37 @@ public class WordMix : MonoBehaviour
 		}
 	}
 
-	// public string mixWord(string word){
-	// 	string newWord = "";
-	// 	int oldNumber = 0;
-	// 	int counter = 0;
-	// 	while(counter != word.Length){
-	// 		int randomPos = GetRandomNumbers(counter, word.Length);
-	// 		if(oldNumber != randomPos){
-	// 			oldNumber = randomPos;
-	// 			counter++;
-	// 			newWord += word[randomPos];
-
-	// 		}
-	// 	}
-	// 	return newWord;
-	// }
-
-	// public int GetRandomNumbers(int minNumber, int maxNumber){
-	// 	if(list.words.Length != 0){
-	// 		return UnityEngine.Random.Range(minNumber, maxNumber);
-	// 	}
-	// 	else{
-	// 		return -1;
-	// 	}
-	// }
-
 	public void ReadJsonFile(){
 		list = JsonUtility.FromJson<WordList>(textJson.text);
 	}
 
-
-	public void copyArray(){
-		for (int i = 0; i < list.words.Length; i++){
-
-		}
-	}
 
 	public void ButtonClicked(){
 		testWord.interactable = false;
 		StartCoroutine(waiter(1));
 	}
 
+	IEnumerator waiter(int sec){
+		solutionChild.interactable = false;
+		if(lvlCount <= lvlAmount){
+			if(solution.Equals(solutionChild.text)){
+				//change color green
+				imageColor.color = new Color32(37, 250, 53, 255);
+				yield return new WaitForSeconds(sec);
+				solutionChild.text = "";
+				PlayGame();
+			}
+			else{
+				//change color red
+				imageColor.color = new Color32(251, 37, 37, 255);
+				yield return new WaitForSeconds(sec);
+				//change color to white
+				imageColor.color = new Color32(255, 255, 255, 255);
+				solutionChild.text = "";
+				wrongChoices++;
+			}
+		}
+	}
 }
 
 [System.Serializable]

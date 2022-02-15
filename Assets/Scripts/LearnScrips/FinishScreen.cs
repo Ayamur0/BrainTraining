@@ -7,8 +7,6 @@ using System;
 
 public class FinishScreen : MonoBehaviour
 {
-
-	private GameQuantities game;
 	public Text TextfieldMistakes;
 	public Text head;
 	private GameObject spawnedStarLeft;
