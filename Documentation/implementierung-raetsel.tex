@@ -65,7 +65,7 @@ In der XML-Datei ist die ID enthalten, welche ein Rätsel eindeutig identifizier
     public bool autoSubmit;
 \end{lstlisting}
 Alle mit '[XmlElement]' markierten Variablen sind unter demselben Namen in den XML-Dateien zu finden. Diese Variablen können dann direkt mithilfe des XML-Serialisierers von C\# aus der Datei gelesen werden. Die anderen Variablen werden dann von den aus der Datei gelesenen Variablen abgeleitet.\\
-\begin{lstlisting}[language=csh, caption={Laden der Daten mit dem XML-Serialisierer}]
+\begin{lstlisting}[language=csh, caption={Laden der Daten mit dem XML-Serialisierer}, escapeinside={(*}{*)}]
 private static XmlSerializer serializer = new XmlSerializer(typeof(RiddleInfo));
 
 public static RiddleInfo loadFromXML(int id) {
@@ -77,7 +77,7 @@ public static RiddleInfo loadFromXML(int id) {
     using (XmlReader reader = new XmlNodeReader(xmldoc)) {
         info = serializer.Deserialize(reader) as RiddleInfo;
     }
-    ...
+    (*...*)
 \end{lstlisting}
 Die Variablen 'completed' und 'points' werden anschließend aus der SaveFile gelesen, da diese Variablen beinhalten, ob das Rätsel schonmal abgeschlossen wurde bzw. wie viele Punkte vom Rätsel noch erhalten werden können.\\
 Die Variable 'pointReduction' lässt sich aus 'maxPoints' und 'minPoints' berechnen, da immer fünfmal Punkte abgezogen werden sollen, bevor die minimalen Punkte erreicht sind.\\
@@ -125,7 +125,7 @@ Die Klassen für die Rätsel erben dabei alle von der abstrakten Klasse Riddle.c
         return id.ToString("000");
     }
 \end{lstlisting}
-Diese Klasse muss von jeder Rätselklasse implementiert werden. In der OnEnable() Funktion muss immer zuerst "base.init(id)" aufgerufen werden, danach können weitere für das Rätsel benötigte Assets geladen werden.\\
+Diese Klasse muss von jeder Rätselklasse implementiert werden. In der OnEnable() Funktion muss immer zuerst 'base.init(id)' aufgerufen werden, danach können weitere für das Rätsel benötigte Assets geladen werden.\\
 In der init() Funktion werden die Assets geladen, die jedes Rätsel benötigt: Die Infos aus der XML-Datei, das Bild für die Lösung, das Prefab für die rechte Seite und das Bild für die untere linke Ecke (falls nicht vorhanden steht hier null).\\
 Zudem muss jedes Rätsel die Funktionen checkResult() und isResultValid() implementieren. Erstere soll dabei true zurückgeben, wenn die richtige Lösung eingegeben wurde und isResultValid() muss true zurückgeben, wenn die eingegebene Lösung syntaktisch Korrekt ist und bestätigt werden könnte (nicht korrekt wäre zB bei einer Texteingabe mit 6 Zeichen nur 4 Zeichen einzugeben).\\
 
@@ -307,7 +307,7 @@ Die Klasse bietet folgende Methoden um die Speicherdaten zu lesen oder veränder
 \item \textbf{int GetRemainingPoints(int id)} gibt die verbleibenden Punkte für das Rätsel zurück
 \item \textbf{void UpdateRemainingPoints(int id, int points)} speichert die verbleibenden Punkte für das Rätsel
 \item \textbf{void UpdateTotalPoints(int points)} speichert einen neuen Gesamtpunktestand
-\end{itemize}\\
+\end{itemize}
 
 Um die Speicherdaten zu speichern und laden wird die SaveDataManager Klasse verwendet.
 Diese besitzt eine statische Variable der SaveData Klasse, über welche alle anderen Klassen auf die Speicherdaten zugreifen können. Mithilfe der SaveGame() Methode werden diese Daten dann in einer Datei gespeichert:
@@ -565,7 +565,7 @@ void Update() {
 \end{lstlisting}
 Wenn gerade ein Tile bewegt wird (dragging != -1 ist) dann wird die Position des Images von diesem Tile auf die momentane Mausposition gesetzt. Ist die Mausposition außerhalb des erlaubten Bereichs, in dem das Tile bewegt werden darf, wird die Position nicht verändert und das Image bleibt an der vorherigen Stelle.\\
 
-\begin{lstlisting}[language=csh, caption={Ausschnitt der OnPointerUp Methode des SnapDragControllers}]
+\begin{lstlisting}[language=csh, caption={Ausschnitt der OnPointerUp Methode des SnapDragControllers}, escapeinside={(*}{*)}]
 public void OnPointerUp() {
         // need to reset dragging first, else Update will set position while this function is executed
         if (!Input.GetMouseButtonUp(0))
@@ -575,12 +575,12 @@ public void OnPointerUp() {
         if (enableRotation && Time.time - pointerDownTime < 0.2) {
             tiles[lastDrag].image.transform.Rotate(0.0f, 0.0f, 90.0f, Space.Self);
         }
-        ...
+        (*...*)
 \end{lstlisting}
 Wird die Maustaste dann wieder losgelassen, wird zuerst die dragging Variable auf -1 gesetzt, da während diese Methode ausgeführt wird, bereits die Update Funktion wieder aufgerufen könnte, welche das Tile bewegen würde. Um innerhalb dieser Methode trotzdem zu wissen, welches Tile bewegt wurde wird der Wert der dragging Variable vorher noch in einer lokalen Variable gespeichert.\\
 Ist Rotation im Skript aktiviert, so wird das Image um 90° nach rechts gedreht, falls zwischen PointerDown und PointerUp Zeit weniger als 0.2 Sekunden lagen.\\
-\begin{lstlisting}[language=csh, caption={Setzen der Position in der OnPointerUp Methode}]
-		...
+\begin{lstlisting}[language=csh, caption={Setzen der Position in der OnPointerUp Methode}, escapeinside={(*}{*)}]
+		(*...*)
  		float x = Input.mousePosition.x;
         float y = Input.mousePosition.y;
 

@@ -7,12 +7,14 @@
 \bigskip
 }
 
-
 \documentclass[oneside]{ausarbeitung}
 \setcounter{tocdepth}{3}
 \setcounter{secnumdepth}{3}
 \bibliography{latexlit}
 
+
+\usepackage{listings}
+\lstset{language=csh, literate={-}{-}1}
 % ----------------------------------------------------------------------
 
 \begin{document}
@@ -81,8 +83,8 @@
 
 %--- Firmendaten Anzeigen
 % Auskommentieren, wenn die Arbeit nicht bei einer ext. Firma gemacht wurde.
-\makeworkplace
-\cleardoublepage
+% \makeworkplace
+% \cleardoublepage
 
 %--- Eidesstattliche Erklärung anzeigen
 \makeaffirmation
@@ -110,16 +112,16 @@
 \end{abstract}
 %-----------------------------------------------------------------------
 \cleardoublepage
-%\tableofcontents %TODO verursacht Error
+\tableofcontents
 
 %---
-%\listoffigures
+\listoffigures
 
 %---
 %\listoftables
 
 %---
-%\listoflistings %TODO verursacht Error
+\listoflistings
 
 %---
 

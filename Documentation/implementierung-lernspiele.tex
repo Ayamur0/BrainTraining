@@ -828,20 +828,20 @@ Diese Funktion aktiviert alle drei Buttons und wird aufgerufen nachdem das Kind 
   \caption{Rechenmauer mit fünf Steinen unten}
   \label{triangle}
 \end{figure}
-Die Rechenmauer kann in drei verschiedenen Varianten gespielt werden. Je nach dem Schwierigkeitsgrad, wird diese mit fünf, vier oder drei Steinen in der untersten Reihe erzeugt. Im Header ist die Szene wie die anderen aufgebaut. In der Mitte wird die Mauer angezeigt, für welche ein Prefab eines Steines angelegt wurde, dieses wird dann mithilfe einer \textif{Layout Group} an die richtige Position gesetzt. Die Felder, die die unterste Reihe bilden, werden deaktiviert, damit der Nutzer diese nicht verändern kann. Wenn das Kind den Test Button drückt, werden die richtigen Felder auch deaktiviert, damit diese nicht wieder verfälscht werden können. Die falschen Steine werden geleert und das Kind muss die Lösung erneut eintragen. Dies ist in der Abbildung \ref{wrongAndRightStone} zu sehen.\\
+Die Rechenmauer kann in drei verschiedenen Varianten gespielt werden. Je nach dem Schwierigkeitsgrad, wird diese mit fünf, vier oder drei Steinen in der untersten Reihe erzeugt. Im Header ist die Szene wie die anderen aufgebaut. In der Mitte wird die Mauer angezeigt, für welche ein Prefab eines Steines angelegt wurde, dieses wird dann mithilfe einer \textit{Layout Group} an die richtige Position gesetzt. Die Felder, die die unterste Reihe bilden, werden deaktiviert, damit der Nutzer diese nicht verändern kann. Wenn das Kind den Test Button drückt, werden die richtigen Felder auch deaktiviert, damit diese nicht wieder verfälscht werden können. Die falschen Steine werden geleert und das Kind muss die Lösung erneut eintragen. Dies ist in der Abbildung \ref{wrongAndRightStone} zu sehen.\\
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/rechenmauerRichtigUndFalsch.PNG}
   \caption{Richtig und falsch gelöste Steine}
   \label{wrongAndRightStone}
-\end{figure}\\
+\end{figure}
 Wenn der Schüler/die Schülerin die Rechenmauer komplett richtig gelöst hat, wird das anhand des Feuerwerks, das um den Test Button auftaucht angezeigt. Die Pyramide wird geleert und eine neue unterste Reihe wird erzeugt. Das Feuerwerk wird auch in dem Spiel "Führe die Reihe fort"\ angewendet und ist in Abbildung \ref{firework} zu sehen.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/finisheTriangle.PNG}
   \caption{Feuerwerk nach richtigem Lösen}
   \label{firework}
-\end{figure}\\
+\end{figure}
 \subsubsection{Rechenmauer - Skript}
 \begin{lstlisting}[language=csh, caption={Triangle.cs Variablen-Deklaration}]
 public class Triangle : MonoBehaviour
@@ -917,7 +917,7 @@ Die Start-Funktion weißt den Buttons den Listener zu und deaktiviert den Test-B
 		}
 	}
 \end{lstlisting}
-In dem Skript für die Rechenmauer und in dem für "Führe die Reihe fort"\, wird die Update-Funktion genutzt, um zu überprüfen ob alle Eingabefelder gefüllt sind. Wenn eines der Felder leer ist, wird der Test-Button nicht aktiviert. In anderen Szenen wurde dies mit der Funktion \textit{onValueChanged} gelöst, aber um mehrere Felder zu überprüfen ist die Variante in der Update-Funktion angenehmer. In diesem Skript läuft in der Update-Funktion eine doppelte \textit{for}-Schleife durch. Diese läuft für jede Zeile die Länge ab und kontrolliert ob eines der Felder leer ist. Wenn ein Feld leer ist, wird die \texit{boolean} Variable auf \textit{true} gesetzt, solange diese nicht \textit{false} ist, wird der Test-Button nicht aktiviert.\\
+In dem Skript für die Rechenmauer und in dem für "Führe die Reihe fort"\, wird die Update-Funktion genutzt, um zu überprüfen ob alle Eingabefelder gefüllt sind. Wenn eines der Felder leer ist, wird der Test-Button nicht aktiviert. In anderen Szenen wurde dies mit der Funktion \textit{onValueChanged} gelöst, aber um mehrere Felder zu überprüfen ist die Variante in der Update-Funktion angenehmer. In diesem Skript läuft in der Update-Funktion eine doppelte \textit{for}-Schleife durch. Diese läuft für jede Zeile die Länge ab und kontrolliert ob eines der Felder leer ist. Wenn ein Feld leer ist, wird die \textit{boolean} Variable auf \textit{true} gesetzt, solange diese nicht \textit{false} ist, wird der Test-Button nicht aktiviert.\\
 \begin{lstlisting}[language=csh, caption={Triangle.cs GenerateSolutionArray-Funktion}]
 	public void GenerateSolutionArray(){
 		if(triangleSize >= 3){
@@ -1072,13 +1072,13 @@ Hier wird überprüft, ob die Mauer komplett richtig gerechnet wurde. Dafür wir
   \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/lightningViewWithoutCover.PNG}
   \caption{Blitzblick ohne Vorhang}
   \label{withoutCover}
-\end{figure}\\
+\end{figure}
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/lightningViewCover.PNG}
   \caption{Blitzblick mit Vorhang}
   \label{withCover}
-\end{figure}\\
+\end{figure}
 Die Szene ist hier in zwei Bildern gezeigt. In der Abbildung \ref{withoutCover} ist die Szene ohne den Vorhang zu sehen und in der Abbildung \ref{withCover} mit dem Vorhang. Das Spiel Blitzblick zeigt dem Schüler/der Schülerin eine Anzahl an Objekten und verdeckt diese danach. Das Kind muss dann sehr schnell sehen wie viele der Objekte angezeigt wurden und diese in ein Textfeld eingeben. Wenn das Kind den Test-Button auswählt, wird die Zahl überprüft und wenn es richtig lag, wird eine neue Runde geladen. Wenn das Kind die falsche Anzahl angibt, bekommt es die Objekte noch einmal für eine Sekunde zu sehen. Die Zeit, wie lange die Objekte zu sehen sind, wird nicht verringert oder erhöht, da eine Sekunde für die vorhergesehene Anzahl an Objekten einen angemessenen Schwierigkeitsgrad hat.\\
 Die Szene hat wie jede andere einen Header. In diesem ist ein Menü-Button, eine Überschrift und die Levelanzahl zu sehen. In der Mitte der Szene ist das Feld, in dem die Objekte auftauchen, welches von einem grünen Vorhang verdeckt wird. Rechts davon ist das Eingabefeld für den Nutzer. Ganz unten in der Szene ist der Button zum Testen der Lösung. Dieser ist, solange keine Zahl eingegeben wurde, deaktiviert. In dieser Szene wird dem Schüler/der Schülerin durch einen grünen Rahmen angezeigt, ob die Lösung richtig oder falsch ist.\\
 \subsubsection{Blitzblick - Skript}
@@ -1467,7 +1467,7 @@ Für die Szene werden Textfelder für das Level, sowie das gemischte Wort, Butto
   \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/JsonFile.PNG}
   \caption{JSON-File in das Skript importieren}
   \label{jsonUnity}
-\end{figure}\\
+\end{figure}
 Wie dann auf dieses File zugegriffen wird, wird später erklärt.\\
 \begin{lstlisting}[language=csh, caption={WordMix.cs Start-Funktion}]
 	void Start()
@@ -1565,14 +1565,14 @@ Zuerst wird das Eingabefeld deaktiviert. Danach wird, wie sonst auch, zuerst üb
   \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/finishScreen.PNG}
   \caption{Endszene nach Abschluss eines Levels}
   \label{finishSzene}
-\end{figure}\\
+\end{figure}
 Diese Szene wird geladen, wenn das Kind ein Level beendet. Die Szene bekommt dort wo die Überschrift \textit{Header} steht, eine Botschaft vom Skript übergeben. Je nachdem wie viele Fehler das Kind hat, wird dort wo \textit{Glückwunschtext} steht eine andere Nachricht ausgegeben. Dort wo die drei weißen Vierecke sind werden aus einem Prefab ein Stern erzeugt. Diese kann das Kind sammeln und im Hauptmenü angezeigt bekommen. Ganz unten befindet sich ein Knopf, der in das Hauptmenü zurückführt. Somit kann das Kind dann ein neues Level auswählen. In der Abbildung \ref{withoutError} ist die Szene zu sehen, wenn das Kind keine Fehler gemacht hat.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/finishScreen0Mistakes.PNG}
   \caption{Endszene mit null Fehlern}
   \label{withoutError}
-\end{figure}\\
+\end{figure}
 Es werden keine Sterne erzeugt, wenn der Schüler/die Schülerin mehr als vier Fehler gemacht hat. Bei genau vier oder weniger Fehlern wird der Stern auf der linken Seite erzeugt. Wenn der Nutzer/die Nutzerin genau zwei oder weniger Fehler hat, wird der Stern auf der rechten Seite erzeugt. Der Stern in der Mitte wird nur bei genau null Fehlern erzeugt.
 \subsubsection{Nach Abschluss des Levels - Skript}
 \begin{lstlisting}[language=csh, caption={FinishScreen.cs Variablendeklaration}]
@@ -1630,4 +1630,4 @@ Die Funktion für das Menü ist schnell erklärt und wird nicht gezeigt. Diese s
 		SaveDataManager.SaveGame();
 	}
 \end{lstlisting}
-Diese Funktion besteht aus verknüpften \textit{ff}-Statement. Als Erstes wird davon ausgegangen, dass das Kind zu viele Fehler für Sterne gemacht hat. Deshalb wird die Überschrift auf \dq Schade!\dq{} gesetzt. Die Botschaft darunter wird auf einen motivierenden Satz gesetzt. In dem Fall, dass zu viele Fehler gemacht wurden, wäre dieser \dq Nächstes Mal klappt's\dq{}. Wenn das Kind unter vier Fehler gemacht hat, wird die Zahl der gespeicherten Sterne um eins erhöht, dafür wird die Variable aus dem Skript um die Rätselergebnisse zu speichern aufgerufen und die dort angelegte Variable für die Anzahl der Sterne um eins erhöht. Danach wird der erste Stern erzeugt. Die Texte der Überschrift werden ab dem ersten Stern immer \dq Glückwunsch!\dq{} anzeigen und für den Text für die Fehler wird außer bei null Fehlern der Text \dq Nur ... Fehler!\dq{} anzeigen. Wenn das Kind dann unter zwei Fehler gemacht hat, wird der zweite Stern erzeugt und die Variable erneut erhöht. Als letzte Abfrage wird überprüft, ob das Kind keine Fehler gemacht hat. In diesem Fall wird ein dritter Stern erzeugt und die Variable zum Zählen der Sterne um eins erhöht. Der Text unter der Überschrift der Szene zeigt nun \dq Super, alles richtig!!!\dq{}. Nachdem diese Abfragen durchgelaufen sind, muss noch die Funktion aus dem Skript aufgerufen werden, die die Daten speichert. dem Befehl \textit{SaveDataManger.SaveGame()} zu erreichen.\\
+Diese Funktion besteht aus verknüpften \textit{ff}-Statement. Als Erstes wird davon ausgegangen, dass das Kind zu viele Fehler für Sterne gemacht hat. Deshalb wird die Überschrift auf 'Schade!' gesetzt. Die Botschaft darunter wird auf einen motivierenden Satz gesetzt. In dem Fall, dass zu viele Fehler gemacht wurden, wäre dieser 'Nächstes Mal klappt's'. Wenn das Kind unter vier Fehler gemacht hat, wird die Zahl der gespeicherten Sterne um eins erhöht, dafür wird die Variable aus dem Skript um die Rätselergebnisse zu speichern aufgerufen und die dort angelegte Variable für die Anzahl der Sterne um eins erhöht. Danach wird der erste Stern erzeugt. Die Texte der Überschrift werden ab dem ersten Stern immer 'Glückwunsch!' anzeigen und für den Text für die Fehler wird außer bei null Fehlern der Text 'Nur ... Fehler!' anzeigen. Wenn das Kind dann unter zwei Fehler gemacht hat, wird der zweite Stern erzeugt und die Variable erneut erhöht. Als letzte Abfrage wird überprüft, ob das Kind keine Fehler gemacht hat. In diesem Fall wird ein dritter Stern erzeugt und die Variable zum Zählen der Sterne um eins erhöht. Der Text unter der Überschrift der Szene zeigt nun 'Super, alles richtig!!!'. Nachdem diese Abfragen durchgelaufen sind, muss noch die Funktion aus dem Skript aufgerufen werden, die die Daten speichert. dem Befehl \textit{SaveDataManger.SaveGame()} zu erreichen.\\
