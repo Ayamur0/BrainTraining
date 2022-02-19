@@ -122,17 +122,6 @@
 %\listoflistings %TODO verursacht Error
 
 %---
-\listofabbreviations
-\begin{acronym}[Bsp.]  % Längstes Kürzel in der nachfolgenden
-                       % Liste um die Breite der Spalte für die
-                       % Abkürzungen zu bestimmen.
-
-%% Eintrag: \acro{Referenzname}[Kürzel]{Langform}
-%% Im Text wird die Abkürzung dann mit \ac{Referenzname} benutzt.
-\acro{rup}[RUP]{Rational Unified Process}
-\acro{bsp}[Bsp.]{Beispiel}
-\end{acronym}
-%---
 
 
 \cleardoublepage
@@ -258,7 +247,7 @@ Diese erlaubt es zB die beiden Methoden Start und Update zu verwenden, welche be
 Die Start Methode wird dabei aufgerufen, bevor der erste Frame geladen wird, in dem dieses Skript vorhanden ist. Ist das Skript also zB die Komponente eines Würfels, welcher nun in die Szene geladen wird, so wird die Start Methode einmal aufgerufen, bevor der Würfel in der Szene auftaucht.\\
 Die Update Methode wird hingegen jeden Frame aufgerufen, solange das Skript in der Szene vorhanden ist. \\
 
-Hier können noch viele weitere Funktionen verwendet werden, wie zB onCollisionEnter(), wenn ein Collider vorhanden ist. Weitere Informationen sind in der Unity Dokumentation zu finden %TODO Link zu Unity
+Hier können noch viele weitere Funktionen verwendet werden, wie zB onCollisionEnter(), wenn ein Collider vorhanden ist. Weitere Informationen sind in der Unity Dokumentation zu finden \autocite{Unity:Doc}.
 
 \subsubsection{UnityEngine.SceneManagement}
 \label{Grundlagen:SceneManagement}
@@ -333,14 +322,17 @@ Als letztes stellt sich die Frage für welche Plattform das Projekt entwickelt w
 \chapter{Lösungskonzept}
 \label{cha:loesungskonzept}
 
-%TODO Klassendiagramme u.ä.
 \section{Rästel}
+Ein wichtiger Aspekt für die Rätsel ist, dass sie nicht nur Zahlen oder Text als Lösung haben. Denn wenn alle Rätsel nur Zahlen oder Text als Lösung haben, dann werden diese schnell repetitiv und langweilig für Kinder. Rätsel, die mehr Interaktion bieten, motivieren die Kinder mehr dazu diese zu lösen und sich damit zu beschäftigen.\\
+Zudem sind auch aussagekräftige Bilder notwendig, um die Rätsel für Kinder leichter verständlich zu machen. Die Bilder für dieses Spiel wurden alle aus Layton’s Mystery Journey: Katrielle und die Verschwörung der Millionäre für Nintendo Switch entnommen.\\
+
+\graphic{classDiagramRiddle}{Klassenstruktur zum Laden der Rätsel}
+
+Im obigen Klassendiagramm ist die Struktur zu sehen, welches verwendet wird, um die Rätsel zu laden. Die Prefabs für die Rätsel verwenden dabei verschiedene Skripte, um Interaktionen, wie das Verschieben von Objekten zu ermöglichen.\\
+Die R001 - R023 Klassen enthalten alle Informationen zum Laden der Rätsel. Dabei besitzt jede dieser Klassen eine Instanz der RiddleInfo Klasse, welche die aus den XML Dateien geladenen Informationen beinhaltet. Zu den aus der XML Datei geladenen Informationen, werden auch manche Infos aus dem Savegame geladen, wie zB ob das Rätsel bereits abgeschlossen wurde.\\
+Der RiddleManager verwendet dann die R001 - R023 Klassen um die Rätsel zu laden und die SolutionScene um die Lösung anzuzeigen.
 
 \section{Lernspiele}
-
-In diesem Kapitel werden Lösungen für die Probleme aus dem vorherigen Kapitel genannt. Es wird auch erklärt, warum diese Lösung gewählt wurde und was die Alternativen wären. Hierbei wird auch beachtet, die Vor- und Nachteile der Alternativen zu nennen. 
-\\
-
 Für das erste Problem, welche Spiele für Grundschulkinder der ersten bis vierten Klasse pädagogisch wirkungsvoll sind, sollte erst überlegt werden, was \textit{pädagogisch sinnvoll} für Kinder ist und was im Lehrplan steht.\\
 Deshalb sollte das zweite und dritte Problem zuerst gelöst werden. Um dieses zu beantworten, wird zuerst die Begrifflichkeit \textit{pädagogisch sinnvoll} erklärt.  Zunächst wird erklärt, was man unter \textit{pädagogisch} versteht. Der Begriff \textit{pädagogisch} lässt sich in vier Aufgabenbereiche unterteilen,\textit{Betreuung, Erziehung, Bildung und Lernen}. Die ersten drei Begriffe sind nicht essenziell für das Spiel, also wird sich auf den Begriff des Lernens fokussiert. Dieser wird definiert als "\ Im familien- und schulergänzenden Kontext kommt dem Lernen in seinen spielerischen, sensomotorischen, entdeckenden und selbstgesteuerten Aspekten Bedeutung zu. Das begriffliche und kognitive Lernen steht zwar nicht im Vordergrund, spielen aber ebenfalls eine Rolle"\footnote{Vgl. Päda.logics! (2019, o. S.)}. %TODO Umschreiben Direktes Zitat nicht geht, Quellenverzeichnis überprüfen
 In dem Fall des Projektes sollten die Spiele für die Kinder spielerisch sein und ihr kognitives Lernen fördern. Zeitgleich sollten die Spiele nicht über dem Niveau der ersten bis vierten Klasse stehen.\\
