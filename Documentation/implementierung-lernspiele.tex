@@ -5,16 +5,37 @@
 
 %TODO Variablen in den Skripten Checken
 \subsubsection{Menü - Design}
-\graphic{menuLearning}{Auswahl der Level}
 
-In der Abbildung 5.15 ist die Auswahl der sechs unterschiedlichen Level zu sehen. Die Szene besteht aus einem Zurück-Button und sechs weiteren für die Lernspiele. Mit dem zurück Button kommt man wieder in das Hauptmenü. Die restlichen Buttons leiten den Nutzer ein Menü weiter. In dem nächsten Menü werden die Alternativen und die Schwierigkeiten des Spiels festgelegt. Die Buttons wurden im Programm \textit{Inkscape vector graphics} erstellt. Damit die beiden Teile des Projektes zusammenpassen, wurde ein einheitliches Design überlegt. Dieses unterscheidet sich in den Farben und in den Buttons. Der Hintergrung, die Art der Buttons und die Schrifftart sind die gleichen. So das das Kind anhand der Farben einen Unterschied in den Abschnitten Rätseln und Lernspiele erkennen kann. In dieser Szene wurde für jeden Button ein PNG entworfen. Wie dies im Programm \textit{Inkscape} aussieht ist in der Abbildung 5.16 zu sehen.\\
-\graphic{InkscapeButtonGreen}{Button-Design} 
-Der Button besteht aus mehreren Objekten, welche in Abbildung 5.17 zu sehen sind. Für den Hintergrund des Buttons wurden drei Rechtecke erzeugt, ein weißes, ein dunkelgüßnes und ein hellgrünes. Diese werden immer kleiner und anschließend übereinander gelegt. Von allen Rechtecken werden die Kanten abgerundet. Als letztes werden noch zwei Textfelder eingefügt. Jedes der Textfelder ist unterschiedlich gestaltet, so dass am Ende die gewünschte Schrift rauskommt. 
-\graphic{InkscapeButtonSingleTiles}{Button einzelteile}
-Nachdem das Design für die einzelnen Buttons fertig sind, werden diese in Unity auf die \textit{Image} Komponente des Buttons gezogen. Dies ist in der Abbildung 5.18 zu sehen.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/menuLearning.PNG}
+  \caption{Auswahl der Level}
+  \label{MenüLernen01}
+\end{figure}
+
+
+In der Abbildung \ref{MenüLernen01} ist die Auswahl der sechs unterschiedlichen Level zu sehen. Die Szene besteht aus einem Zurück-Button und sechs weiteren für die Lernspiele. Mit dem zurück Button kommt man wieder in das Hauptmenü. Die restlichen Buttons leiten den Nutzer ein Menü weiter. In dem nächsten Menü werden die Alternativen und die Schwierigkeiten des Spiels festgelegt. Die Buttons wurden im Programm \textit{Inkscape vector graphics} erstellt. Damit die beiden Teile des Projektes zusammenpassen, wurde ein einheitliches Design überlegt. Dieses unterscheidet sich in den Farben und in den Buttons. Der Hintergrung, die Art der Buttons und die Schrifftart sind die gleichen. So das das Kind anhand der Farben einen Unterschied in den Abschnitten Rätseln und Lernspiele erkennen kann. In dieser Szene wurde für jeden Button ein PNG entworfen. Wie dies im Programm \textit{Inkscape} aussieht ist in der Abbildung \ref{ButtonInkscape} zu sehen.\\
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/InkscapeButtonGreen.PNG}
+  \caption{Button-Design}
+  \label{ButtonInkscape}
+\end{figure}
+Der Button besteht aus mehreren Objekten, welche in Abbildung \ref{ButtonInkscapeSingleTiles} zu sehen sind. Für den Hintergrund des Buttons wurden drei Rechtecke erzeugt, ein weißes, ein dunkelgüßnes und ein hellgrünes. Diese werden immer kleiner und anschließend übereinander gelegt. Von allen Rechtecken werden die Kanten abgerundet. Als letztes werden noch zwei Textfelder eingefügt. Jedes der Textfelder ist unterschiedlich gestaltet, so dass am Ende die gewünschte Schrift rauskommt. 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/InkscapeButtonSingleTiles.PNG}
+  \caption{Button einzelteile}
+  \label{ButtonInkscapeSingleTiles}
+\end{figure}
+Nachdem das Design für die einzelnen Buttons fertig sind, werden diese in Unity auf die \textit{Image} Komponente des Buttons gezogen. Dies ist in der Abbildung \ref{UnityButtonImgChange} zu sehen.
 In dieser Abbildung, markiert ein grüner Pfeil die Stelle ab der das Image des Buttons ausgewählt wird.
-\graphic{buttonImgChange}{Button Image ändern}
-
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/buttonImgChange.PNG}
+  \caption{Button Image ändern in Unity}
+  \label{UnityButtonImgChange}
+\end{figure}
 \subsubsection{Menü - Skript}
 
 In diesem Abschnitt wird das Skript erklärt, welches die Auswahl der Level verwaltet.
@@ -51,8 +72,18 @@ public class MenuPickLevel : MonoBehaviour
 
 Nachdem alle notwendigen Bibliotheken eingebunden wurden, wird die Klasse deklariert. Die Klasse bekommt hinten \textit{MonoBehaviour} angehängt, dies ermöglicht unteranderem Funktionen wie \textit{void start()} und \textit{void() update} zu nutzen. Wenn ein Skript diese Funktionen nicht benötigt, weil es zum Beispiel nur etwas ausrechen muss, so kann das \textit{MonoBehaviour} dahinter weggelassen werden.\\
 In den darauf folgenden Zeilen werden die Variablen deklariert die für das Skript notwendig sind. Zuerst werden die Buttons deklariert. Der auskommentierte Code, welcher in der Abbildung für eine bessere Übersichtlichkeit nicht dargestellt wird, stellt eine alternative Lösung dar. In Unity können Buttons in das Skript eingefügt werden, welches man in Abbildung 5.16 sehen kann. Dadurch können wir im Code dann auf das Objekt des jeweiligen Buttons zugreifen und mit diesen arbeiten. Es gibt zwei Möglichkeiten mehrere Buttons zu implementieren. Entweder man deklariert die anzahl an Buttons selbst oder man nutzt ein Array dafür. Beides ist in den folgenden Abbildungen zu sehen.
-\graphic{buttonZuweisen}{Buttons in Unity einzeln zuweisen}
-\graphic{buttonsIntoArray}{Buttons in Unity in Array einfügen}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/buttonZuweisen.PNG}
+  \caption{Buttons in Unity einzeln zuweisen}
+  \label{singleButtonUnity}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/buttonsIntoArray.PNG}
+  \caption{Buttons in Unity in Array einfügen}
+  \label{arrayButtonUnity}
+\end{figure}
 In C\# gibt es standardmäßig nicht die Möglchkeit ein \textit{Const Array} zu erstellen. Für jeden Button wird in diesem Skript eine Konstante benötigt, denn diese soll dem nachfolgenden Skript weiterleiten welcher Button gedrückt wurde. Dies ist wichtig, da die Level unterschiedliche Varianten und Schwierikeitsgrade beinhalten und dementsprechend unterschiedliche Buttons angezeigt werden. Um ein Array zu deklarieren, welches ähnlich zu einer Konstanten funktioniert, kann ein Array welches \textit{readonly} ist oder eine Enumeration verwendet werden. Eine Enumeration ist eine Reihe benannter Konstanten, das heißt alle Komma die von Hand einzeln erzeugt wurden, können in die Enumeration eingespeichert werden. Da diese Lösung weniger Code benötigt und für mehrere Buttons effektiver ist, wurde diese Möglichkeit auch umgesetzt. In der Menü-Szene sind beide Möglichkeiten im Code geschrieben, aber die Umsetzung alle Buttons und Konstanten einzeln zu deklarieren wurde auskommentiert.\\
 Als letztes wird eine statische Variable deklariert, welche später den Wert einer Konstanten zugewiesen bekommt. In der nächsten Szene kann dann auf diese zugegriffen werden und somit ist dem nachfolgenden Skript dann klar, welche Buttons für die nächste Szene geladen werden müssen. In Unity gibt es unterschiedliche Möglichkeiten, um Werte zwischen Skripten transferieren zu können. Einmal wären das static Variablen. Unity selbst bietet aber auch die Möglichkeit einen Wert in eine Varibale in einem file zu speichern, dafür wird der \textit{PlayerPrefs.setInt/String/Float("variablen name", variablen wert);} verwendet. Diese Variante wird in diesem Skript nicht verwendet, da nur die Information aus dem alten Skript benötigt wird und diese nur für diese beiden Skripte notwendig ist. Wenn die Information für mehrere Skripte notwendig wäre, könnte man diese durch den \textit{PlayerPrefs} Befehl speichern.\\
 
@@ -113,12 +144,27 @@ In dieser Szene ist noch anzumerken, dass es einen Fehler bei den Konstanten gab
 
 \subsection{Szene - Erweitertes Menü}
 \subsubsection{Erweitertes Menü - Design}
-In diesem Abschnitt, wird das Design des erweiterten Menüs erklärt. In diesem Menü gibt es wieder einen Zurück-Button, der in das vorherige Menü zurückleitet. Auf der linken Seite des Menüs werden die alternativen Spielmodi angezeigt und auf der rechten Seite die Schwierigkeitsgraden. Zu sehen ist dies in der Abbildung 5.20. Die Alternativen sind nicht für jedes Level vorhanden oder gleich, wenn es keine zur Auswahl gibt, ist die linke Hälfte  leer. Für die beiden Seiten wurden auch wieder mehrere Button-Designs angefertigt.
-\graphic{basicOperatorsAdvanced}{Auswahl der einzelnen Optionen eines Levels}
-Um das ausgewählte Spiel starten zu können, muss auf beiden Seiten eine Option gewählt werden. Solange nicht auf beiden Seiten ein Button ausgewählt wurde, ist der Start-Button deaktiviert. Wenn ein Button auf einer Seite ausgewählt, wurde wird dieser keaktiviert und kann nicht wiederholt ausgewählt werden. Sobald eine andere Alternative ausgewält wird, wird diese deaktiviert und die andere wieder aktiviert. So wird verhindert, dass nie mehr als eine möglichkeit aktiviert sein kann. Wenn ein Level ohne Alternativenwahl ausgewählt wurde, muss nur eine Schwierigkeit ausgewählt werden, um das Spiel zu starten. In der Abbildung 5.21 ist eine Auswahl zu sehen. Der Start-Button ist hier noch deaktiviert, weil keine Schwierigkeit gewählt wurde. 
-\graphic{basicOperatorsAdvancedSingleChoice}{Einzelne Auswahl}
+In diesem Abschnitt, wird das Design des erweiterten Menüs erklärt. In diesem Menü gibt es wieder einen Zurück-Button, der in das vorherige Menü zurückleitet. Auf der linken Seite des Menüs werden die alternativen Spielmodi angezeigt und auf der rechten Seite die Schwierigkeitsgraden. Zu sehen ist dies in der Abbildung \ref{AdvancedMenü}. Die Alternativen sind nicht für jedes Level vorhanden oder gleich, wenn es keine zur Auswahl gibt, ist die linke Hälfte  leer. Für die beiden Seiten wurden auch wieder mehrere Button-Designs angefertigt.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/basicOperatorsAdvanced.PNG}
+  \caption{Auswahl der einzelnen Optionen eines Levels}
+  \label{AdvancedMenü}
+\end{figure}
+Um das ausgewählte Spiel starten zu können, muss auf beiden Seiten eine Option gewählt werden. Solange nicht auf beiden Seiten ein Button ausgewählt wurde, ist der Start-Button deaktiviert. Wenn ein Button auf einer Seite ausgewählt, wurde wird dieser keaktiviert und kann nicht wiederholt ausgewählt werden. Sobald eine andere Alternative ausgewält wird, wird diese deaktiviert und die andere wieder aktiviert. So wird verhindert, dass nie mehr als eine möglichkeit aktiviert sein kann. Wenn ein Level ohne Alternativenwahl ausgewählt wurde, muss nur eine Schwierigkeit ausgewählt werden, um das Spiel zu starten. In der Abbildung \ref{singleChoice} ist eine Auswahl zu sehen. Der Start-Button ist hier noch deaktiviert, weil keine Schwierigkeit gewählt wurde. 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/basicOperatorsAdvancedSingleChoice.PNG}
+  \caption{Einzelne Auswahl}
+  \label{singleChoice}
+\end{figure}
 Nachdem auf jeder Seite ein Button gewählt wurde, ist der Start-Button nicht mehr deaktiviert und der Spieler kann das Spiel starten.
-\graphic{basicOperatorsAdvancedFinish}{Auswahlbedingung um das Level zu laden}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/basicOperatorsAdvancedFinish.PNG}
+  \caption{Auswahlbedingung um das Level zu laden}
+  \label{startLevel}
+\end{figure}
 \subsubsection{Erweitertes Menü - Skript}
 In diesem Abschnitt, wird das Skript erklärt. Da die Imports die selben sind, werden diese nicht erneut erklärt.
 \begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs Variablendeklaration}]
@@ -340,14 +386,19 @@ Dieses Skript arbeitet gleich wie das Skript davor. Es überprüft welche der vi
 In diesem Skript kam es zu einem Problem, nachdem das erste Menü Skript angepasst wurde. Dieses Skript läuft mit einer \textit{For}-Schleife durch und erzeugt je nachdem welche Zahl in der Variablen \textit{loadButtonsNumber} steht die richtige Anzahl an Buttons. Für das Spiel "größer, kleiner, gleich"\ erzeugt es zwei Buttons und für die Grundrechenarten vier. Da aber die Grundrechenarten die Nummer Drei bekamen wurde ein Button zu wenig erzeugt. Um dies zu verhindern, wird am Anfang einmal überprüft ob die \textit{loadButtonsNumber} zu diesem Zeitpunkt eine drei beinhaltet und wenn ja wird die Größe auf vier gesetzt, wenn das nicht der Fall ist wird diese auf zwei gesetzt. Somit wird die richtige Anzahl an Buttons für die Alternativen erzeugt.\\
 Die \textit{For}-Schleife muss auch hier wieder eine temporäre Variable erzeugen, hier wurde sie \textit{copy} genannt. Um Objekte durch ein Skript zu erzeugen, wird in das Objekt \textit{spawnedObject} mithilfe der Instantiate-Methode, dies ist eine Methode um ein Objekt zu spawnen der Button erzeugt. Die Instantiate-Methode bekommt ein \textit{GameObject} das sie spawnen soll, in diesem Fall den Button Prefab. Dann benötigt sie eine Position, das wäre die Position des Spawners auf der linken Seite. Diese bekommt man durch den Aufruf \textit{spawnerLeft.transform.position}. Dieser gibt die Position des \textit{GameObject} auf der linken Seite zurück und an dieser Stelle soll der Button erzeugt werden. Da sie keine Rotation benötigt, wird als letzer Übergabewert \textit{Quaternion.identity} verwendet.
 Damit in Unity die Objekte in der Hierarchie unterscheidbar waren, bekamen sie an den Namen ein "i"\ angehängt(spawnedObject0).\\
-Um die Buttons richtig anzuordnen wurde ein Overlay mit vertikalen und horizontalen Layoutgroups angelegt. In der Abbildung 5.23 ist dies zu sehen. Das Objekt \textit{Choices}  eine bekam eine horizontale Layoutgruppe, die Objekte \textit{leftSite} und \textit{rightSite} bekamen eine vertikale Layoutgruppe. 
+Um die Buttons richtig anzuordnen wurde ein Overlay mit vertikalen und horizontalen Layoutgroups angelegt. In der Abbildung \ref{layoutAdvancedMenu} ist dies zu sehen. Das Objekt \textit{Choices}  eine bekam eine horizontale Layoutgruppe, die Objekte \textit{leftSite} und \textit{rightSite} bekamen eine vertikale Layoutgruppe. 
 %TODO Maybe noch ein Bild
 Damit die Buttons in diesen Objekten zu sehen sind, wird dem \textit{spawnedObjekt} ein Elternobjekt zugewiesen. Um dies zu erreichen, wird \textit{spawnedObject.transform.SetParent} aufgerufen. Danach wird das Objekt an der richtigen Stelle angezeigt, aber nicht in der richtigen Größe. Unity skaliert das Objekt kleiner, da es hierbei die Größe des Objekts nimmt in dem das neue Objekt erzeugt wird. Damit das Objekt die Originalgröße behält, wird für das erzeugte Objekt die Skalierung auf die originale Größe gesetzt. Auch dies ist mithilfe des \textit{.transfom.localScale} Befehls möglich.\\
 Bilder in Unity werden unscharf dargestellt. Dies kann verhindert werden, wenn die Option \textit{preserveAspect} auf \textit{true} gesetzt wird. Dies wird auch für jedes erzeugte Objekt in dieser Funktion erledigt.\\
 Nachdem alle Buttons für die linke Seite erzeugt wurden, werden diese in die Liste \textit{LeftSideList} gespeichert und bekommen danach den Listener zugewiesen. Dieser ruft dann die Funktion auf, die speichert welche Alterantive des Spiels gespeichert werden soll.\\
 Nachdem die Buttons links erzeugt wurden, muss die Funktion in einer \textit{If} und \textit{else if}-Abfrage überprüfen welche Bilder den Buttons zugewiesen werden sollen, sonst würde auf den Buttons nichts stehen. Wenn die Variable \textit{size} die Zahl Zwei beinhaltet, wird auf den Button Links in den Komponenten Image das passende Bild aus dem Array gespeichert. Der Befehl \textit{leftSideList[i].GetComponentInChildren<Image>().sprite = quantitiesModes[i];} nimmt die Komponeten des Buttons aus der Liste \textit{leftSideListe} und fügt das Bild aus dem Array an der Stelle i ein.\\
 Für die Grunrechenarten wird dasselbe angewandt, in dem fall ist die Variable gleich vier ist.
-\graphic{LayoutMenuAdvanced}{Layout Erweitertes-Menü}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/LayoutMenuAdvanced.PNG}
+  \caption{Layout Erweitertes-Menü}
+  \label{layoutAdvancedMenu}
+\end{figure}
 \begin{lstlisting}[language=csh, caption={MenuPickLevelAdvanced.cs SpawnButtonsRight-Funktion}]
 	public void SpawnButtonsRight(){
 		for (int i = 0; i < 3; i++){
@@ -367,10 +418,25 @@ Für die Grunrechenarten wird dasselbe angewandt, in dem fall ist die Variable g
 Die Funktion \textit{SpawnButtonsRight} arbeitet gleich wie die SpawnButtonsLeft-Funktion, nur dass in diesem Fall immer drei Buttons gespawnt, auf die richtige größe skaliert und in eine Liste eingefügt werden. Diesen werden danach dann die Bilder der unterschiedlichen Schwierkeitsgrade hinzugefügt.
 \subsection{Szene - Grundrechenarten}
 \subsubsection{Grundrechenarten - Design}
-\graphic{addition}{Grundrechenarten - Addition}
-In der Szene der Grundrechenarten gibt es ein Textfeld, welches mit einem grünen Pfeil markiert wurde. In diesem steht der Operator, also ob das Kind addieren, subtrahieren, multiplizieren oder dividieren soll. Die Szene kann mit dem Menü-Button oben links verlassen werden. Die Überschrift der Szene sagt dem Kind, dass es den Term ausrechnen soll. Ganz rechts oben steht das aktuelle Level und wie viele es insgesamt gibt. Dies wird, sobald das Kind eine Rechnung richtig hat, um eins hochgezählt. In der Mitte der Szene steht links die erste Zahl, dann der Operator, dann die zweite Zahl. Danach kommt das Gleichheitszeichen und ein Eingabefeld für die Lösung des Nutzers. Dieses Feld wird grün umrandet, wenn die Lösung richtig ist und rot, wenn diese falsch ist. Nach einer falschen Eingabe wird das Eingabefeld wieder geleert. In der Abbildung 5.24 und 5.25 ist der grüne und rote Rand zu sehen. Dieser wird in diesem Fall aus der Szene "größer, kleiner, gleich"\ sein, ist aber in den Szenen, in denen er verwendet wird, gleich. 
-\graphic{rightChoiceQuantities}{Grüner Rahmen}
-\graphic{wrongChoiceQuantites}{Roter Rahmen}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/addition.jpg}
+  \caption{Grundrechenarten - Addition}
+  \label{basicOperation}
+\end{figure}
+In der Szene der Grundrechenarten gibt es ein Textfeld, welches mit einem grünen Pfeil markiert wurde. In diesem steht der Operator, also ob das Kind addieren, subtrahieren, multiplizieren oder dividieren soll. Die Szene kann mit dem Menü-Button oben links verlassen werden. Die Überschrift der Szene sagt dem Kind, dass es den Term ausrechnen soll. Ganz rechts oben steht das aktuelle Level und wie viele es insgesamt gibt. Dies wird, sobald das Kind eine Rechnung richtig hat, um eins hochgezählt. In der Mitte der Szene steht links die erste Zahl, dann der Operator, dann die zweite Zahl. Danach kommt das Gleichheitszeichen und ein Eingabefeld für die Lösung des Nutzers. Dieses Feld wird grün umrandet, wenn die Lösung richtig ist und rot, wenn diese falsch ist. Nach einer falschen Eingabe wird das Eingabefeld wieder geleert. In der Abbildung \ref{greenBorder} und \ref{redBorder} ist der grüne und rote Rand zu sehen. Dieser wird in diesem Fall aus der Szene "größer, kleiner, gleich"\ sein, ist aber in den Szenen, in denen er verwendet wird, gleich. 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth,height=0.30\textheight,keepaspectratio]{images/rightChoiceQuantities.PNG}
+  \caption{Grüner Rahmen}
+  \label{greenBorder}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.5\textwidth,height=0.30\textheight,keepaspectratio]{images/wrongChoiceQuantites.PNG}
+  \caption{Roter Rahmen}
+  \label{redBorder}
+\end{figure}
 Der Button \textit{Testen} löst die Funktion aus, die kontrolliert, ob richtig gerechnet wurde. Dieser ist deaktiviert, solange keine Zahl eingeben wurde und wird aktiviert, sobald eine Zahl darin steht.
 \subsubsection{Grundrechenarten - Skript}
 \begin{lstlisting}[language=csh, caption={MathOperations.cs Variablen-Deklaration}]
@@ -426,8 +492,13 @@ So weiß das Skript nun, ob es \textit{Addieren, Subtrahieren, Multiplizieren od
 		}
 	}
 \end{lstlisting}
-Die EnableButton-Funktion überprüft bei jeder Änderung des Wertes, ob das Input Feld leer ist oder nicht. Dies erfolgt mit der IsNullOrEmpty-Abfrage, da aber eine Integerzahl eingegeben wird, muss diese mit \textit{string.} in einen String umgewandelt werden. Wenn das Feld leer ist, wird der Button deaktiviert und das Eingabefeld aktiviert, sodass der Schüler/die Schülerin eine Eingabe tätigen kann. Wenn das Feld gefüllt ist, wird der Testbutton aktiviert. Damit in den jeweiligen Szenen keine falsche Eingabe gemacht werden kann, also bei den mathematischen Spielen kein Text und bei dem Deutsch-Spiel keine Zahl eingegeben werden kann, wird in Unity die Eingabe auf den jeweiligen Wert festgelegt. Dies ist in Abbildung 5.27 zu sehen.
-\graphic{inputType}{Festlegen welcher Wert in das Input-Feld geschrieben werden darf}
+Die EnableButton-Funktion überprüft bei jeder Änderung des Wertes, ob das Input Feld leer ist oder nicht. Dies erfolgt mit der IsNullOrEmpty-Abfrage, da aber eine Integerzahl eingegeben wird, muss diese mit \textit{string.} in einen String umgewandelt werden. Wenn das Feld leer ist, wird der Button deaktiviert und das Eingabefeld aktiviert, sodass der Schüler/die Schülerin eine Eingabe tätigen kann. Wenn das Feld gefüllt ist, wird der Testbutton aktiviert. Damit in den jeweiligen Szenen keine falsche Eingabe gemacht werden kann, also bei den mathematischen Spielen kein Text und bei dem Deutsch-Spiel keine Zahl eingegeben werden kann, wird in Unity die Eingabe auf den jeweiligen Wert festgelegt. Dies ist in Abbildung \ref{inputField} zu sehen.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/inputType.PNG}
+  \caption{Festlegen welcher Wert in das Input-Feld geschrieben werden darf}
+  \label{inputField}
+\end{figure}
 Die Erklärung des Codes der Funktion, die in das Menü zurückkehrt, wird nicht eingefügt, da etwas in dieser Art schon erklärt wurde. Dieser setzt die statischen Variablen auf den Ursprungswert zurück und lädt die Menüszene.\\
 \begin{lstlisting}[language=csh, caption={MathOperations.cs PlayGame-Funktion}]
 public void PlayGame(int gameMode){
@@ -541,7 +612,12 @@ Dies ist die \textit{Coroutine} für alle Grundrechenarten außer der Division. 
 Der Unterschied zur Überprüfung der Division ist, in der Abfrage, anstatt zu testen ob die Eingabe das gleiche ist wie die Lösung, wird getestet, ob die Eingabe das gleiche wie die Zahl, die für das linke Feld generiert wurde ist.
 \subsection{Szene - Mengen vergleichen}
 \subsubsection{Mengen vergleichen - Design}
-\graphic{quantitiesObjects}{größer, kleiner, gleich}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/quantitiesObjects.PNG}
+  \caption{größer, kleiner, gleich}
+  \label{quantities}
+\end{figure}
 In dieser Szene gibt es zwei Möglichkeiten das Spiel zu spielen. Entweder werden in dem großen Feldern links und rechts mittig Zahlen oder mithilfe einer \textit{Layout Group} Objekte in vier Reihen eingefügt. Der Header der Szene beinhaltet einen Menü-Bbutton, eine kleine Aufgabenstellung und die Level-Anzeige. In der Mitte der Szene befindet sich ein leeres Viereck, welches anzeigt,welcher der unteren Buttons gedrückt wurde und ob die Lösung richtig oder falsch ist. Dies ist wieder mit einem grünen oder roten Rahmen umgesetzt. Ganz unten in der Szene gibt es drei verschiedene Buttons für die jeweilige Option "größer"\, "kleiner"\ oder "gleich"\. Die Buttons werden nach dem Auswählen einer Option deaktiviert, bis das nächste Level geladen hat oder bis das Kind erneut versuchen kann, die richtig Lösung zu bestimmten. Die Buttons mussten deaktiviert werden, da bei der richtigen Lösung auf den zutreffenden Button zehnmal gedrückt werden könnte und somit das Spiel nach einer Runde beendet wäre.\\
 \subsubsection{Mengen vergleichen - Skript}
 \begin{lstlisting}[language=csh, caption={GameQuantities.cs Variablen-Deklaration}]
@@ -746,11 +822,26 @@ Die \textit{Coroutine} ist dafür zuständig zu überprüfen, ob die Zahl im lin
 Diese Funktion aktiviert alle drei Buttons und wird aufgerufen nachdem das Kind den falschen Button ausgewählt hat.
 \subsection{Szene - Rechenmauer}
 \subsubsection{Rechenmauer - Design}
-\graphic{bottom5Tiles}{Rechenmauer mit fünf Steinen unten}
-Die Rechenmauer kann in drei verschiedenen Varianten gespielt werden. Je nach dem Schwierigkeitsgrad, wird diese mit fünf, vier oder drei Steinen in der untersten Reihe erzeugt. Im Header ist die Szene wie die anderen aufgebaut. In der Mitte wird die Mauer angezeigt, für welche ein Prefab eines Steines angelegt wurde, dieses wird dann mithilfe einer \textif{Layout Group} an die richtige Position gesetzt. Die Felder, die die unterste Reihe bilden, werden deaktiviert, damit der Nutzer diese nicht verändern kann. Wenn das Kind den Test Button drückt, werden die richtigen Felder auch deaktiviert, damit diese nicht wieder verfälscht werden können. Die falschen Steine werden geleert und das Kind muss die Lösung erneut eintragen. Dies ist in der Abbildung 5.30 zu sehen.\\
-\graphic{rechenmauerRichtigUndFalsch}{ Richtig und falsch gelöste Steine}
-Wenn der Schüler/die Schülerin die Rechenmauer komplett richtig gelöst hat, wird das anhand des Feuerwerks, das um den Test Button auftaucht angezeigt. Die Pyramide wird geleert und eine neue unterste Reihe wird erzeugt. Das Feuerwerk wird auch in dem Spiel "Führe die Reihe fort"\ angewendet und ist in Abbildung 5.31 zu sehen.
-\graphic{finisheTriangle}{Feuerwerk nach richtigem Lösen}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/bottom5Tiles.PNG}
+  \caption{Rechenmauer mit fünf Steinen unten}
+  \label{triangle}
+\end{figure}
+Die Rechenmauer kann in drei verschiedenen Varianten gespielt werden. Je nach dem Schwierigkeitsgrad, wird diese mit fünf, vier oder drei Steinen in der untersten Reihe erzeugt. Im Header ist die Szene wie die anderen aufgebaut. In der Mitte wird die Mauer angezeigt, für welche ein Prefab eines Steines angelegt wurde, dieses wird dann mithilfe einer \textif{Layout Group} an die richtige Position gesetzt. Die Felder, die die unterste Reihe bilden, werden deaktiviert, damit der Nutzer diese nicht verändern kann. Wenn das Kind den Test Button drückt, werden die richtigen Felder auch deaktiviert, damit diese nicht wieder verfälscht werden können. Die falschen Steine werden geleert und das Kind muss die Lösung erneut eintragen. Dies ist in der Abbildung \ref{wrongAndRightStone} zu sehen.\\
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/rechenmauerRichtigUndFalsch.PNG}
+  \caption{Richtig und falsch gelöste Steine}
+  \label{wrongAndRightStone}
+\end{figure}\\
+Wenn der Schüler/die Schülerin die Rechenmauer komplett richtig gelöst hat, wird das anhand des Feuerwerks, das um den Test Button auftaucht angezeigt. Die Pyramide wird geleert und eine neue unterste Reihe wird erzeugt. Das Feuerwerk wird auch in dem Spiel "Führe die Reihe fort"\ angewendet und ist in Abbildung \ref{firework} zu sehen.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/finisheTriangle.PNG}
+  \caption{Feuerwerk nach richtigem Lösen}
+  \label{firework}
+\end{figure}\\
 \subsubsection{Rechenmauer - Skript}
 \begin{lstlisting}[language=csh, caption={Triangle.cs Variablen-Deklaration}]
 public class Triangle : MonoBehaviour
@@ -939,7 +1030,7 @@ Diese Funktion deklariert die Größe eines normalen Arrays, welches die Größe
 		spawnedObject.transform.localScale = scaleSize;
 	}
 \end{lstlisting}
-In dieser Funktion werden die Prefabs des Feuerwerks erzeugt. Dafür werden die Objekte so wie in den anderen Skripten erzeut. Der Unterschied hierbei ist, das das Feuerwerk eine Rotation benötigt um nicht gerade aufzutauchen. Daher werden aus den Bereichen links und rechts um den Test-Button die Werte der Rotation genommen und das Feuerwerk Objekt rotiert. Um an die Werte zu kommen, wird \textit{leftFirework.transfom.rotation} aufgerufen. Die beiden Feuerwerk Objekte wurde auch in diesem Fall wieder zu klein Skaliert und müssen auch wieder auf die Originalgröße skaliert werden.\\
+In dieser Funktion werden die Prefabs des Feuerwerks erzeugt. Dafür werden die Objekte so wie in den anderen Skripten erzeut. Der Unterschied hierbei ist, dass das Feuerwerk eine Rotation benötigt um nicht gerade aufzutauchen. Daher werden aus den Bereichen links und rechts um den Test-Button die Werte der Rotation genommen und das Feuerwerk-Objekt rotiert. Um an die Werte zu kommen, wird \textit{leftFirework.transfom.rotation} aufgerufen. Die beiden Feuerwerk Objekte wurden auch in diesem Fall wieder zu klein skaliert und müssen auch wieder auf die Originalgröße skaliert werden.\\
 \begin{lstlisting}[language=csh, caption={Triangle.cs DeleteFirework-Funktion}]
 	public void DeleteFirework(){
 		Destroy(leftFirework.transform.GetChild(0).gameObject);
@@ -976,12 +1067,22 @@ Damit das Feuerwerk nach einer Sekunde wieder verschwindet, wird die Funktion \t
 Hier wird überprüft, ob die Mauer komplett richtig gerechnet wurde. Dafür wird eine boolean Variable benötigt, diese ist standardmäßig mit \textit{false} implementiert. Nachdem die Funktion getestet hat, ob das Kind noch nicht alle Level gespielt hat, wird mit einer doppelten \textit{for}-Schleife überprüft, ob die Eingabe des Kindes die gleiche ist wie die Zahlen in dem Lösungsarray. Wenn ein Ergebnis richtig ist, wird das Eingabefeld deaktiviert und die Schleife springt einen Durchgang weiter. Wenn eine der Eingaben nicht richtig ist, wird das Feld geleert, der Fehlerzähler wird eins nach oben gezählt und die Variable \textit{finished} wird auf \textit{true} gesetzt. Wenn die Variable \textit{false} ist, wurde die gesamte Mauer gelöst, also wird das Feuerwerk mit dem Aufruf der Funktion \textit{SpawnFirework()} erzeugt. Dann wartet das Skript mithilfe des \textit{yield return new WaitForSeconds(sec)} eine Sekunde. Danach wird das Feuerwerk mit der Funktion \textit{DeleteFirework()} gelöscht. Als Letztes wird die Funktion \textit{PlayGame()} aufgerufen und damit eine neue Mauer generiert.\\
 \subsection{Szene - Blitzblick}
 \subsubsection{Blitzblick - Design}
-\graphic{lightningViewWithoutCover}{Blitzblick ohne Vorhang}
-\graphic{lightningViewCover} Blitzblick mit Vorhang}
-Die Szene ist hier in zwei Bildern gezeigt. In der Abbildung 5.32 ist die Szene ohne den Vorhang zu sehen und in der Abbildung 5.33 mit dem Vorhang. Das Spiel Blitzblick, zeigt dem Schüler/der Schülerin, eine Anzahl an Objekten und verdeckt diese danach. Das Kind, muss dann sehr schnell sehen, wie viele der Objekte angezeigt wurden und diese in ein Textfeld eingeben. Wenn das Kind den Testbutton auswählt wird die Zahl überprüft und wenn es richtig lag wird eine neue Runde geladen. Wenn das Kind die falsche Anzahl angibt, bekommt es die Objekte noch einmal für eine Sekunde zu sehen. Die Zeit, wie lange die Objekte zu sehen sind, wird nicht verringert oder erhöht, da eine Sekunde für die vorhergesehen Anzahl an Objekten schon schwer ist.\\
-Die Szene hat einen Header wie jede andere, in diesem ist ein Menü Button, eine Überschrift und die Levelanzahl zu sehen. In der Mitte der Szene ist das Feld, indem die Objekte auftauchen, dieses wird von einem grünen Vorhang verdeckt. Rechts davon ist das Eingabefeld für den Nutzer. Ganz unten in der Szene ist der Button zum Testen seiner Lösung. Dieser ist, solange keine Zahl eingegeben wurde, deaktiviert. In dieser Szene wird dem Schüler/der Schülerin durch einen grünen Rahmen angezeigt, ob die Lösung richtig oder falsch ist.\\
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/lightningViewWithoutCover.PNG}
+  \caption{Blitzblick ohne Vorhang}
+  \label{withoutCover}
+\end{figure}\\
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/lightningViewCover.PNG}
+  \caption{Blitzblick mit Vorhang}
+  \label{withCover}
+\end{figure}\\
+Die Szene ist hier in zwei Bildern gezeigt. In der Abbildung \ref{withoutCover} ist die Szene ohne den Vorhang zu sehen und in der Abbildung \ref{withCover} mit dem Vorhang. Das Spiel Blitzblick zeigt dem Schüler/der Schülerin eine Anzahl an Objekten und verdeckt diese danach. Das Kind muss dann sehr schnell sehen wie viele der Objekte angezeigt wurden und diese in ein Textfeld eingeben. Wenn das Kind den Test-Button auswählt, wird die Zahl überprüft und wenn es richtig lag, wird eine neue Runde geladen. Wenn das Kind die falsche Anzahl angibt, bekommt es die Objekte noch einmal für eine Sekunde zu sehen. Die Zeit, wie lange die Objekte zu sehen sind, wird nicht verringert oder erhöht, da eine Sekunde für die vorhergesehene Anzahl an Objekten einen angemessenen Schwierigkeitsgrad hat.\\
+Die Szene hat wie jede andere einen Header. In diesem ist ein Menü-Button, eine Überschrift und die Levelanzahl zu sehen. In der Mitte der Szene ist das Feld, in dem die Objekte auftauchen, welches von einem grünen Vorhang verdeckt wird. Rechts davon ist das Eingabefeld für den Nutzer. Ganz unten in der Szene ist der Button zum Testen der Lösung. Dieser ist, solange keine Zahl eingegeben wurde, deaktiviert. In dieser Szene wird dem Schüler/der Schülerin durch einen grünen Rahmen angezeigt, ob die Lösung richtig oder falsch ist.\\
 \subsubsection{Blitzblick - Skript}
-\begin{lstlisting}[language=csh, caption={lightningView.cs Variablen Deklaration}]
+\begin{lstlisting}[language=csh, caption={lightningView.cs Variablendeklaration}]
 public class lightningView : MonoBehaviour {
 
 	public Text showLevel;
@@ -1011,7 +1112,7 @@ public class lightningView : MonoBehaviour {
 	private bool hitPosition = false;
 	private Vector3 scaleSize = new Vector3 (1.0f, 1.0f, 1.0f);
 \end{lstlisting}
-Für dieses Spiel benötigen wir wieder ein Textfeld, um das Level anzuzeigen. Die Szene benötigt, auch ein Eingabefeld und ein Objekt, um die Farbe des Rahmens zu ändern. Da in diesem Skript wieder Objekte erzeugt werden, wird ein Bereich in denen diese auftauchen sollen, festgelegt. In Unity wurde ein Prefab der Objekte vorbereitet. Damit der Vorhang über den Objekten zu sehen ist, wird dieser auch durch ein Prefab geladen. In diesem Skript werden die Objekte an zufälligen Positionen erzeugt, damit diese nicht aufeinander liegen, wird die position in eine Vektor-Liste eingespeichert. Um das Spiel zu managen, werden ein paar \textit{private} Attribute benötigt. Um zu unterscheiden, wie groß die minimal Distanz sein soll, wurde eine Variable deklariert. Um eine Überschneidung zu finden, benötigt das Skript eine Boolean variable. Die Objekte werden auch in diesem Fall wieder zu klein skaliert, deswegen wird wieder ein Vektor mit der Standartgröße festgelegt\\
+Für dieses Spiel wird ein Textfeld benötigt, um das Level anzuzeigen. Die Szene benötigt auch ein Eingabefeld und ein Objekt, um die Farbe des Rahmens zu ändern. Da in diesem Skript wieder Objekte erzeugt werden, wird ein Bereich, in dem diese auftauchen sollen, festgelegt. In Unity wurde ein Prefab der Objekte vorbereitet. Damit der Vorhang über den Objekten zu sehen ist, wird dieser auch durch ein Prefab geladen. In diesem Skript werden die Objekte an zufälligen Positionen erzeugt. Damit diese nicht aufeinander liegen, wird die Position in eine Vektor-Liste eingespeichert. Um das Spiel zu verwalten, werden einife \textit{private} Attribute benötigt. Um zu unterscheiden, wie groß die minimale Distanz zwischen den Objekten und zum Rand sein soll, wurde eine Variable deklariert. Um eine Überschneidung zu finden, benötigt das Skript eine boolean Variable. Die Objekte werden auch in diesem Fall wieder zu klein skaliert, deswegen wird wieder ein Vektor mit der Standardgröße festgelegt.\\
 \begin{lstlisting}[language=csh, caption={lightningView.cs Start-Funktion}]
 	void Start() {
 		minDistance = spawnedObject.GetComponent<RectTransform>().rect.width / 2;
@@ -1024,8 +1125,8 @@ Für dieses Spiel benötigen wir wieder ein Textfeld, um das Level anzuzeigen. D
 		playGame();
 	}
 \end{lstlisting}
-Diese \textit{Start} Funktion, legt als Erstes die minimale Distanz fest, die ein Objekt zu einem anderen Objekt besitzen darf. Diese wird wie folgt berechnet. Das Skript holt sich von dem Prefab Objekt \textit{spawnedObject} ein Rechteck. Der befehlt \textit{.GetComponent<RectTransform>().rect.width} sucht sich aus dem Prefab das Rechteck und nimmt von diesem die Breite. Die minimale Distanz zwischen den Objekten ist die Hälfte des bekommenen Rechtecks. Danach wird der Bereich für die Objekte auf die Originalgröße skaliert, da dieser nicht mit skaliert wurde. Das heißt, im Vollbildmodus wurde dieser nicht größer. Der Testbutton wird wieder deaktiviert. In dieser Szene werden von den statischen Variablen, nur die Levelanzahl verwendet. Das Feld der Objekte kann nur eine gewisse Anzahl an Objekten beinhalten und diese Zahl darf auch für die Kinder nicht zu groß werden. Um zu überprüfen, ob das Kind etwas in das Eingabefeld eingegeben hat, wird die \textit{onValueChange} Methode verwendet. Als Letztes wird die \textit{playGame()} aufgerufen.\\
-Die nächsten zwei Funktionen des Skriptes, laden das Menü und Aktivieren oder Deaktivieren den Test Button, diese sind ähnlich und werden deswegen nicht mehr genauer erläutert.\\
+Diese Start Funktion legt als Erstes die minimale Distanz fest, die ein Objekt zu einem anderen Objekt besitzen darf. Diese wird wie folgt berechnet. Das Skript holt sich von dem Prefab Objekt \textit{spawnedObject} ein Rechteck. Der Befehl \textit{GetComponent<RectTransform>().rect.width} sucht aus dem Prefab das Rechteck und nimmt von diesem die Breite. Die minimale Distanz zwischen den Objekten ist die Hälfte des bekommenen Rechtecks. Danach wird der Bereich für die Objekte auf die Originalgröße skaliert, da dieser nicht mitskaliert wurde. Das heißt, im Vollbildmodus wurde dieser nicht größer. Der Test-Button wird wieder deaktiviert. In dieser Szene werden von den statischen Variablen nur die Levelanzahl verwendet. Das Feld der Objekte kann nur eine gewisse Anzahl an Objekten beinhalten und diese Zahl darf auch für die Kinder nicht zu groß werden. Um zu überprüfen, ob das Kind etwas in das Eingabefeld eingegeben hat, wird die onValueChange Methode verwendet. Als Letztes wird die Funktion \textit{playGame()} aufgerufen.\\
+Die nächsten zwei Funktionen des Skriptes laden das Menü und aktivieren oder deaktivieren den Test-Button. Diese sind ähnlich zu den vorigen Funktionen und werden deswegen nicht genauer erläutert.\\
 \begin{lstlisting}[language=csh, caption={lightningView.cs buttonClick-Funktion}]
 	public void buttonClick(){
 		checkButton.interactable = false;
@@ -1035,8 +1136,8 @@ Die nächsten zwei Funktionen des Skriptes, laden das Menü und Aktivieren oder 
 		StartCoroutine(solutionWaiter(1));
 	}
 \end{lstlisting}
-Diese Funktion wird beim Aufruf des Testbuttons durchlaufen, da in dieser Szene über den Objekten ein Vorhang schwebt, wird dieser einmal gelöscht und die \textit{Coroutine}, die die Lösung überprüft wird aufgerufen.\\
-Auch die Funktion für die Zufallszahlen wird nicht genauer erklärt. In diesem Spiel wurde die maximale Zahl auf die zehn gesetzt. Da mehr Objekte das Feld nicht beinhalten können und Kinder nicht zu viele Objekte in so kurzer Zeit erkennen können.\\
+Diese Funktion wird beim Aufruf des Test-Buttons durchlaufen. Da in dieser Szene über den Objekten ein Vorhang schwebt, wird dieser einmal gelöscht und die \textit{Coroutine}, die die Lösung überprüft wird aufgerufen.\\
+Auch die Funktion für die Zufallszahlen wird nicht genauer erklärt. In diesem Spiel wurde die maximale Zahl der Objekte auf zehn gesetzt, da das Feld nicht mehr Objekte beinhalten kann und Kinder nicht zu viele Objekte in so kurzer Zeit erkennen können.\\
 \begin{lstlisting}[language=csh, caption={hideCircle.cs buttonClick-Funktion}]
 	public void hideCircle(){
 		StartCoroutine(waiter(1));
@@ -1051,7 +1152,7 @@ Auch die Funktion für die Zufallszahlen wird nicht genauer erklärt. In diesem 
 		solution.interactable = true;
 	}
 \end{lstlisting}
-Um den Vorhang nicht direkt am Anfang zu erzeugen, wird eine weiter \textit{Coroutine} geladen, diese deaktiviert das Eingabefeld für den Nutzer so lange bis der Vorhang aufgetaucht ist, dies hat den Vorteil, dass der Nutzer nicht schon direkt die Zahl eintragen kann, sondern wirklich eine Sekunde warten muss. Danach wird wie in anderen Szenen das Objekt erzeugt. Da der Vorhang aber erst zu klein war und in der Originalgröße zu groß ist, wird diese mit 0.75 multipliziert.\\
+Um den Vorhang nicht direkt am Anfang zu erzeugen, wird eine weitere \textit{Coroutine} geladen. Diese deaktiviert das Eingabefeld für den Nutzer so lange bis der Vorhang aufgetaucht ist. Dies hat den Vorteil, dass der Nutzer/Nutzerin nicht schon direkt die Zahl eintragen kann, sondern wirklich eine Sekunde warten muss. Danach wird, wie in anderen Szenen, das Objekt erzeugt. Da der Vorhang aber erst zu klein war und in der Originalgröße zu groß ist, wird diese mit 0.75 multipliziert.\\
 \begin{lstlisting}[language=csh, caption={hideCircle.cs setObjects-Funktion}]
 	public void setObjects(){
 		Debug.Log(numberLeft);
@@ -1064,7 +1165,7 @@ Um den Vorhang nicht direkt am Anfang zu erzeugen, wird eine weiter \textit{Coro
 		}
 	}
 \end{lstlisting}
-Hier werden für die zufällig generierte Zahl die Objekte mithilfe einer \textit{For}-Schleife generiert. Diese werden auf die normale Größe skaliert und danach wird die Funktion \textit{ChangePosition(i)} aufgerufen.\\
+Hier werden für die zufällig generierte Zahl die Objekte mithilfe einer \textit{for}-Schleife generiert. Diese werden auf die normale Größe skaliert und danach wird die Funktion \textit{ChangePosition(i)} aufgerufen.\\
 \begin{lstlisting}[language=csh, caption={hideCircle.cs ChangePosition-Funktion}]
 	public void ChangePosition(int firstNumber){
 		RectTransform spawnRect = spawner.GetComponent<RectTransform>();
@@ -1104,9 +1205,10 @@ Hier werden für die zufällig generierte Zahl die Objekte mithilfe einer \texti
 
 	}
 \end{lstlisting}
-Hier wird eine zufällige Position in dem Rechteck \textit{spawner} erzeugt. Dafür, bekommt ein Objekt \textit{RectTransform} das Rechteck des \textit{spawner}. Von diesem Objekt werden die breite und Höhe in Variablen gespeichert. Dann wird für die X-Position und Y-Position eine Random Zahl erzeugt. Die X-Position wird aus der Breite berechnet. Die kleinste mögliche Zahl befindet sich an der Stelle \textit{-width/2 + minDistance}, die maximale Zahle befindet sich an der Stelle \textit{width/2 - minDistance}. Es muss die negative breite geteilt durch zwei sein, da das Skript vom Mittelpunkt des Objektes ausgeht, also muss erst die breite geteilt werden und danach ist die negative zahl davon ganz links. Damit das Objekt nicht auf dem Rand des Rechtecks spawnend, wird die minimale Distanz der Objekte darauf gerechnet. Für den ganz rechten Rand des Rechtecks wird die positive Breite geteilt und minus die minimale Distanz gerechnet. Für die Y-Position wird die gleiche Rechnung benötigt. Nur dass anstatt der breite die höhe des Rechtecks verwendet wird. Nachdem die beiden Positionen zufällig erzeugt wurden, werden diese in einen Vektor gespeichert. Wenn die Übergabe variable eine null ist, also wenn die \textit{For}-Schleife bei dem ersten durchlaufen ist, wird die Position, die im Vektor \textit{newPos} gespeichert wurde, in eine Liste gespeichert. Danach wird das Objekt an diese Position bewegt und die Funktion mithilfe des Befehls \textit{return} verlassen.\\
-Wenn das nicht der erste Durchlauf ist, wird mithilfe einer \textit{For}-Schleife, für das aktuelle Objekt zuerst die Distanz zwischen allen Objekten und der neuen Position berechnet. Die Methode \textit{.Distance} bekommt zwei Vektoren, mit den X und Y werden der Position übergeben und berechnet einen Vektor der die Distanz beinhaltet. Wenn die Distanz dann größer oder gleich unsere minimal Distanz ist, wurde eine Position gefunden, die genutzt werden kann, um das Objekt zu platzieren. Wenn das nicht der Fall ist, wird die Boolean Variable auf false gesetzt und die Schleife verlassen. In diesem Fall wird durch eine Abfrage die Funktion \textit{ChangePosition(firstNumber)} erneut aufgerufen. Wenn die Variable \textit{hitPosition} true ist, wird die neu gefundene Position in die Liste gespeichert und das Objekt an die besagte Position bewegt.\\
-Die Funktion, die die Objekte wieder löscht, ist dieselbe, die die Objekte in dem Spiel größer, kleiner, gleich löscht. Diese geht mithilfe einer \textit{foreach}-Schleife alle Objekte durch und löscht diese.\\
+Hier wird eine zufällige Position in dem Rechteck \textit{spawner} erzeugt. Dafür bekommt ein Objekt \textit{RectTransform} das Objekt aus \textit{spawner} zugewiesen. Der Vorteil hierbei ist, dass aus dem Objekt \textit{RectTransform} die höhe und breite ausgelesen werden kann. Diese werden in Variablen gespeichert. Dann wird für die x- und y-Position eine zufällige Zahl erzeugt. Die x-Position wird aus der Breite berechnet. Die kleinstmögliche  Zahl befindet sich an der Stelle \textit{(-width/2) + minDistance}, die maximale Zahl befindet sich an der Stelle \textit{(width/2) - minDistance}. Es muss die halbe negative Breite sein, da das Skript vom Mittelpunkt des Objektes ausgeht. Also muss erst die negative breite geteilt werden und danach die minimale Distanz darauf gerechnet werden. Das ergebnis ist die zahl die die Objekte nach links begrenzt. Für den rechten Rand des Rechtecks wird die positive Breite halbiert und minus der minimalen Distanz gerechnet. Für die y-Position wird die gleiche Rechnung benötigt. Nur dass anstatt der Breite die Höhe des Rechtecks verwendet wird. Nachdem die beiden Positionen zufällig erzeugt wurden, werden diese in einen Vektor gespeichert. Wenn die Übergabevariable eine Null ist, also wenn die \textit{for}-Schleife bei dem ersten Durchlaufen ist, wird die Position, die im Vektor \textit{newPos} gespeichert wurde, in eine Liste gespeichert. Danach wird das Objekt an diese Position bewegt und die Funktion mithilfe des Befehls \textit{return} verlassen.\\
+Wenn das nicht der erste Durchlauf ist, wird mithilfe einer \textit{for}-Schleife, für das aktuelle Objekt zuerst die Distanz zwischen allen Objekten und der neuen Position berechnet.
+Die Methode \textit{Distance} errechnet aus zwei Positionen die distanz zwischen diesen. Das ergebnis wird in einen Vektor gespeichert. Die Funktion benötigt die Positionen in Form eines Vektors um die Distanz zu berechnen. Wenn die Distanz dann größer oder gleich der minimalen Distanz ist, wird eine Position gefunden, die genutzt werden kann, um das Objekt zu platzieren. Wenn das nicht der Fall ist, wird die boolean Variable auf \textit{false} gesetzt und die Schleife verlassen. In diesem Fall wird durch eine Abfrage die Funktion \textit{ChangePosition(firstNumber)} erneut aufgerufen. Wenn die Variable \textit{hitPosition} \textit{true} ist, wird die neu gefundene Position in die Liste gespeichert und das Objekt an die besagte Position bewegt.\\
+Die Funktion, die die Objekte wieder löscht, ist dieselbe, die die Objekte in dem Spiel "größer"\ , "kleiner"\ , "gleich"\ löscht. Diese geht mithilfe einer \textit{foreach}-Schleife alle Objekte durch und löscht diese.\\
 \begin{lstlisting}[language=csh, caption={hideCircle.cs playGame-Funktion}]
 	public void playGame(){
 		counterRound++;
@@ -1125,7 +1227,7 @@ Die Funktion, die die Objekte wieder löscht, ist dieselbe, die die Objekte in d
 		hideCircle();
 	}
 \end{lstlisting}
-Die Funktion \textit{playGame} arbeitet ähnlich zu den anderen, zuerst wird der Level Zähler hochgezählt und getestet, ob das Kind noch Level spielen sollte. Wenn nicht, wird die Szene für den Abschluss geladen. Die Farbe des Rahmens wird wieder auf Weiß gesetzt und ein neues Level wird generiert. Dafür muss das Eingabefeld geleert werden und neue Objekte zufällig erzeugt werden. Als Abschluss, muss der Vorhang wieder auftauchen.\\
+Die Funktion \textit{playGame} arbeitet ähnlich zu den anderen. Zuerst wird der Zähler für die anzahl an Runden hochgezählt und getestet, ob das Kind noch Level spielen sollte. Wenn nicht, wird die Szene für den Abschluss geladen. Die Farbe des Rahmens wird wieder auf weiß gesetzt und ein neues Level wird generiert. Dafür muss das Eingabefeld geleert werden und neue Objekte zufällig erzeugt werden. Zum Schluss taucht der Vorhang wieder aus.\\
 \begin{lstlisting}[language=csh, caption={hideCircle.cs solutionWaiter-Funktion}]
 	IEnumerator solutionWaiter(int sec){
 		solution.interactable = false;
@@ -1151,13 +1253,18 @@ Die Funktion \textit{playGame} arbeitet ähnlich zu den anderen, zuerst wird der
 		}
 	}
 \end{lstlisting}
-Diese \textit{Coroutine} deaktiviert das Eingabefeld und überprüft, ob die eingeben Zahl dieselbe ist, wie die zufällig generierte. Wenn das der Fall ist, wird der Rahmen grün und nach einer Sekunde werden die Objekte gelöscht und eine neue Runde mit der \textit{playGame()} Funktion gestartet. Wenn das Kind falsch liegt, wird der Rahmen für eine Sekunde rot und danach wieder weiß, das Eingabefeld wird geleert und die Objekte werden wieder versteckt.
-\subsection{Szene - Vervollständigen die Reihe}
-\subsubsection{Vervollständigen die Reihe - Design}
-\graphic{finishPattern}{Verfolständige die Reihe}
-In dieser Szene muss das Kind eine vorgegebene Reihe erkennen und fortführen. Den Kindern werden fünf Zahlen vorgegeben und aus dieser Reihe müssen sie die Schritte, die die Zahlen machen, erkennen und anwenden. Die Szene hat einen Header der gleich aufgebaut ist wie in den anderen Szenen. In der Mitte der Szene befinden sich insgesamt zehn Feldern, in der oberen Reihe, sind dies fünf Textfelder. Diese zeigen die Reihe an. In der unteren Reihe, befinden sich fünf Textfelder, die den Platzhalter Zahl haben. In diese können die Kinder ihre Zahlen eingeben. Der Testbutton wird auch in dieser Szene erst aktiviert, wenn alle Eingabefelder eine Zahl beinhalten. Diese Felder können keine anderen Zeichen als Zahlen enthalten. Dem Schüler/der Schülerinnen, wird auch in dieser Szene anhand eines Feuerwekes gezeigt, ob es alle Felder richtig ausgefüllt hat. In Abbildung 5.31 ist das erwähnte Feuerwekt zu sehen. Das Spiel wurde so implementiert, dass eine zufällige Zahl erzeugt wird und mit zwei weiteren Zufallszahlen die Reihe fortgesetzt wird. Es wurde sich gegen noch mehr Zufallszahlen entschieden, damit die Schüler/Schülerinnen keine zu komplexen Reihen bekommen. Es wurde aber so implementiert, dass in den unterschiedlichen Schwierigkeitsgraden die Anfangszahl größer werden kann und auch die Zahlen, die die Reihe Fortzusetzen werden größer.
-\subsubsection{Vervollständigen die Reihe - Skript}
-\begin{lstlisting}[language=csh, caption={hideCircle.cs Variablen Deklaration}]
+Diese \textit{Coroutine} deaktiviert das Eingabefeld und überprüft, ob die eingegebene Zahl dieselbe ist, wie die zufällig generierte. Wenn das der Fall ist, wird der Rahmen grün und nach einer Sekunde werden die Objekte gelöscht und eine neue Runde mit der playGame Funktion gestartet. Wenn das Kind falsch liegt, wird der Rahmen für eine Sekunde rot und danach wieder weiß, das Eingabefeld wird geleert und die Objekte werden wieder versteckt.
+\subsection{Szene - Führe die Reihe fort}
+\subsubsection{Führe die Reihe fort - Design}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/finishPattern.PNG}
+  \caption{Führe die Reihe fort}
+  \label{finishPattern}
+\end{figure}
+In dieser Szene muss das Kind eine vorgegebene Reihe erkennen und fortführen. Den Kindern werden fünf Zahlen vorgegeben und aus dieser Reihe müssen sie das Muster der Zahlen erkennen und anwenden. Die Szene hat einen Header, der gleich aufgebaut ist, wie in den anderen Szenen. In der Mitte der Szene befinden sich insgesamt zehn Felder, in der oberen Reihe sind dies fünf Textfelder, welche das Zahlenmuster anzeigen. In der unteren Reihe befinden sich fünf Textfelder, diese haben einen Platzhalter, in diesem steht das Wort Zahl. In diese können die Kinder ihre Zahlen eingeben. Der Test-button wird auch in dieser Szene erst aktiviert, wenn alle Eingabefelder eine Zahl beinhalten. Diese Felder können keine anderen Zeichen als Zahlen enthalten. Dem Schüler/der Schülerinnen wird auch in dieser Szene anhand eines Feuerwekes gezeigt, ob es alle Felder richtig ausgefüllt hat. In Abbildung \ref{firework} ist das erwähnte Feuerwerk zu sehen. Das Spiel wurde so implementiert, dass eine zufällige Zahl erzeugt wird und mit zwei weiteren Zufallszahlen die Reihe fortgesetzt wird. Es wurde sich gegen noch mehr Zufallszahlen entschieden, damit die Schüler/Schülerinnen keine zu komplexen Reihen bekommen. Es wurde aber so implementiert, dass in den unterschiedlichen Schwierigkeitsgraden die Anfangszahl größer werden kann und auch die Zahlen, die die Reihe fortzusetzen größer werden.
+\subsubsection{Führe die Reihe fort - Skript}
+\begin{lstlisting}[language=csh, caption={hideCircle.cs Variablendeklaration}]
 public class FinishPattern : MonoBehaviour {
 
 	public Text lvlText;
@@ -1193,7 +1300,7 @@ public class FinishPattern : MonoBehaviour {
 	public InputField[] arrayInputs = new InputField[5];
 	public Text[] arrayTextFields = new Text[5];
 \end{lstlisting}
-Für dieses Spiel werden mehr er zufällige Zahlen benötigt. Eine um die Reihe zu starten und zwei um die Reihe fortzusetzen.  Es werden auch wieder Variablen benötigt, um das Spiel laufen zu lassen. Wie die Level Anzahl, die Fehleranzahl, die Anzahl an leveln und die Maximale größte Zahl. Für die Reihe und die Lösungen werden zwei Arrays deklariert. Diese bekommen die Größe Fünf. Die Szene benötigt zwei Objekte für die Buttons und die Objekte für das Feuerwerk. In dieser Szene wurden anfangs, die Objekte für die Eingaben der Kinder und die Textfelder Einzeln deklariert, in der aktuellsten Umsetzung wurden auch dafür zwei Arrays deklariert. Diese sind Public und somit können die einzelnen Objekte in Unity in das Skript von Hand eingefügt werden. Wie dies abläuft, ist in Abbildung 5.19 zu sehen.\\
+Für dieses Spiel werden mehrere zufällige Zahlen benötigt. Eine um die Reihe zu starten und zwei um die Reihe fortzusetzen.  Es werden auch wieder Variablen benötigt, um das Spiel auszuführen. Wie die Levelanzahl, die Fehleranzahl und die maximal größte Zahl. Für die Reihe und die Lösungen werden zwei Arrays deklariert. Diese bekommen die größe fünf. Die Szene benötigt zwei Objekte für die Buttons und die Objekte für das Feuerwerk. In dieser Szene wurden anfangs die Objekte für die Eingaben der Kinder und die Textfelder einzeln deklariert, in der aktuellsten Umsetzung wurden auch dafür zwei Arrays deklariert. Diese sind \textit{public} und somit können die einzelnen Objekte in Unity in das Skript von Hand eingefügt werden. Wie dies abläuft, ist in Abbildung \ref{singleButtonUnity} zu sehen.\\
 \begin{lstlisting}[language=csh, caption={hideCircle.cs Start-Funktion}]
 	void Start() {
 		menu.onClick.AddListener(() => GoBack());
@@ -1207,7 +1314,7 @@ Für dieses Spiel werden mehr er zufällige Zahlen benötigt. Eine um die Reihe 
 		PlayGame();
 	}
 \end{lstlisting}
-In der \textit{Start}-Funktion werden die Listener für die Buttons deklariert. Die größte mögliche Nummer die zufällig erzeugt werden kann wird festgelegt und die Anzahl an leveln wird auch festgelegt. Der Test Button wird deaktiviert. Um eine andere Art der Überprüfung, ob ein Eingabefeld leer ist zu verwenden, wurde jedem der Eingabefelder über die Methode \textit{onValueChanged} ein Listener hinzugefügt. Diese Art ist zwar schon bekannt, wurde in diesem Teil des Projektes aber noch nicht mit einem Array aus Objekten verwendet. Als Letztes wurde die Funktion, die das Spiel startet und immer wieder neu erzeugt aufgerufen, die \textit{PlayGame}-Funktion.\\
+In der Start Funktion werden die Listener für die Buttons deklariert. Die größtmögliche Nummer, die zufällig erzeugt werden kann, wird festgelegt und ebenso die Anzahl an Leveln.  Der Test-Button wird deaktiviert. Um eine andere Art der Überprüfung, ob ein Eingabefeld leer ist zu verwenden, wurde jedem der Eingabefelder über die Methode \textit{onValueChanged} ein Listener hinzugefügt. Diese Art ist zwar schon bekannt, wurde in diesem Teil des Projektes aber noch nicht mit einem Array aus Objekten verwendet. Als Letztes wurde die Funktion, die das Spiel startet und immer wieder neu erzeugt aufgerufen, die \textit{PlayGame}-Funktion.\\
 \begin{lstlisting}[language=csh, caption={hideCircle.cs EnableButton-Funktion}]
 	public void EnableButton() {
 		if (string.IsNullOrEmpty(arrayInputs[0].text) || string.IsNullOrEmpty(arrayInputs[1].text) || string.IsNullOrEmpty(arrayInputs[2].text) || string.IsNullOrEmpty(arrayInputs[3].text) || string.IsNullOrEmpty(arrayInputs[4].text)) {
@@ -1217,8 +1324,8 @@ In der \textit{Start}-Funktion werden die Listener für die Buttons deklariert. 
 		}
 	}
 \end{lstlisting}
-Hier ist die Funktion zu sehen, die den Testbutton aktiviert oder deaktiviert. Da es mehrere Felder sind, können diese entweder mithilfe einer \textit{For}-Schleife abgefragt werden, diese würde dann durch alle Eingabefelder iterieren und überprüfen, ob an dieser Stelle eine Eingabe ist, wenn ja, könnte nach der gesamten Überprüfung der Testbutton aktiviert werden, wenn nicht, dann würde dieser deaktiviert bleiben. Da es aber mit der Schleife mehr Code wäre, wurde in einem \textit{If}-Statement mithilfe der Oder-Verknüpfung überprüft, ob eines der Felder leer ist. Wenn ja, wird der Button nicht aktiviert oder erneut deaktiviert, fals das Kind die Eingabe aus einem der Felder löscht. Wenn alle Felder gefüllt sind, wird in einer \textit{else} der Button aktiviert.\\
-Die nächsten vier Funktionen des Skriptes, werden nicht gezeigt, diese werden einmal aufgerufen, wenn der Menüknopf gedrückt wird und wenn der Testknopf gedrückt wurde. Diese laden die Menü-Szene und starten die Abfrage, ob die eingegebene Lösung des Kindes richtig ist. Die letzten zwei Funktionen sind für die zufälligen Zahlen zuständig, die erste der beiden, erzeugt eine zufällige Zahl zwischen null und der maximal möglichen Zahl. Die andere wird später zweimal aufgerufen, um die Zahlen für das Muster zu erzeugen. Diese werden zwischen eins und der maximal möglichsten Zahl erzeugt. Der Grund dafür war, es wäre für die Kinder langweilig, wenn die Reihe sich um null erhöht. \\
+Hier ist die Funktion zu sehen, die den Test-Button aktiviert oder deaktiviert. Da es mehrere Felder sind, können diese mithilfe einer \textit{for}-Schleife abgefragt werden. Diese würde dann durch alle Eingabefelder iterieren und überprüfen, ob an dieser Stelle eine Eingabe ist. Wenn dies der Fall ist, könnte nach der gesamten Überprüfung der Test-Button aktiviert werden, wenn nicht, dann würde dieser deaktiviert bleiben. Da es aber mit der Schleife mehr Code wäre, wurde in einem \textit{if}-Statement mithilfe der Oder-Verknüpfung überprüft, ob eines der Felder leer ist. Wenn ja, wird der Button nicht aktiviert oder erneut deaktiviert, falls das Kind die Eingabe aus einem der Felder löscht. Wenn alle Felder gefüllt sind, wird in einer \textit{else} der Button aktiviert.\\
+Die nächsten vier Funktionen des Skriptes werden nicht gezeigt. Diese werden einmal aufgerufen, wenn der Menü-Button oder der Test-Button gedrückt wurde. Diese laden die Menü-Szene beziehungsweise starten die Abfrage, ob die eingegebene Lösung des Kindes richtig ist. Die letzten zwei Funktionen sind für die zufälligen Zahlen zuständig. Die erste der beiden erzeugt eine zufällige Zahl zwischen null und der maximal möglichen Zahl. Die andere wird später zweimal aufgerufen, um die Zahlen für das Muster zu erzeugen. Diese werden zwischen eins und der maximal möglichsten Zahl erzeugt. Der Grund hierfür ist, dass es für die Kinder unspannend wäre, wenn sich das Muster um null verändern würde.\\
 \begin{lstlisting}[language=csh, caption={hideCircle.cs PlayGame-Funktion}]
 	public void PlayGame() {
 		lvlCounter++;
@@ -1237,7 +1344,7 @@ Die nächsten vier Funktionen des Skriptes, werden nicht gezeigt, diese werden e
 		SetPattern();
 	}
 \end{lstlisting}
-Diese Funktion ist wieder ähnlich zu den andere, sie überprüft wie viele Level noch gespielt werden müssen und beendet das Spiel oder setzt es fort. Wenn das Kind noch spielen soll, wird der Text um das Level anzuzeigen aktualisiert. Die Eingabe Felder werden zurückgesetzt und die zufälligen Zahlen werden erzeugt und in die dazugehörige Variable gespeichert. Danach wird das Muster erzeugt und die daraus folgende Lösung berechnet. Als Letztes wird das Muster nur noch in die Textfelder geschrieben.\\
+Diese Funktion ist wieder ähnlich zu den anderen. Sie überprüft wie viele Level noch gespielt werden müssen und beendet das Spiel oder setzt es fort. Wenn das Kind noch spielen soll, wird der Text um das Level anzuzeigen aktualisiert. Die Eingabefelder werden zurückgesetzt und die zufälligen Zahlen werden erzeugt und in die dazugehörige Variable gespeichert. Danach wird das Muster erzeugt und die daraus folgende Lösung berechnet. Als Letztes wird das Muster in die Textfelder geschrieben.\\
 \begin{lstlisting}[language=csh, caption={hideCircle.cs SetStartPattern- und SetSolution-Funktion}]
 	public void SetStartPattern() {
 		patternNumbers[0] = randomNumber;
@@ -1255,7 +1362,7 @@ Diese Funktion ist wieder ähnlich zu den andere, sie überprüft wie viele Leve
 		solutionsNumbers[4] = solutionsNumbers[3] + FirstRandomNumber;
 	}
 \end{lstlisting}
-Diese Funktionen könnten auch in einer Funktion stattfinden, wurde aber für die Übersichtlichkeit in zwei unterschiedlichen implementiert. Die \textit{SetStartPattern}-Funktion, speichert an die erste stelle die Start Zahl ein. Danach wird mithilfe der zwei andern Zufallszahlen, hier \textit{FirstRandomNumber} und \textit{SecondRandomNumber} genannt berechnet. Zuerst wird die erste Zahl darauf addiert, danach die zweite und so weiter. Nachdem das Muster berechnet wurde, wird die Funktion \textit{SetSolution} aufgerufen, diese berechnet die Lösung, die das Kind eintippen sollte. Dafür wird die letzte Zahl des Musters verwendet, auf diese wird die erste Zufallszahl addiert und danach auf das Ergebnis die zweite Zahl addiert. Das wird so lange wiederholt, bis das Array gefüllt ist.\\
+Diese Funktionen könnten auch in einer Funktion stattfinden, wurde aber für die Übersichtlichkeit in zwei unterschiedlichen implementiert. Die SetStartPattern Funktion, speichert an die erste Stelle die Start-Zahl ein. Danach wird mithilfe der zwei anderen Zufallszahlen, hier \textit{FirstRandomNumber} und \textit{SecondRandomNumber}, die Reihe berechnet. Zuerst wird die erste Zahl auf die Start-Zahl addiert, danach die zweite und so fortführend die weiteren Zahlen. Nachdem das Muster berechnet wurde, wird die Funktion \textit{SetSolution} aufgerufen, diese berechnet die Lösung, die das Kind eintippen sollte. Dafür wird die letzte Zahl des Musters verwendet, auf welche die erste Zufallszahl addiert wird und anschließend auf dieses Ergebnis die zweite Zufallszahl addiert. Das wird so lange wiederholt, bis das Array gefüllt ist.\\
 \begin{lstlisting}[language=csh, caption={hideCircle.cs SetPattern-Funktion}]
 	public void SetPattern() {
 		for (int i = 0; i < arrayInputs.Length; i++){
@@ -1263,8 +1370,8 @@ Diese Funktionen könnten auch in einer Funktion stattfinden, wurde aber für di
 		}
 	}
 \end{lstlisting}
-Diese Funktion iteriert mit einer \textit{For}-Schleife durch das Textfeld Array und weißt jedem der Felder die passende Nummer zu. Die Integerzahl wird auch hier wieder in einen String umgewandelt.\\
-Die Funktionen um das Feuerwerk zu erzeugen und zu löschen, sind dieselben wie in dem Skript für die Rechenmauer.\\ %TODO nenne wo diese stehen
+Diese Funktion iteriert mit einer \textit{for}-Schleife durch das Textfeld-Array und weist jedem der Felder die passende Nummer zu. Die Integerzahl wird auch hier wieder in einen String umgewandelt.\\
+Die Funktionen, um das Feuerwerk zu erzeugen und zu löschen, sind dieselben wie in dem Skript für die Rechenmauer.\\ %TODO nenne wo diese stehen
 \begin{lstlisting}[language=csh, caption={hideCircle.cs Solution-Funktion}]
 	IEnumerator Solution(int sec){
 		bool skip = false;
@@ -1289,7 +1396,7 @@ Die Funktionen um das Feuerwerk zu erzeugen und zu löschen, sind dieselben wie 
 		}
 	}
 \end{lstlisting}
-Diese Funktion überprüft die Lösungen des Kindes. Dafür wird eine Boolean Variable benötigt. Danach wird mit einer \textit{For}-Schleife durch fünf Schritte iteriert. Da die Arrays eine feste Größe besitzen ist es möglich dort die fünf fest vorzugeben. In diesem Fall kann auch die Größe des Eingabearrays oder des Lösungsarrays verwendet werden. In der Schleife, werden die Eingaben des Schülers/der Schülerinnen mit denen aus dem Lösungsarray verglichen, sobald eine Zahl gleich ist, wird die Boolean Variable auf true gesetzt und die Schleife springt eine Iteration weiter. Wenn eine Eingabe nicht mit der Lösung übereinstimmt, wird die Boolean Variable auf true gesetzt und der Zähler für die Fehler wird um eins erhöht. Das dazugehörige Eingabefeld wird geleert, somit sollte das Kind wissen, dass dieses Feld nicht richtig gelöst war. Wenn die Variable \textit{skipt} am Ende der Schleife den wert false hat, sind alle Eingabefelder richtig gelöst. Daraufhin wird mithilfe der Funktion \textit{SpawnFirework} das Feuerwerk für den Nutzer erzeugt. Nach einer Sekunde wird dieses durch die Funktion \textit{DeleteFirework} wieder gelöscht. Als letzter Schritt des Skriptes wird die Funktion \textit{PlayGame} aufgerufen. \\
+Diese Funktion überprüft die Lösungen des Kindes. Dafür wird eine boolean Variable benötigt. Danach wird mit einer \textit{for}-Schleife durch fünf Schritte iteriert. Da die Arrays eine feste Größe besitzen, ist es möglich dort die Fünf fest vorzugeben. In diesem Fall kann auch die Größe des Eingabearrays oder des Lösungsarrays verwendet werden. In der Schleife werden die Eingaben des Schülers/der Schülerin mit denen aus dem Lösungsarray verglichen. Sobald eine Zahl gleich ist, wird die boolean Variable auf \textit{false} gesetzt und die Schleife springt eine Iteration weiter. Wenn eine Eingabe nicht mit der Lösung übereinstimmt, wird die boolean Variable auf \textit{true} gesetzt und der Zähler für die Fehler wird um eins erhöht. Das dazugehörige Eingabefeld wird geleert, somit sollte das Kind wissen, dass dieses Feld nicht richtig gelöst war. Wenn die Variable \textit{skip} am Ende der Schleife den Wert \textit{false} hat, sind alle Eingabefelder richtig gelöst. Daraufhin wird mithilfe der Funktion \textit{SpawnFirework} das Feuerwerk für den Nutzer/die Nutzerin erzeugt. Nach einer Sekunde wird dieses durch die Funktion \textit{DeleteFirework} wieder gelöscht. Als letzter Schritt des Skriptes wird die Funktion \textit{PlayGame} aufgerufen. \\
 \begin{lstlisting}[language=csh, caption={hideCircle.cs ResetInputFields-Funktion}]
 	public void ResetInputFields(){
 		for (int i = 0; i < arrayInputs.Length; i++){
@@ -1298,16 +1405,21 @@ Diese Funktion überprüft die Lösungen des Kindes. Dafür wird eine Boolean Va
 		}
 	}
 \end{lstlisting}
-Diese Funktion löscht nach erfolgreichen Lösens der Reihe die Eingabe aus alle Eingabefeldern. Das wird mit einer \textit{For}-Schleife gelöst. Diese leert das Eingabefeld und aktiviert es für den Nutzer wieder.
-\subsection{Szene - Wortsalat}
-\subsubsection{Wortsalat - Design}
-\graphic{wordMix}{Wortsalat}
-Dies ist die einzige Szene, die ein Spiel beinhaltet, um die Sprache Deutsch zu verbessern. Die Szene hat einen Header, der sich nicht von den anderen unterscheidet. Dieser beinhaltet einen Menübutton, eine Überschrift und die Level Anzeige.\\
-In der Mitte gibt es ein großes Rechteck, in diesem wird das Wort, das gemischt wird angezeigt. Dazwischen befindet sich das Bild eines Pfeiles. Dieser wurde aus dem Internet heruntergeladen und die Quelle befindet sich im Quellenverzeichnis.\\ %TODO quelle einfügen
-Ganz rechts ist das Eingabefeld für den Nutzer. Ganz unten in der Mitte befindet sich der Button, um die Lösung zu überprüfen.
-\subsubsection{Wortsalat - Skript}
-Als Erstes wird auf die Datei die Wörter beinhaltet eingegangen. Um eine Liste mit vielen deutschen Wörtern zu bekommen, kann eine \textit{API} verwendet werden. Da aber sicher gegangen werden sollte, dass die Wörter für Kinder in der ersten bis vierten Klasse nicht zu anspruchsvoll sind und die Kinder diese Wörter auf jeden Fall kennen. Damit dies gewährleistet wurde, können auf der Website \textit{Grundschulkönig} können im Themenbereich Deutsch, eine Liste mit einem Grundwortschatz für die erste bis zweite  Klasse herunterladen\footnote{Grundschulkönig, (2022, o. S.)}. Es wurden keine Wörter für die dritte und vierte Klasse ausgewählt, da die Datei mit den ersten beiden Klassen sehr viele Worte beinhaltet. Diese Datei kann aber einfach erweitert werden. Im folgenden Abschnitt wird ein Teilausschnitt der Datei gezeigt. 
-\begin{lstlisting}[language=csh, caption={Wort Datei}]
+Diese Funktion löscht nach erfolgreichem Lösen der Reihe die Eingabe aus allen Eingabefeldern. Das wird mit einer \textit{for}-Schleife gelöst. Diese leert das Eingabefeld und aktiviert es für den Nutzer wieder.
+\subsection{Szene - Buchstabensalat}
+\subsubsection{Buchstabensalat - Design}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/wordMix.PNG}
+  \caption{Buchstabensalat}
+  \label{wordMix}
+\end{figure}
+Dies ist die einzige Szene, die ein Spiel beinhaltet, um die Kompetenzen im Fach Deutsch zu verbessern. Die Szene hat einen Header, der sich nicht von den anderen unterscheidet. Dieser beinhaltet einen Menü-Button, eine Überschrift und die Levelanzeige.\\
+In der Mitte gibt es ein großes Rechteck, in welchem das Wort, in dem die Buchstaben durcheinander gemischt werden, angezeigt wird. Dazwischen befindet sich das Bild eines Pfeiles\footnote{icons8, (2022, o. S.)}.\\ %TODO quelle einfügen
+Ganz rechts ist das Eingabefeld für den Nutzer. Unten in der Mitte befindet sich der Button, um die Lösung zu überprüfen.
+\subsubsection{Buchstabensalat - Skript}
+Als Erstes wird auf die Datei, die Wörter beinhaltet, eingegangen. Um eine Liste mit vielen deutschen Wörtern zu bekommen, kann eine \textit{API} verwendet werden. Da aber sicher gegangen werden sollte, dass die Wörter für Kinder in der ersten bis vierten Klasse nicht zu anspruchsvoll sind und die Kinder diese Wörter auf jeden Fall kennen, wurde von der Internetseite \textit{Grundschulkönig}.de aus dem Themenbereich Deutsch der ersten und zweiten Klasse eine Liste mit dem Grundwortschatz heruntergeladen.\footnote{Grundschulkönig, (2022, o. S.)}. Es wurden keine Wörter für die dritte und vierte Klasse ausgewählt, da die Datei mit den ersten beiden Klassen sehr viele Worte beinhaltet. Diese Datei kann aber einfach erweitert werden. Im folgenden Abschnitt wird ein Teilausschnitt der Datei gezeigt. 
+\begin{lstlisting}[language=csh, caption={Wortdatei}]
 {
 	"words": [
 		"Abend",
@@ -1322,8 +1434,8 @@ Als Erstes wird auf die Datei die Wörter beinhaltet eingegangen. Um eine Liste 
 		"Äpfel",
 		"April",
 \end{lstlisting}
-Die Datei ist angelegt wie eine JSON Datei und wurde auch mit der gleichen Endung abgespeichert. Das ermöglicht dem Skript darauf zuzugreifen wie als wäre es eine Tabelle in einer JSON Datenbank.\\
-\begin{lstlisting}[language=csh, caption={WordMix.cs Variablen Deklaration}]
+Die Datei ist angelegt wie eine JSON-Datei und wurde auch mit der gleichen Endung abgespeichert. Das ermöglicht dem Skript darauf zuzugreifen wie als wäre es eine Tabelle in einer JSON-Datenbank.\\
+\begin{lstlisting}[language=csh, caption={WordMix.cs Variablendeklaration}]
 public class WordMix : MonoBehaviour
 {
 
@@ -1349,7 +1461,13 @@ public class WordMix : MonoBehaviour
 	public Button testWord;
 	public Button menu;
 \end{lstlisting}
-Für die Szene werden Textfelder für das Level und das gemischte Wort benötigt. Es wird auch ein Eingabefeld für den Nutzer benötigt. Die Buttons für das Menü und das Testen werden ebenfalls auch benötigt. Es werden Variablen benötigt, die Anzahl an Level begrenzen und die Zufallszahl abspeichern. Die Level und die Fehler müssen auch gezählt werden. Das Skript muss die Lösung abspeichern und das gemischte Wort. Um mit der JSON Datei zu arbeiten, werden zwei Objekte benötigt. Eine \textit{WordList list} und ein \textit{TextAsset textJson} auf das \textit{TextAsset} Objekt, wird die Datei mit allen Wörtern zugewiesen. Dies ist zu sehen in Abbildung 5.36. \graphic{JsonFile}{JSON File in das Skript importieren}\\
+Für die Szene werden Textfelder für das Level, sowie das gemischte Wort, Buttons für das Menü und zum Testen und Variablen, die die Levelanzahl begrenzen und die Zufallszahl abspeichern benötigt. Die Level und die Fehler müssen auch gezählt werden. Das Skript muss die Lösung und das gemischte Wort abspeichern. Um mit der JSON-Datei zu arbeiten, werden zwei Objekte benötigt. Eine \textit{WordList} und ein \textit{TextAsset} auf das Objekt \textit{TextAsset} wird die JSON-Datei mit allen Wörtern zugewiesen. Dies ist zu sehen in Abbildung \ref{jsonUnity}. 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/JsonFile.PNG}
+  \caption{JSON-File in das Skript importieren}
+  \label{jsonUnity}
+\end{figure}\\
 Wie dann auf dieses File zugegriffen wird, wird später erklärt.\\
 \begin{lstlisting}[language=csh, caption={WordMix.cs Start-Funktion}]
 	void Start()
@@ -1363,7 +1481,7 @@ Wie dann auf dieses File zugegriffen wird, wird später erklärt.\\
 		PlayGame();
 	}
 \end{lstlisting}
-Diese Funktion deaktiviert, den Test Button und fügt die Listener hinzu. Die Level Anzahl wird abgespeichert und eine Listener wird hinzugefügt, der sich bei einer Eingabe in das Eingabefeld aktiviert und eine Funktion aufruft, die testet, ob der Testbutton aktiviert werden soll oder nicht. Danach wird die Funktion aufgerufen, die unsere JSON Datei liest und die Worte daraus in eine Liste speichert. Als Letztes wird die Funktion \textit{PlayGame} aufgerufen und das Spiel wird initialisiert.\\
+Diese Funktion deaktiviert den Test-Button und fügt die Listener hinzu. Die Levelanzahl wird abgespeichert und ein Listener wird hinzugefügt, der sich bei einer Eingabe in das Eingabefeld aktiviert und eine Funktion aufruft, die testet, ob der Test-Button aktiviert werden soll oder nicht. Danach wird die Funktion aufgerufen, die die JSON-Datei liest und die Worte daraus in eine Liste speichert. Als Letztes wird die Funktion \textit{PlayGame} aufgerufen und das Spiel wird initialisiert.\\
 \begin{lstlisting}[language=csh, caption={WordMix.cs ReadJsonFile-Funktion}]
 	public void ReadJsonFile(){
 		list = JsonUtility.FromJson<WordList>(textJson.text);
@@ -1374,9 +1492,9 @@ Diese Funktion deaktiviert, den Test Button und fügt die Listener hinzu. Die Le
 	public string[] words;
 	}
 \end{lstlisting}
-Um daten aus einer JSON Datei zu lesen, wird eine extra Klasse benötigt, diese kann serialisiert werden, aber nicht vererbt. Das ist das Keyword \textit{System.Serializable}. Diese Klasse beinhaltet einen String Array \textit{words}. Um nun auf die Daten zu kommen, wird in die liste, die in den Variablen deklariert, wurde die listen aus der JSON Datei gespeichert. Dafür muss diese jedes Wort in einen String umwandeln und auch nur die einzelnen Wörter ausgeben. Mit \textit{JsonUtility.FromJson<WordList>textJson.text);} bekommt unser Skript ein Objekt der Klasse \textit{WordList}, dieses ist ein Array aus Wörtern. Diese können in unsere Liste gespeichert werden, darum ist egal, wie groß die Datei ist, die Liste wächst mit. Um auf die einzelnen Wörter aus der Datei zu kommen wird das Objekt das die Datei beinhaltet mit \textit{.text} aufgerufen, diese Methode gibt die einzelnen Wörter aus der Datei aus, diese werden in das Array \textit{words} gespeichert und dieses Array wird in eine Liste gespeichert. Daher hat das Skript nun eine Liste mit allen Wörtern, die in der Datei vorhanden sind.\\
-Die Funktionen für den Menübutton und um den Test Button zu aktivieren, arbeiten gleich wie in den anderen Szenen, der Menü Button lädt die Szene des Menüs und setzt die Variablen. Die Funktion für den Testbutton überprüft nur das Eingabefeld und aktiviert oder deaktiviert diesen.\\
-Die Funktion \textit{PlayGame} arbeitet gleich wie alle anderen, einmal den Zähler hochzählen und die Szene \textit{LearnFinishScreen} laden oder Szene für die nächste Runde vorbereiten. In dieser Szene wird wieder durch einen farbigen Rand angezeigt, ob das Kind richtig lag oder nicht. Das heißt, dieser Rahmen muss wieder auf die Farbe Weiß gesetzt werden. Danach wird wieder ein neues Wort aus der Liste geholt und gemischt. Als letztes, wird das Wort, wenn es gemischt wurde in das Textfeld links geschrieben.\\
+Um Daten aus einer JSON-Datei zu lesen, wird eine extra Klasse benötigt. Diese kann serialisiert werden, aber nicht vererbt. Das wird mit dem Keyword \textit{System.Serializable} angezeigt und umgesetzt. Diese Klasse beinhaltet ein String-Array \textit{words}. Um nun auf die Daten zu kommen, wird aus dem Objekt dem die JSON-Datei zugewiesen wurde, die Wörter in die Liste \textit{list} gespeichert. Dafür muss diese jedes Wort in einen String umwandeln und auch nur die einzelnen Wörter ausgeben. Mit \textit{JsonUtility.FromJson<WordList>textJson.text);} bekommt das Skript ein Objekt der Klasse \textit{WordList}, welches ein Array aus Wörtern ist. Diese können in die Liste gespeichert werden, darum ist unwichtig, wie groß die Datei ist, die Liste wächst mit. Um auf die einzelnen Wörter aus der Datei zuzugreifen wird das Objekt, das die Datei beinhaltet, mit \textit{.text} aufgerufen. Diese Methode gibt die einzelnen Wörter aus der Datei aus. Diese werden in das Array \textit{words} gespeichert und dieses Array wird in eine Liste gespeichert. Daher hat das Skript nun eine Liste mit allen Wörtern, die in der Datei vorhanden sind.\\
+Die Funktionen für den Menü-Button und um den Test-Button zu aktivieren, arbeiten gleich wie in den anderen Szenen. Der Menü-Button lädt die Szene des Menüs und setzt die Variablen. Die Funktion für den Test-Button überprüft nur das Eingabefeld und aktiviert oder deaktiviert diesen.\\
+Die Funktion \textit{PlayGame} arbeitet gleich wie alle anderen. Sie zählt den Zähler hoch und lädt die Szene \textit{LearnFinishScreen} oder bereitet die Szene für die nächste Runde vor. In dieser Szene wird wieder durch einen farbigen Rand angezeigt, ob das Kind richtig lag oder nicht. Das heißt, dieser Rahmen muss wieder auf die Farbe weiß gesetzt werden. Danach wird wieder ein neues Wort aus der Liste geholt und gemischt. Als Letztes wird das Wort, wenn es gemischt wurde, in das linke Textfeld geschrieben.\\
 \begin{lstlisting}[language=csh, caption={WordMix.cs GetWord-Funktion}]
 	public void GetWord(){
 		randomNumber = GetRandomNumbers();
@@ -1385,7 +1503,7 @@ Die Funktion \textit{PlayGame} arbeitet gleich wie alle anderen, einmal den Zäh
 		mixedWord = mixWord(solution);
 	}
 \end{lstlisting}
-Diese Funktion erzeugt eine zufällige Zahl mit der \textit{GetRandomNumbers} Funktion, danach wird mit dieser aus der Liste an der Stelle der zufälligen Zahl ein Wort geholt. Dieses wird in die Variable für die Lösung gespeichert. Damit das Kind keinen zu langen Text in das Textfeld schreiben kann, wurde die Länge für das Eingabefeld, die Länge die eingegeben werden kann auf die Länge des Wortes gesetzt. Als Letztes wird die Funktion \textit{mixWord(solution)} aufgerufen, diese gibt dem Skript ein Wort zurück, das gemischt ist. Als Übergabe in diese Funktion wird das aus der Liste geholte Wort übergeben.\\
+Diese Funktion erzeugt eine zufällige Zahl mit der Funktion \textit{GetRandomNumbers}, danach wird mit dieser aus der Liste an der Stelle der zufälligen Zahl ein Wort geholt. Dieses wird in die Variable für die Lösung gespeichert. Damit das Kind keinen zu langen Text in das Textfeld schreiben kann, wurde die Länge für die möglichen einzugebenden Zeichen im Eingabefeld auf die Länge des Wortes gesetzt. Als Letztes wird die Funktion \textit{mixWord(solution)} aufgerufen, diese gibt dem Skript ein Wort zurück, das gemischt ist. Als Übergabe in diese Funktion wird das aus der Liste geholte Wort übergeben.\\
 \begin{lstlisting}[language=csh, caption={WordMix.cs mixWord-Funktion}]
 	public string mixWord(string word){
 		string finishedMixing = "";
@@ -1402,7 +1520,7 @@ Diese Funktion erzeugt eine zufällige Zahl mit der \textit{GetRandomNumbers} Fu
 		return finishedMixing;
 	}
 \end{lstlisting}
-Diese Funktion erzeugt eine temporäre Variable \textit{finishedMixing} diese ist mit einem leeren String gefüllt. Danach wird eine zufällige Zahl erzeugt. Dafür wird nicht die Methode von Unity verwendet, sondern die in C# verwendet werden kann. Dafür wird ein Objekt der Klasse \textit{System.Random} erzeugt. Danach wird eine sortierte Liste erzeugt. In diese wird das Wort gespeichert. Um das Wort zufällig in die Liste zu bekommen, wird eine \textit{foreach}-Schleife genutzt. Diese fügt an eine zufällige Zahl einen Buchstaben aus dem Wort ein. Der Aufruf \textit{rnd.Next()} gibt eine zufällige Zahl aus, die in der Reichweite eines Integers ist. Das heißt es können sehr kleine aber auch sehr große Zahlen rauskommen. Danach muss mit einer weiteren \textit{foreach}-Schleife das Wort zu einem String zusammengefügt werden. Dafür wird an jeder Stelle der Liste das Zeichen an den leeren String gehangen. Da diese Methode nicht garantiert, dass das Wort nicht zufällig gleich zusammengesetzt wird, wird in einem \textit{If}-Statement abgefragt, ob das neue Wort das gleiche wie das Wort ist, was in die Funktion übergeben wird. Wenn das Wort dasselbe ist, wird die Funktion mit dem gleichen Wort noch einmal aufgerufen. Wenn das Wort unterschiedlich ist, wird dieses zurückgegeben.\\
+Diese Funktion erzeugt eine temporäre Variable \textit{finishedMixing} , welche mit einem leeren String gefüllt ist. Danach wird eine zufällige Zahl erzeugt. Dafür wird nicht die Methode von Unity verwendet, sondern die die in C\# verwendet werden kann. Dafür wird ein Objekt der Klasse \textit{System.Random} erzeugt. Danach wird eine sortierte Liste erzeugt. In diese wird das Wort gespeichert. Um das Wort zufällig in die Liste zu bekommen, wird eine \textit{foreach}-Schleife genutzt. Diese fügt an eine zufällige Zahl einen Buchstaben aus dem Wort ein. Der Aufruf \textit{rnd.Next()} gibt eine zufällige Zahl aus, die in der Reichweite eines Integers ist. Das heißt es können sehr kleine aber auch sehr große Zahlen herauskommen. Danach muss mit einer weiteren \textit{foreach}-Schleife das Wort zu einem String zusammengefügt werden. Dafür wird an jeder Stelle der Liste das Zeichen an den leeren String gehangen. Da diese Methode nicht garantiert, dass das Wort nicht zufällig gleich zusammengesetzt wird, wird in einem \textit{If}-Statement abgefragt, ob das neue Wort das gleiche wie das Wort ist, was in die Funktion übergeben wird. Wenn das Wort dasselbe ist, wird die Funktion mit dem gleichen Wort noch einmal aufgerufen. Wenn das Wort unterschiedlich ist, wird dieses zurückgegeben.\\
 \begin{lstlisting}[language=csh, caption={WordMix.cs GetRandomNumbers-Funktion}]
 	public int GetRandomNumbers(){
 		if (list.words.Length != 0) {
@@ -1413,8 +1531,8 @@ Diese Funktion erzeugt eine temporäre Variable \textit{finishedMixing} diese is
 		}
 	}
 \end{lstlisting}
-Hier wird eine zufällige Zahl erzeugt, die Liste startet an Index null und endet mit der Zahl der Länge der Liste. Also wird erst abgefragt, ob die Liste leer ist, wenn das der Fall ist, wird minus eins zurückgegeben. Wenn in der Liste aber mindestens ein Wort steht, wird mit dem Zufallszahlgenerator von Unity eine Zufallszahl zwischen null und der maximalen Länge der Liste erzeugt. Diese Funktion muss nicht angepasst werden, wenn die Liste wächst. So können immer mehr Wörter hinzugefügt werden.\\
-Die Funktion, die beim Drücken des Testbuttons aufgerufen wird, deaktiviert den Button und ruft die \textit{Coroutine}, die das Ergebnis überprüft und verarbeitet.\\
+Hier wird eine zufällige Zahl erzeugt. Die Liste startet an Index null und endet mit der Zahl, die der Länge der Liste entspricht. Also wird erst abgefragt, ob die Liste leer ist, wenn das der Fall ist, wird minus eins zurückgegeben. Wenn in der Liste aber mindestens ein Wort steht, wird mit dem Zufallszahlgenerator von Unity eine Zufallszahl zwischen null und der maximalen Länge der Liste erzeugt. Diese Funktion muss nicht angepasst werden, wenn die Liste wächst. So können immer mehr Wörter hinzugefügt werden.\\
+Die Funktion, die beim Drücken des Test-Buttons aufgerufen wird, deaktiviert den Button und ruft die \textit{Coroutine}, die das Ergebnis überprüft und verarbeitet, auf.\\
 \begin{lstlisting}[language=csh, caption={WordMix.cs waiter-Funktion}]
 	IEnumerator waiter(int sec){
 		solutionChild.interactable = false;
@@ -1439,15 +1557,25 @@ Die Funktion, die beim Drücken des Testbuttons aufgerufen wird, deaktiviert den
 	}
 }
 \end{lstlisting}
-Zuerst wird das Eingabefeld deaktiviert. Danach wird, wie sonst auch, zuerst überprüft, ob noch Level gespielt werden sollen. Danach wird, wenn das eingegebene Wort richtig ist, der Rahmen grün und nach einer Sekunde wird das nächste Wort geladen. Dafür muss das Feld geleert werden und die Funktion \textit{PlayGame} aufgerufen werden. Wenn das Kind falsch liegt, wird der Rahmen rot und nach einer Sekunde wieder weiß. Das Textfeld wird geleert und der Zähler für die Fehler wird nach oben gezählt.
+Zuerst wird das Eingabefeld deaktiviert. Danach wird, wie sonst auch, zuerst überprüft ob noch Level gespielt werden sollen. Danach wird, wenn das eingegebene Wort richtig ist, der Rahmen grün und nach einer Sekunde wird das nächste Wort geladen. Dafür muss das Feld geleert werden und die Funktion \textit{PlayGame} aufgerufen werden. Wenn das Kind falsch liegt, wird der Rahmen rot und nach einer Sekunde wieder weiß. Das Textfeld wird geleert und der Zähler für die Fehler wird nach oben gezählt.
 \subsection{Szene - Nach Abschluss des Levels}
 \subsubsection{Nach Abschluss des Levels - Design}
-\graphic{finishScreen}{End Szene nach Abschluss eines Levels}
-Diese Szene wird geladen, wenn das Kind ein Level beendet. Die Szene bekommt dort wo, die die Überschrift \textit{Header} steht, eine Botschaft vom Skript übergeben. Je nachdem wie viele Fehler das Kind hat, wird dort wo \textit{Glückwunschtext} steht eine andere Nachricht ausgegeben. Dort wo die drei weißen Vierecke sind, werden aus einem Prefab ein Stern erzeugt. Diese kann das Kind sammeln und im Hauptmenü angezeigt bekommen. Ganz unten befindet sich ein Knopf, der in das Hauptmenü zurückführt. Somit kann das Kind dann ein neues Level auswählen. In der Abbildung 5.38 ist die Szene zu sehen, wenn das Kind keine Fehler gemacht hat.
-\graphic{finishScreen0Mistakes}{End Szene mit Null fehlern}
-Es werden keine Sterne erzeugt, wenn der Schüler/die Schülerinnen mehr als vier Fehler gemacht hat. Bei genau vier oder weniger Fehlern wird der Stern auf der ganz linken Seite erzeugt. Wenn der Nutzer genau zwei oder weniger Fehler hat, wird der Stern auf der rechten Seite erzeugt. Der Stern in der Mitte wird nur bei genau null Fehlern erzeugt.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/finishScreen.PNG}
+  \caption{Endszene nach Abschluss eines Levels}
+  \label{finishSzene}
+\end{figure}\\
+Diese Szene wird geladen, wenn das Kind ein Level beendet. Die Szene bekommt dort wo die Überschrift \textit{Header} steht, eine Botschaft vom Skript übergeben. Je nachdem wie viele Fehler das Kind hat, wird dort wo \textit{Glückwunschtext} steht eine andere Nachricht ausgegeben. Dort wo die drei weißen Vierecke sind werden aus einem Prefab ein Stern erzeugt. Diese kann das Kind sammeln und im Hauptmenü angezeigt bekommen. Ganz unten befindet sich ein Knopf, der in das Hauptmenü zurückführt. Somit kann das Kind dann ein neues Level auswählen. In der Abbildung \ref{withoutError} ist die Szene zu sehen, wenn das Kind keine Fehler gemacht hat.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/finishScreen0Mistakes.PNG}
+  \caption{Endszene mit null Fehlern}
+  \label{withoutError}
+\end{figure}\\
+Es werden keine Sterne erzeugt, wenn der Schüler/die Schülerin mehr als vier Fehler gemacht hat. Bei genau vier oder weniger Fehlern wird der Stern auf der linken Seite erzeugt. Wenn der Nutzer/die Nutzerin genau zwei oder weniger Fehler hat, wird der Stern auf der rechten Seite erzeugt. Der Stern in der Mitte wird nur bei genau null Fehlern erzeugt.
 \subsubsection{Nach Abschluss des Levels - Skript}
-\begin{lstlisting}[language=csh, caption={FinishScreen.cs Variablen Deklaration}]
+\begin{lstlisting}[language=csh, caption={FinishScreen.cs Variablendeklaration}]
 public class FinishScreen : MonoBehaviour
 {
 	public Text TextfieldMistakes;
@@ -1463,7 +1591,7 @@ public class FinishScreen : MonoBehaviour
 
 	public Button menu;
 \end{lstlisting}
-Das letzte Skript benötigt zwei Textfeld Objekte für die Überschrift und den Text, der je nach Fehler unterschiedlich ist. Um die Sterne zu erzeugen, werden drei \textit{GameObjects} benötigt. In diese werden die Sterne \textit{Instantiated}. Es werden drei leere Bereiche benötigt, um den einzelnen Sternen eine Position zuzuweisen. Damit auch ein Stern erscheint, wird ein \textit{GameObjekt} mit dem Prefab des Sternes benötigt. Zuletzt braucht es eine Variable für die Fehler und ein Objekt für den Menübutton.\\
+Das letzte Skript benötigt zwei Textfeld-Objekte für die Überschrift und den Text, der je nach Fehleranzahl unterschiedlich ist. Um die Sterne zu erzeugen, werden drei \textit{GameObjects} benötigt. In diese werden die Sterne instantiiert. Es werden drei leere Bereiche benötigt, um den einzelnen Sternen eine Position zuzuweisen. Damit auch ein Stern erscheint, wird ein \textit{GameObjekt} mit dem Prefab des Sternes benötigt. Zuletzt braucht es eine Variable für die Fehler und ein Objekt für den Menü-Button.\\
 \begin{lstlisting}[language=csh, caption={FinishScreen.cs Start-Funktion}]
 	void Start()
 	{
@@ -1472,8 +1600,8 @@ Das letzte Skript benötigt zwei Textfeld Objekte für die Überschrift und den 
 		SpawnStars();
 	}
 \end{lstlisting}
-Die \textit{Start} Funktion fügt dem Menü Button einen Listener zu. Danach holt es sich aus der Datei die Variable, die die Fehler gespeichert hat, die Anzahl. Als Letztes wird eine Funktion aufgerufen, die die Sterne erzeugen soll.\\
-Die Funktion für das Menü ist schnell erklärt und wird nicht gezeigt, diese setzt alle statischen Variablen auf 0 zurück und lädt die Menüszene mit dem \textit{SzeneManager}\\
+Die Start Funktion fügt dem Menü-Button einen Listener zu. Danach holt es sich aus der Datei die Variable, die die Anzahl an Fehlern gespeichert hat. Als Letztes wird eine Funktion aufgerufen, die die Sterne erzeugen soll.\\
+Die Funktion für das Menü ist schnell erklärt und wird nicht gezeigt. Diese setzt alle statischen Variablen auf null zurück und lädt die Menüszene mit dem \textit{SzeneManager}.\\
 \begin{lstlisting}[language=csh, caption={SpawnStars.cs Start-Funktion}]
 	public void SpawnStars(){
 		head.text = ("Schade!");
@@ -1502,4 +1630,4 @@ Die Funktion für das Menü ist schnell erklärt und wird nicht gezeigt, diese s
 		SaveDataManager.SaveGame();
 	}
 \end{lstlisting}
-Diese Funktion besteht aus verknüpften \textit{If}-Statements, als Erstes wird davon ausgegangen, dass das Kind zu viele Fehler für Sterne gemacht hat. Deshalb wird die Überschrift auf \textit{Schade!} gesetzt. Die Botschaft darunter wird auf einen motivierenden Satz gesetzt. In dem Fall das zu viele Fehler gemacht wurden, wäre dieser \textit{Nächstes Mal klappts's}. Wenn das Kind unter vier Fehlern gemacht hat, wird die Zahl der gespeicherten Sterne um eins erhöht, dafür wird die Variable aus dem Skript um die Rätsel Ergebnisse zu speichern aufgerufen, und die dort angelegte Variable für die Anzahl der Sterne um eins erhöht. Danach wird der erste Stern erzeugt, die Texte der Überschrift werden ab dem ersten Stern immer \textit{Glückwunsch!} anzeigen und für der Text für die Fehler wird außer bei null Fehlern den Text \textit{Nur ... Fehler!} anzeigen. Wenn das Kind dann unter zwei Fehlern gemacht hat, wird der zweite Stern erzeugt und die Variable erneut erhöht. Als letzte Abfrage wird, überprüft, ob das Kind keine Fehler gemacht hat. In diesem Fall wird ein dritter Stern erzeugt und die Sternerzähler Variable um eins erhöht. Der Text unter der Überschrift der Szene zeigt nun an \textit{Super, alles richtig!!!}. Nachdem diese Abfragen durchgelaufen sind, muss noch die Funktion aus dem Skript aufgerufen werden, die die Daten speichert. Dies ist mit dem folgenden Befehl zu erreichen, \textit{SaveDataManger.SaveGame()}.\\
+Diese Funktion besteht aus verknüpften \textit{ff}-Statement. Als Erstes wird davon ausgegangen, dass das Kind zu viele Fehler für Sterne gemacht hat. Deshalb wird die Überschrift auf \dq Schade!\dq{} gesetzt. Die Botschaft darunter wird auf einen motivierenden Satz gesetzt. In dem Fall, dass zu viele Fehler gemacht wurden, wäre dieser \dq Nächstes Mal klappt's\dq{}. Wenn das Kind unter vier Fehler gemacht hat, wird die Zahl der gespeicherten Sterne um eins erhöht, dafür wird die Variable aus dem Skript um die Rätselergebnisse zu speichern aufgerufen und die dort angelegte Variable für die Anzahl der Sterne um eins erhöht. Danach wird der erste Stern erzeugt. Die Texte der Überschrift werden ab dem ersten Stern immer \dq Glückwunsch!\dq{} anzeigen und für den Text für die Fehler wird außer bei null Fehlern der Text \dq Nur ... Fehler!\dq{} anzeigen. Wenn das Kind dann unter zwei Fehler gemacht hat, wird der zweite Stern erzeugt und die Variable erneut erhöht. Als letzte Abfrage wird überprüft, ob das Kind keine Fehler gemacht hat. In diesem Fall wird ein dritter Stern erzeugt und die Variable zum Zählen der Sterne um eins erhöht. Der Text unter der Überschrift der Szene zeigt nun \dq Super, alles richtig!!!\dq{}. Nachdem diese Abfragen durchgelaufen sind, muss noch die Funktion aus dem Skript aufgerufen werden, die die Daten speichert. dem Befehl \textit{SaveDataManger.SaveGame()} zu erreichen.\\
