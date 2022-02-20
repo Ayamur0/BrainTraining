@@ -7,7 +7,7 @@
 \bigskip
 }
 
-\documentclass[oneside]{ausarbeitung}
+\documentclass[oneside]{Ausarbeitung}
 \setcounter{tocdepth}{3}
 \setcounter{secnumdepth}{3}
 \bibliography{latexlit}
@@ -96,7 +96,7 @@
   Das Lernspiel soll dabei zwei große Teile beeinhalten: Spiele mit denen die Kinder    wichtige Grundlagen in unter anderem Mathematik und Deutsch lernen können und Rätsel.
   Die Lernspiele beinhalten 6 einzelne Spiele:
   \begin{itemize}
-  	\item Blitzblick 
+  	\item Blitzblick
   	\item Grundrechenarten  (Addition, Subtraktion, Division, Multiplikation)
   	\item Mengen vergleichen mit Objekten und Zahlen
   	\item Vervollständigen die Reihe
@@ -105,10 +105,10 @@
   \end{itemize}
   %TODO vielleicht als Fließtext
   Zudem sind 23 verschiedene Rätsel vorhanden, die von einfachen Rätseln, bei denen eine Zahl als Ergebnis eingegeben werden muss, bis zu Rätseln bei denen Ziegen auf einem Feld verteilt werden müssen, reichen.\\
-  
+
   Das Spiel wird in 2D umgesetzt und mithilfe der Unity Engine programmiert.
   In diesem Bericht wird der gesamte Erstellungsprozess eines 2D Spiels in Unity, vom Erstellen des Projekts, über den Aufbau des Codes, bis zum fertigen Spiel, beschrieben.
-  
+
 \end{abstract}
 %-----------------------------------------------------------------------
 \cleardoublepage
@@ -171,15 +171,7 @@ Des weiteren muss ein Punktesystem eingebaut werden, um die Kinder zu motivieren
 \section{Vorgehen}
 \label{sec:vorgehen}
 
-Nachdem mit Problemstellung und Ziel gewissermaßen Anfangs- und Endpunkt 
-des Praktikums beschrieben sind, wird hier der zur Erreichung des Ziels 
-eingeschlagene Weg vorgestellt. Dazu werden typischerweise die folgenden 
-Kapitel und ihr Beitrag zur Erreichung des Ziels der Arbeit kurz 
-beschrieben. Die folgenden Kapitel sind ein – möglicher – Aufbau, 
-Abweichungen können durchaus notwendig sein. Zur Darstellung des 
-Vorgehens ist eine grafische Darstellung sinnvoll, bei der die einzelnen 
-Lösungsschritte und ihr Zusammenhang dargestellt werden. Ein Beispiel 
-hierfür findet sich in Abbildung \ref{fig:1}.
+Um das Ziel des Projektes zu erreichen, wurde mehrere Meilensteine festgelegt. Um den ersten Meilenstein zu erreichen, muss das erste Level für die Rätsel- und Lernspiele vorhanden sein. Um die Lernspiele zu erstellen, musste erst Recherche betrieben werden, danach wurde die Szene erstellt und die Logik dafür implementiert. Damit das erste Rätsel erstellt wird, wurde eine Szene kreiert in die alle Rätsel geladen werden. Danach wurden die Klasse und XML Datei des Rätsel erstellt, als letztes wurde die Klasse die die Rätsel lädt erstellt. Um den zweiten Meilenstein zu erreichen, sollten die restlichen Level erstellt werden. Für die Lernspiele wurden die restlichen Szenen und Skripte der Lernspiele erstellt. Um die restlichen Rätsel einzubauen, wurden die Klassen und die XML Dateien erzeugt und danach die restlichen Skripte für die Rätsel implementiert. Im dritten Meilenstein wurde das Menü erstellt. Dafür wurde zuerst eine Menüszene für die Rätsel- und Lernspiele erstellt. Danach wurde ein Hauptmenü das in die einzelnen Menüs weiterleitet erstellt. Als letztes wurde ein Savegame angelegt, um die Punktzahl der Rätsel und die Sterne der Lernspiele zu speichern. Um den letzten Meilenstein zu erreichen, muss nur noch die Dokumentation geschrieben werden. Der Ablauf ist in der Abbildung 1.1 zu sehen.
 
 \begin{figure}[htbp]
   \centering
@@ -238,7 +230,7 @@ public class TestScript : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
     }
-	
+
 	// Update is called once per frame
     void Update() {
     }
@@ -269,7 +261,7 @@ Es ist auch möglich in einer Schleife die Wartezeiten zurückzugeben:
 void IEnumerator count(int counter, int amount){
 	for(int i = 0; i < amount; i++){
 		counter++
-		yield return new WaitForSeconds(1);	
+		yield return new WaitForSeconds(1);
 	}
 }
 \end{lstlisting}
@@ -336,7 +328,7 @@ Der RiddleManager verwendet dann die R001 - R023 Klassen um die Rätsel zu laden
 
 \section{Lernspiele}
 Für das erste Problem, welche Spiele für Grundschulkinder der ersten bis vierten Klasse pädagogisch wirkungsvoll sind, sollte erst überlegt werden, was \textit{pädagogisch sinnvoll} für Kinder ist und was im Lehrplan steht.\\
-Deshalb sollte das zweite und dritte Problem zuerst gelöst werden. Um dieses zu beantworten, wird zuerst die Begrifflichkeit \textit{pädagogisch sinnvoll} erklärt.  Zunächst wird erklärt, was man unter \textit{pädagogisch} versteht. Der Begriff \textit{pädagogisch} lässt sich in vier Aufgabenbereiche unterteilen,\textit{Betreuung, Erziehung, Bildung und Lernen}. Die ersten drei Begriffe sind nicht essenziell für das Spiel, also wird sich auf den Begriff des Lernens fokussiert. Dieser wird definiert als "\ Im familien- und schulergänzenden Kontext kommt dem Lernen in seinen spielerischen, sensomotorischen, entdeckenden und selbstgesteuerten Aspekten Bedeutung zu. Das begriffliche und kognitive Lernen steht zwar nicht im Vordergrund, spielen aber ebenfalls eine Rolle"\footnote{Vgl. Päda.logics! (2019, o. S.)}. %TODO Umschreiben Direktes Zitat nicht geht, Quellenverzeichnis überprüfen
+Deshalb sollte das zweite und dritte Problem zuerst gelöst werden. Um dieses zu beantworten, wird zuerst die Begrifflichkeit \textit{pädagogisch sinnvoll} erklärt.  Zunächst wird erklärt, was man unter \textit{pädagogisch} versteht. Der Begriff \textit{pädagogisch} lässt sich in vier Aufgabenbereiche unterteilen,\textit{Betreuung, Erziehung, Bildung und Lernen}. Die ersten drei Begriffe sind nicht essenziell für das Spiel, also wird sich auf den Begriff des Lernens fokussiert. Dieser wird definiert als "\ Im Familien- und schulergänzenden Kontext kommt dem Lernen in seinen spielerischen, sensomotorischen, entdeckenden und selbst-gesteuerten Aspekten Bedeutung zu. Das begriffliche und kognitive Lernen steht zwar nicht im Vordergrund, spielen aber ebenfalls eine Rolle"\footnote{Vgl. Päda.logics! (2019, o. S.)}. %TODO Umschreiben Direktes Zitat nicht geht, Quellenverzeichnis überprüfen
 In dem Fall des Projektes sollten die Spiele für die Kinder spielerisch sein und ihr kognitives Lernen fördern. Zeitgleich sollten die Spiele nicht über dem Niveau der ersten bis vierten Klasse stehen.\\
 
 Das dritte Problem, also was im Lehrplan steht, ist leicht zu lösen. Da das Projekt in Baden-Württemberg bearbeitet wurde, wurde der Lehrplan aus diesem Bundesland gewählt.\\
@@ -344,15 +336,15 @@ Im Fach Deutsch geht es in den ersten beiden Klassen, also Klasse 1/2 darum, von
 Im Bereich der Mathematik lernen Kinder der Klassen 1/2, Zahlen und Operatoren, Raum und Formen, Größen und Messen und Daten, Häufigkeiten und Wahrscheinlichkeit kennen.\\
 Im Bereich Zahlen und Operatoren lernen Kinder Zahlen und Zahlenbeziehungen kennen. Sie sollen auch verstehen, was Rechenoperatoren sind und wie diese anzuwenden sind. Im Bereich Raum und Form sollen die Kinder die Fähigkeit sich im Raum zu orientieren bekommen, sie sollten Flächen legen und auslegen können. Sie sollen auch einfache Geometrische Figuren und Abbildungen erkennen und benennen.\\
 Die Kinder lernen auch Größen zu erkennen und mit diesen in den geeigneten Situationen umzugehen.\\
-Im letzten Bereich lernen Kinder Daten aus einfachen Situationen auszuwerten und darzustellen. Sie lernen auch einfache Zufallsexperimente kennen. 
+Im letzten Bereich lernen Kinder Daten aus einfachen Situationen auszuwerten und darzustellen. Sie lernen auch einfache Zufallsexperimente kennen.
 \\
 In der Klasse 3/4 werden die oben genannten Bereiche erweitert und verbessert, so müssen Kinder zum Beispiel jetzt weitere geometrische Figuren erkennen und nennen können.
 \\
 Nachdem diese Probleme nun gelöst wurden, können Spiele, die den oben genannten Kriterien entsprechen, ausgesucht werden. Es werden nun Spiele ausgesucht, die die verschiedenen Bereiche des Lehrplans abdecken und gleichzeitig die Kinder fördern und ihr Wissen verbessern\footnote{Vgl. Ministerium für Kultus, Jugend und Sport Baden Württemberg (2016, S. 12 - 36)}.\\
 Um Ideen für Lernspiele zu sammeln wurde im Internet recherchiert welche Spiele andere Anwendungen zum Lernen anbieten. Es wurde hierzu auf unterschiedlichen Seiten nach Spielen gesucht. Auf den Online-Portalen für Spiele wie zum Beispiel Spielzwerg, findet man überwiegend Sodokus, Puzzles und ein paar andere Arten von Spielen, die das Gehirn trainieren sollen. Die meisten sind für Kinder der ersten bis vierten Klasse aber nicht sinnvoll, da diese Spiele nicht alle den Inhalten des Lehrplans entsprechen.\\
-Also wurden Spielideen auf der Basis des Lehrplans gesammelt, in welchen die Kinder die Grundrechenarten, Mengen, Wahrscheinlichkeiten kennenlernen, sowie deutsche Wörter schreiben und lesen können. Daraus bilden sich folgende Ideen, einmal die Grundrechenarten, das Vergleichen von Mengen mit Gegenständen, sowie das Vergleichen von Zahlen in der symbolischen Art, Rechenmauer lösen, das Spiel Blitzblick, die Länger von Objekten vergleichen, zahlenreihen erkennen und fortführen können. Damit Kinder in der Sprache Deutsch besser werden können, sollten die Kinder Wörter lesen und schreiben können. Die Kinder sollten außerdem ganze Texte schreiben und verstehen.\\
+Also wurden Spielideen auf der Basis des Lehrplans gesammelt, in welchen die Kinder die Grundrechenarten, Mengen, Wahrscheinlichkeiten kennenlernen, sowie deutsche Wörter schreiben und lesen können. Daraus bilden sich folgende Ideen, einmal die Grundrechenarten, das Vergleichen von Mengen mit Gegenständen, sowie das Vergleichen von Zahlen in der symbolischen Art, Rechenmauer lösen, das Spiel Blitzblick, die Länger von Objekten vergleichen, Zahlenreihen erkennen und fortführen können. Damit Kinder in der Sprache Deutsch besser werden können, sollten die Kinder Wörter lesen und schreiben können. Die Kinder sollten außerdem ganze Texte schreiben und verstehen.\\
 Aus den oben genannten Spielen wurde sechs ausgewählt, darunter die Grundrechenarten, da diese für Schulkinder unbedingt notwendig sind. Des Weiteren wurden der Blitzblick und der Mengenvergleich ausgewählt. Beim Blitzblick müssen Kinder schnell erfassen, wie viele Objekte sie sehen und lernen dadurch Mengen zu erfassen und die Anzahl dann auch zu nennen, ohne die Objekte nachzuzählen. Beim Mengenvergleich in dem die Schüler/Schülerinnen die Mengen vergleichen sollen, gibt es zwei Varianten, den Vergleich von Objekten in der ikonischen Schreibweise und den Vergleich von Zahlen in der symbolischen Art. Bei der Variante mit Zahlen, lernen die Kinder die Zahlen miteinander zu vergleichen und somit welche Zahl größer oder kleiner ist. Die Objekten animieren die Kinder dazu Mengen zunächst zu erfassen und anschließend miteinander zu vergleichen sollen. Es wurde sich auch für das Spiel entschieden Zahlenreihen zu erkennen und fortzuführen, da das Erkennen von Mustern und Strukturen ebenfalls Teil des Lehrplans ist. %TODO Quelle hinzufügen
-Die Schüler/Schülerinnen, sollten in der Lage sein die Zahlen um die die Reihe erweitert wird zu erkennen und dadurch die Reihe fortzuführen. Die Rechenmauer bietet den Kindern die Möglichkeit die Addition noch einmal zu verbessern. Das Prinzip der Rechenmauer ist das folgende, jeweils zwei Steine der REchenmauer, die in der gleichen Ebene werden addiert und das Ergebnis wird in den Stein darüber geschrieben. Die Subtraktion kann als Erweiterung noch eingebaut werden. Bei der Rechenmauer sollen die Schülerinnen und Schüler wie bei dem Spiel \textit{Grundrechenarten - Addition} addieren, aber in diesem Fall können die Zahlen wesentlich größer werden. Als letztes Spiel wurde sich für ein Spiel entschieden, was Wörter für Grundschulkinder nimmt, diese mischt und dem Kind anzeigen. Die Aufgabe des Kindes ist es zu erkennen welches Wort gemischt wurde und es richtig in ein Textfeld zu schreiben. Hierbei lernt das Kind Wörter, die es gelernt hat, zu erkennen und zu schreiben. Für die Aufgaben, in denen das Kind die Länge von Objekten unterscheiden kann, wurde sich nicht entschieden, da der Bildschirm nur eine gewisse Größe hat und es sehr ähnlich zu dem Mengenvergleichen ist. Die Objekte würden in Unity lang gezogen werden und das Kind müsste sehen welches länger ist. Außerdem ist die enaktive Umsetzung mit realen Objekten bei dem Vergleich von Längen besser geeignet. Im Fach Deutsch wurde sich nur für ein Spiel entschieden, da ein Spiel mit langen Texten schwer umsetzbar wäre. Das Kind müsste entweder lange Texte schreiben oder lesen und darauf hin müsste dieser lange Text überprüft werden. In diesem Fall gibt es auch keine gute Möglichkeit dies umzusetzen, sodass es dem Kind Spaß machen würde.
+Die Schüler/Schülerinnen, sollten in der Lage sein die Zahlen um die die Reihe erweitert wird zu erkennen und dadurch die Reihe fortzuführen. Die Rechenmauer bietet den Kindern die Möglichkeit die Addition noch einmal zu verbessern. Das Prinzip der Rechenmauer ist das folgende, jeweils zwei Steine der Rechenmauer, die in der gleichen Ebene werden addiert und das Ergebnis wird in den Stein darüber geschrieben. Die Subtraktion kann als Erweiterung noch eingebaut werden. Bei der Rechenmauer sollen die Schülerinnen und Schüler wie bei dem Spiel \textit{Grundrechenarten - Addition} addieren, aber in diesem Fall können die Zahlen wesentlich größer werden. Als letztes Spiel wurde sich für ein Spiel entschieden, was Wörter für Grundschulkinder nimmt, diese mischt und dem Kind anzeigen. Die Aufgabe des Kindes ist es zu erkennen welches Wort gemischt wurde und es richtig in ein Textfeld zu schreiben. Hierbei lernt das Kind Wörter, die es gelernt hat, zu erkennen und zu schreiben. Für die Aufgaben, in denen das Kind die Länge von Objekten unterscheiden kann, wurde sich nicht entschieden, da der Bildschirm nur eine gewisse Größe hat und es sehr ähnlich zu dem Mengenvergleichen ist. Die Objekte würden in Unity lang gezogen werden und das Kind müsste sehen welches länger ist. Außerdem ist die enaktive Umsetzung mit realen Objekten bei dem Vergleich von Längen besser geeignet. Im Fach Deutsch wurde sich nur für ein Spiel entschieden, da ein Spiel mit langen Texten schwer umsetzbar wäre. Das Kind müsste entweder lange Texte schreiben oder lesen und darauf hin müsste dieser lange Text überprüft werden. In diesem Fall gibt es auch keine gute Möglichkeit dies umzusetzen, sodass es dem Kind Spaß machen würde.
 \\
 Nachdem die Spiele des Projektes festgelegt sind, muss geklärt werden, welches Framework verwendet werden soll. Hierzu muss festgelegt sein, was es für ein Projekt sein soll. Soll die Anwendung in 2D oder in 3D sein? Für ein Projekt, das aus Spielen und Rätseln besteht, bietet sich es in 2D mehr an. Das liegt daran, dass die Kinder in diesen Spielen mehr schreiben und Objekte bewegen müssen. In 3D ist die Umgebung wahrscheinlich zusätzlich ablenkend und nicht dem Ziel förderlich. Wenn Lernspiele im Internet betrachtet werden, so sind diese immer in 2D.\\
 Um die Wahl des Frameworks einzugrenzen, muss klar sein, ob das Spiel online oder offline spielbar ist und auf welcher Plattform dieses Projekt erscheinen soll.\\
@@ -377,31 +369,22 @@ Nachdem diese Probleme geklärt wurden, sollte überlegt werden, welche Engine d
 \chapter{Inbetriebnahme}
 \label{cha:inbetriebnahme}
 
-Aufgabe des Kapitels Inbetriebnahme ist es, die Überführung der in 
-Kapitel \ref{cha:implementierung} entwickelte Lösung in das betriebliche 
-Umfeld aufzuzeigen. Dabei wird beispielsweise die Inbetriebnahme eines 
-Programms beschrieben oder die Integration eines erstellten 
+Aufgabe des Kapitels Inbetriebnahme ist es, die Überführung der in
+Kapitel \ref{cha:implementierung} entwickelte Lösung in das betriebliche
+Umfeld aufzuzeigen. Dabei wird beispielsweise die Inbetriebnahme eines
+Programms beschrieben oder die Integration eines erstellten
 Programmodules dargestellt.
 
-Bei der Software-Erstellung entspricht dieses Kapitel der 
+Bei der Software-Erstellung entspricht dieses Kapitel der
 Auslieferungsphase (Deployment) im \ac{rup}.
 
 %---
 \chapter{Evaluierung}
 Um zu nennen, welche Ziele des Projektes erreicht wurden und welche nicht erreicht wurden, werden diese in vier Kategorien eingeteilt. Diese lauten "Must Have"\ , "\ Should Have"\, "Could Have"\ und "Nice to Have"\ eingeteilt.\\
 Die Kategorie "Must Have" beinhaltete alle Ziele die auf jeden Fall erfüllt sein müssen. In diesem Projekt wären das die Lernspiele und die Rätsel. Diese sollten auch ein Menü zur auswahl der Spiele besitzen. Diese Ziel wurde erreicht, es gibt in beiden Bereichen eine Auswahl an unterschiedlichen Spielen. Die Spiele wurden durch ein Menü eingeteilt und können so bequem ausgewählt werden.\\
-In der Kategorie "Should Have"\ wurde für das Projekt ein Hauptmenü vorhergesehen. Auch diese Zeil wurde erreicht. Es gibt eine Szene in dieser kann das Kind zwischen den Rätseln und den Lernspielen entscheiden. Hierbei kann das Kind sehen, wie viele Punkte es in dem Abschnitt der Rätsel bekommen hat und wie viele Sterne es durch das Spielen der Lernspiele schon gesammelt hat. Das Kind kann diese Anzahl auch mit einem Button zurücksetzten. Und das Spiel beenden.\\
-Zu den "Could Have"\ gehören schwierigere Level, eine Online Rangliste und das Spiel auch für Handys zu implementieren. Davon wurden nur die schwierigeren Level umgesetzt.\\ %TODO mehr dazu vielleicht
-In der letzten Kategorie den sogenannten "Nice to Have"\, gehören ein Profil, Achivements und eine Evaluation. Ein Profil und Achivements wurden nicht implementiert, aber eine sehr vereinfachtet Art der Evaluation hat statt gefunden. Das Projekt wurde von Bekannten und Freunden getestet. Dies hat dabei geholfen Fehler zu finden und Ideen zu sammeln um das Projekt zu erweitert.\\
-
-
-%TODO Drüberschauen
-Aufgabe des Kapitels Evaluierung ist es, in wie weit die Ziele der 
-Arbeit erreicht wurden. Es sollen also die erreichten Arbeitsergebnisse 
-mit den Zielen verglichen werden. Ergebnis der Evaluierung kann auch 
-sein, das bestimmte Ziele nicht erreicht werden konnten, wobei die 
-Ursachen hierfür auch außerhalb des Verantwortungsbereichs des 
-Praktikanten liegen können.
+In der Kategorie "Should Have"\ wurde für das Projekt ein Hauptmenü vorhergesehen. Auch diese Ziele wurde erreicht. Es gibt eine Szene in dieser kann das Kind zwischen den Rätseln und den Lernspielen entscheiden. Hierbei kann das Kind sehen, wie viele Punkte es in dem Abschnitt der Rätsel bekommen hat und wie viele Sterne es durch das Spielen der Lernspiele schon gesammelt hat. Das Kind kann diese Anzahl auch mit einem Button zurücksetzten. Und das Spiel beenden.\\
+Zu den "Could Have"\ gehören schwierigere Level, eine Online Rangliste und das Spiel auch für Handys zu implementieren. Davon wurden nur die schwierigeren Level umgesetzt.\\
+In der letzten Kategorie den sogenannten "Nice to Have"\, gehören ein Profil, Achievements und eine Evaluation. Ein Profil und Achievements wurden nicht implementiert, aber eine sehr vereinfachtet Art der Evaluation hat statt gefunden. Das Projekt wurde von Bekannten und Freunden getestet. Dies hat dabei geholfen Fehler zu finden und Ideen zu sammeln um das Projekt zu erweitert.\\
 
 %---
 \chapter{Zusammenfassung und Ausblick}
@@ -410,37 +393,25 @@ Praktikanten liegen können.
 \section{Erreichte Ergebnisse}
 \label{sec:ergebnisse}
 
-Die Zusammenfassung dient dazu, die wesentlichen Ergebnisse des 
-Praktikums und vor allem die entwickelte Problemlösung und den 
-erreichten Fortschritt darzustellen. (Sie haben Ihr Ziel erreicht und 
+Die Zusammenfassung dient dazu, die wesentlichen Ergebnisse des
+Praktikums und vor allem die entwickelte Problemlösung und den
+erreichten Fortschritt darzustellen. (Sie haben Ihr Ziel erreicht und
 dies nachgewiesen).
 
 \section{Ausblick}
 \label{sec:ausblick}
 
-
-Das gesamte Projekt könnte noch um ein Profil erweitert werden. Die Kinder könnten sich einen Namen aussuchen, ein Bild für ihr Profil auswählen. Durch das Profil könnten Errungenschaften   und Achievements beinhalten. Das Projekt könnte auch den Kindern ermöglichen sich mit anderen Kindern zu vergleichen, dass heißt sie könnten die Errungenschaften und den Fortschritt sehen. Die Kinder könnten sich auch als Freune hinzufügen. Außerdem könnten Events eingebaut werden in denen die Kinder durch das Spielen von Leveln Punkte sammeln und dann in einer Rangliste aufsteigen. Es könnte Musik eingebaut werden die eine angenehme Atmosphere bieten. Diese könnte in den Einstellungen leiser oder lauter gestellt werden. \\
-Die Rätesel können durch noch mehr unterschiedliche Rätselarten erweitert werden. Außerdem könnte ein Hinweissystem eingefügt werden. Nach der Eingabe der Ergebnisse, könnte mithilfe einer Animation zu dem Sound der abgespielt wurde dem Kind zeigen ob es richtig oder falsch lag.\\
-Die Lernspiele könnten mit neuen Spielen erweitert werden, außerdem könnte die Anzahl der Level nicht mehr mit der Schwierigkeit hochgehen, sonder im dem Menü mitangegeben werden. Es kann ein Menü das mithilfe von Bildern den Kinder erklärt wie sie die Spiele spielen sollen eingebaut werden. Das menü kann um eine auswahl der Klassen erweitert werden, so können die Spiele besser für die einzelnen Klassen gefiltert werden. Das Menü könnte dann auch zwischen den unterschiedlichen Schulfächern unterscheiden um so die Übersichtlichkeit zu verbessern.\\
-
-
-Im Ausblick werden Ideen für die Weiterentwicklung der erstellten Lösung 
-aufgezeigt. Der Ausblick sollte daher zeigen, dass die Ergebnisse der 
-Arbeit nicht nur für die in der Arbeit identifizierten Problemstellungen 
-verwendbar sind, sondern darüber hinaus erweitert sowie auf andere 
-Probleme übertragen werden können.
+Das gesamte Projekt könnte noch um ein Profil erweitert werden. Die Kinder könnten sich einen Namen aussuchen, ein Bild für ihr Profil auswählen. Durch das Profil könnten Errungenschaften beinhalten. Das Projekt könnte auch den Kindern ermöglichen sich mit anderen Kindern zu vergleichen, dass heißt sie könnten die Errungenschaften und den Fortschritt sehen. Die Kinder könnten sich auch als Freunde hinzufügen. Außerdem könnten Events eingebaut werden in denen die Kinder durch das Spielen von Leveln Punkte sammeln und dann in einer Rangliste aufsteigen. Es könnte Musik eingebaut werden die eine angenehme Atmosphäre bieten. Diese könnte in den Einstellungen leiser oder lauter gestellt werden. \\
+Die Rätsel können durch noch mehr unterschiedliche Rätselarten erweitert werden. Außerdem könnte ein Hinweissystem eingefügt werden. Nach der Eingabe der Ergebnisse, könnte mithilfe einer Animation zu dem Sound der abgespielt wurde dem Kind zeigen ob es richtig oder falsch lag.\\
+Die Lernspiele könnten mit neuen Spielen erweitert werden, außerdem könnte die Anzahl der Level nicht mehr mit der Schwierigkeit hochgehen, sonder im dem Menü mitangegeben werden. Es kann ein Menü das mithilfe von Bildern den Kinder erklärt wie sie die Spiele spielen sollen eingebaut werden. Das Menü kann um eine Auswahl der Klassen erweitert werden, so können die Spiele besser für die einzelnen Klassen gefiltert werden. Das Menü könnte dann auch zwischen den unterschiedlichen Schulfächern unterscheiden um so die Übersichtlichkeit zu verbessern.\\
 
 \subsection{Erweiterbarkeit der Ergebnisse}
 \label{sub:erweiterbarkeit}
 
 %TODO Räsel erweiterbarkeit
-
+Um ein Profil einzubauen, wird eine Szene dafür benötigt. Diese benötigt dann einen passenden Aufbau. Ein Textfeld um den Namen einzugeben, ein Feld um ein Bild hochzuladen. Das Profil benötigt eine Liste mit Errungenschaften. Die Errungenschaften bräuchten einen Text und ein Bild. Die Szene würde auch ein Button benötigen um die Änderungen zu speichern.
+Die Rätsel wurden so Implementiert, dass ohne Probleme mehrere erzeugt werden können. Es besteht auch kein Problem ein Hinweissystem einzubauen. Dafür müsste es die Möglichkeit geben eine Währung zu sammeln, diese könnte das Kind durch das Lösen der Rätsel oder sogar durch das Lösen der Lernspiele erhalten. Mit dieser Währung könnte das Kind sich dann einen Hinweis kaufen um das Rätsel lösen zu können. Es muss nur überlegt werden wie viele Hinweise das Kind pro Rätsel kaufen darf. Eine Animation einzubauen ist auch nicht Problematisch, dafür werden zwei Sounds benötigt. Einer für das richtige Lösen und einer für das Falsche Lösen. Des weiteren wird eine Animation benötigt die dem Kind visuell zeigen soll, ob es das Rätsel richtig oder falsch gelöst hat. Diese muss nicht komplex sein, dafür würde auch eine Anreihung von Bildern reichen. \\
 Die Lernspiele können um neue Spiele erweitert werden. Die Spiele die zurzeit Implementiert sind, sind für die erste bis vierte Klasse. Der Lehrplan gibt aber noch mehr Stoff her, so können sich also dafür auch neue Spiele ausgedacht werden. Die Menü-Szenen einzubauen ist auch kein Problem, dafür muss nur ein Design überlegt werden, dass zum restlichen Projekt passt. Eine Anleitung der Spiele, kann in eines der Menüs eingebaut werden. Am besten in das Menü das dann die Spiele auch anbietet. Wenn ein Menü eingebaut wird, welches zum Beispiel zwischen den Spielen für das Fach Deutsch und Mathe unterscheidet, dann sollte sich die Anleitung im jeweiligen Menü befinden, in dem auch die Spiele vorkommen.\\
-
-\subsection{Übertragbarkeit der Ergebnisse}
-\label{sub:uebertragbarkeit}
-
-Und hier etwas über deren Übertragbarkeit.
 
 %-----------------------------------------------------------------------
 \appendix
@@ -448,11 +419,6 @@ Und hier etwas über deren Übertragbarkeit.
 %---
 \printbibliography[heading=bibintoc]
 
-%---
-\chapter{Anhang A}
-
-%---
-\chapter{Anhang B}
 
 
 \end{document}
