@@ -79,7 +79,7 @@ public static RiddleInfo loadFromXML(int id) {
     }
     (*...*)
 \end{lstlisting}
-Die Variablen 'completed' und 'points' werden anschließend aus der SaveFile gelesen, da diese Variablen beinhalten, ob das Rätsel schonmal abgeschlossen wurde bzw. wie viele Punkte vom Rätsel noch erhalten werden können.\\
+Die Variablen 'completed' und 'points' werden anschließend aus der SaveFile gelesen, da diese Variablen beinhalten, ob das Rätsel schon einmal abgeschlossen wurde bzw. wie viele Punkte vom Rätsel noch erhalten werden können.\\
 Die Variable 'pointReduction' lässt sich aus 'maxPoints' und 'minPoints' berechnen, da immer fünfmal Punkte abgezogen werden sollen, bevor die minimalen Punkte erreicht sind.\\
 Für die string 'solution' und 'description' werden die string in den Arrays aneinandergehängt, wobei nach jedem string aus dem Array jeweils zwei Zeilenumbrüche folgen, um die Paragraphen zu trennen. Für die Beschreibung wird zudem noch eine Regex angewendet, da Text der in der XML-Datei zwischen zwei \$-Zeichen steht, in rot angezeigt werden soll:
 \begin{lstlisting}[language=csh, caption={Regex um Text zwischen \$-Zeichen rot zu färben}]
@@ -186,10 +186,10 @@ void LoadRiddle(int id) {
 Zuerst wird hier das Lösungspopup deaktiviert, falls dieses noch offen ist. Ist noch ein anderes Rätsel geladen, wird dieses ebenfalls gelöscht.\\
 Danach wird die statische Variable 'currentRiddle' auf die Klasse des Rätsels gesetzt, das geladen werden soll, damit andere Klassen Zugriff auf das aktuelle Rätsel haben.\\
 Dann werden die Elemente der Szene gesetzt: Der Beschreibungstext wird aktualisiert, falls das Rätsel automatisch bestätigt wird der Bestätigen-Button deaktiviert und falls ein Bild für die untere linke Ecke vorhanden ist, wird dieses gesetzt, ansonsten wird das Standard Bild gesetzt.\\
-Dann wird noch das Prefab in das Canvas der rechten Hälfte gelade. Dabei wird das Prefav auf die Größe des Canvas skaliert, mittels des sizeDeltas und dann in diesem zentriert, indem die Position auf die Mitte des Parents (0,0) gesetzt wird.\\
+Dann wird noch das Prefab in das Canvas der rechten Hälfte geladen. Dabei wird das Prefab auf die Größe des Canvas skaliert, mittels des sizeDeltas und dann in diesem zentriert, indem die Position auf die Mitte des Parents (0,0) gesetzt wird.\\
 Danach ist das Rätsel vollständig geladen und der Spieler kann es lösen.\\
 
-In der Update() Methode des RiddleManagers, welche jeden Frame aufgerufen wird, wird überprüft ob das momentane Ergebnis syntaktisch korrekt ist. Dazu wird die isResultValid() Funktion des aktuellen Rätsels verwendet. Solange die Lösung nicht syntaktisch korrek istt, wird der Bestätigen-Button ausgegraut und ist nicht klickbar.\\
+In der Update() Methode des RiddleManagers, welche jeden Frame aufgerufen wird, wird überprüft ob das momentane Ergebnis syntaktisch korrekt ist. Dazu wird die isResultValid() Funktion des aktuellen Rätsels verwendet. Solange die Lösung nicht syntaktisch korrekt ist, wird der Bestätigen-Button ausgegraut und ist nicht klickbar.\\
 
 Des weiteren gibt es eine SubmitSolution() Funktion, welche nach klicken des Bestätigen-Button überprüft ob die aktuell eingegebene Lösung korrekt ist. Ist die Lösung korrekt wird die Erfolgsszene geladen, ansonsten die Szene für falsche Lösungen. Die Szenen werden dabei im Additiven Modus geladen (siehe \ref{Grundlagen:SceneManagement}) damit danach zum Rätsel zurückgekehrt werden kann. Zudem wird, bei einem richtigen Ergebnis, mit der ShowSolution() Funktion noch das Popup mit der Lösung angezeigt. Die ShowSolution() Funktion setzt dabei den Text und das Bild für die Lösung auf die Daten aus der Rätselklasse. Das Popup mit der Lösung ist dann zu sehen, sobald die geladene Erfolgsszene wieder verschwunden ist.
 \graphic{solutionPopup}{Popup das die Lösung anzeigt}
@@ -218,7 +218,7 @@ Im Falle der richtigen Lösung (siehe obige Szene) werden dann die verdienten Pu
 
 Wurde das Rätsel falsch gelöst, so ist der folgende Screen zu sehen:
 \graphic{riddleFailure}{Szene bei falsch gelöstem Rätsel}
-Bei falscher Lösung wird in dieser Szene mit obiger count() Methode die verbleibende Punktzahl verringert. Wie weit die Punktzahl verringert wird, hängt dabei vom Rätsel ab. Ist die Punktzahl bereits auf dem minimalen Punktestand für dieses Rätsel, so wird sie nich weiter verringert.
+Bei falscher Lösung wird in dieser Szene mit obiger count() Methode die verbleibende Punktzahl verringert. Wie weit die Punktzahl verringert wird, hängt dabei vom Rätsel ab. Ist die Punktzahl bereits auf dem minimalen Punktestand für dieses Rätsel, so wird sie nicht weiter verringert.
 \begin{lstlisting}[language=csh, caption={Methode für die Szene bei falschen Lösungen}]
 private IEnumerator ExecuteFailure() {
         yield return new WaitForSeconds(2);
@@ -246,7 +246,7 @@ In der Liste ist jeweils die Nummer des Rätsels zu sehen, der Name, die Punkte 
 Um die scrollbare Liste zu erzeugen, wird die in Unity vorhandene Scrollview verwendet.
 Fügt man diese in einer Szene hinzu, erhält man folgende Struktur:
 \graphic{scrollView}{Aufbau der in Unity vorhandenen Scrollview}
-Für die hier verwendete Liste wurde das 'Scrollbar Horizontal' Element entfernt, da die Liste nur vertikal gescrolled werden soll. Die Elemente, die in der Liste auftauschen sollen, müssen dann nur als Child Elemente des 'Content' Elements erstellt werden. Dafür wurde ein Prefab für ein Listen Element erstellt, welches die Texte für ID, Titel und Punkte sowie ein Bild für den Haken und den Hintergrund enthält. Dieses wird dann in der Start() Methode der Szene für jedes Rätsel initialisiert und als Child vom 'Content' Element eingefügt:
+Für die hier verwendete Liste wurde das 'Scrollbar Horizontal' Element entfernt, da die Liste nur vertikal gescrollt werden soll. Die Elemente, die in der Liste auftauchen sollen, müssen dann nur als Child Elemente des 'Content' Elements erstellt werden. Dafür wurde ein Prefab für ein Listen Element erstellt, welches die Texte für ID, Titel und Punkte sowie ein Bild für den Haken und den Hintergrund enthält. Dieses wird dann in der Start() Methode der Szene für jedes Rätsel initialisiert und als Child vom 'Content' Element eingefügt:
 \begin{lstlisting}[language=csh, caption={Start Methode der Rätsel Liste, welche die Listenelemente erstellt}]
 void Start() {
         for (int i = 1; i <= RiddleInfo.RiddleAmount; i++) {
@@ -324,7 +324,7 @@ public static void SaveGame() {
 \end{lstlisting}
 Zuerst wird überprüft, ob der 'Saves' Ordner bereits existiert, wenn nicht wird dieser angelegt. Dann wird eine neue Datei und ein BinaryFormatter angelegt. Mithilfe des BinaryFormatters werden die Daten dann in Binärdaten serialisiert und diese in die Datei geschrieben, welche danach geschlossen wird.\\
 
-Um Speicherdaten wieder aus der Datei zu laden, kann die LoadGame() Methode verwendet werden, welche wiederrum mithilfe eines BinaryFormatters die Daten aus der Datei liest, deserilisiert und in die statische Variable schreibt. Wird hier keine Datei gefunden, so wird eine neue Instanz der SaveData Klasse angelegt, welche in die Variable geschrieben wird.\\
+Um Speicherdaten wieder aus der Datei zu laden, kann die LoadGame() Methode verwendet werden, welche wiederum mithilfe eines BinaryFormatters die Daten aus der Datei liest, deserialisiert und in die statische Variable schreibt. Wird hier keine Datei gefunden, so wird eine neue Instanz der SaveData Klasse angelegt, welche in die Variable geschrieben wird.\\
 
 Des weiteren gibt es eine ResetData() Methode, welche die Speicherdatei löscht und die statische Variable auf eine neue Instanz der SaveData Klasse setzt.
 
@@ -352,7 +352,7 @@ public class NumberInput : MonoBehaviour {
 }
 \end{lstlisting}
 Der Zahleninput ist dabei auf maximal zwei Stellen beschränkt. Im Editor werden die zwei InputFelder aus der Szene für die Einer und Zehner Variablen zugewiesen. Diese InputFelder müssen im Editor auf nur Zahlen und maximal ein Zeichen begrenzt werden.\\
-Das Skript bietet dann eine Methode, die überprüft ob die Eingabe snytaktisch korrekt ist, was sie in diesem Fall ist, sobald eines der beiden Felder befüllt wurde. Eine Eingabe von 1 im Zehner Feld und nichts im Einer Feld wird hierbei als korrekt gewertet, da diese als eine Eins ausgewertet wird.\\
+Das Skript bietet dann eine Methode, die überprüft ob die Eingabe syntaktisch korrekt ist, was sie in diesem Fall ist, sobald eines der beiden Felder befüllt wurde. Eine Eingabe von 1 im Zehner Feld und nichts im Einer Feld wird hierbei als korrekt gewertet, da diese als eine Eins ausgewertet wird.\\
 Mit der GetInput() Methode kann die momentan eingegebene Zahl ausgelesen werden.\\
 
 Das Skript für den Textinput ist sehr ähnlich aufgebaut:
@@ -377,7 +377,7 @@ public class TextInput : MonoBehaviour {
 }
 \end{lstlisting}
 Hier muss für jeden Buchstaben ein einzelnes Input Feld angelegt werden, welche dann im InputField Array 'letters' gespeichert werden. Auch hier sollten die Input Felder auf Buchstaben und maximal ein Zeichen begrenzt werden. Der Text zählt als syntaktisch korrekt, sobald in jedem Feld ein Buchstabe steht.\\
-Die GrtInput() Methode liefert hier alle Buchstaben der InputFelder als string verkettet und in Kleinbuchstaben.
+Die GetInput() Methode liefert hier alle Buchstaben der InputFelder als string verkettet und in Kleinbuchstaben.
 
 \subsubsection{StaticSelection}
 Dieses Skript erlaubt es, aus mehreren Feldern eine bestimmte Anzahl zu selektieren.\\
@@ -398,7 +398,7 @@ void Start() {
         }
     }
 \end{lstlisting}
-In der Start Methode wird für jedes Feld (welche Buttons sind) ein onClick Listener festgelegt. Das Feld ruft bei einem Klick dann die OnClick(int index) Funktion des Skripts, mit seinem Index im 'buttons' Array als Paremeter, auf.
+In der Start Methode wird für jedes Feld (welche Buttons sind) ein onClick Listener festgelegt. Das Feld ruft bei einem Klick dann die OnClick(int index) Funktion des Skripts, mit seinem Index im 'buttons' Array als Parameter, auf.
 \begin{lstlisting}[language=csh, caption={OnClick Methode des StaticSelection Skripts}]
 public void OnClick(int index) {
         Image selectedImage = buttons[index].transform.GetChild(0).GetComponent<Image>();
@@ -495,7 +495,7 @@ public override bool checkResult() {
         return selected[0] && !selected[1] && selected[2] && selected[3] && !selected[4];
     }
 \end{lstlisting}
-Um zu bestimmen, ob die Lösung richtig ist, wird geprüft indem getestet wird, ob die booleans für Buttons 0, 2 und 3 true sind (also diese Buttons gedrückt wurden) und die für Buttons 1 und 4 false sind (also diese Buttons nicht gedrückt sind). Ist das der Fall, ist die Lösung korrekt. Wurde ein falscher Button angeklickt oder ein Button vergessen anzuklicken, so wird hier false zurückgegeben.
+Um zu bestimmen, ob die Lösung richtig ist, wird geprüft indem getestet wird, ob die Booleans für Buttons 0, 2 und 3 true sind (also diese Buttons gedrückt wurden) und die für Buttons 1 und 4 false sind (also diese Buttons nicht gedrückt sind). Ist das der Fall, ist die Lösung korrekt. Wurde ein falscher Button angeklickt oder ein Button vergessen anzuklicken, so wird hier false zurückgegeben.
 
 \begin{lstlisting}[language=csh, caption={isResultValid Methode in der Klasse von Rätsel 6}]
     public override bool isResultValid() {
@@ -517,7 +517,7 @@ Folgende Variablen müssen für dieses Skript im Editor gesetzt werden:
 \item \textbf{public Vector2[] locations} hier müssen alle Positionen angegeben werden, an denen die Bilder abegelegt werden können (ohne die Startpositionen der Bilder)
 \item \textbf{public bool enableRotation} Wird dieser boolean auf true gesetzt, so können die Bilder durch einen Klick gedreht werden, steht hier false, so können die Bilder nicht gedreht werden
 \end{itemize}
-Für die Locations könnte man anstelle eines Vector2 Arrays auch ein GameObject Array verwenden. Damint könnten in der Szene leere GameObjects an allen Stellen angelegt werden, an die die Images gesetzt werden dürfen. Dann können die Koordinaten für die Punkte aus den GameObjects gelesen werden und nicht von Hand eingetragen werden. Für Rätsel die eventuell sehr viele mögliche Position haben, wäre dieser Ansatz sinnvoller, er würde aber mehr Objekte in der Szene benötigen.
+Für die Locations könnte man anstelle eines Vector2 Arrays auch ein GameObject Array verwenden. Damit könnten in der Szene leere GameObjects an allen Stellen angelegt werden, an die die Images gesetzt werden dürfen. Dann können die Koordinaten für die Punkte aus den GameObjects gelesen werden und nicht von Hand eingetragen werden. Für Rätsel die eventuell sehr viele mögliche Position haben, wäre dieser Ansatz sinnvoller, er würde aber mehr Objekte in der Szene benötigen.
 
 \begin{lstlisting}[language=csh, caption={Start Methode des SnapDragControllers}]
 public void Start() {
@@ -694,7 +694,7 @@ Mit der E Taste wird das Objekt um 90° gegen den Uhrzeigersinn gedreht. Auch hi
 
 Dieses Skript wird nur von Rätsel 1 verwendet, hier muss aus den Dreiecken ein K gebildet werden:
 \graphic{r001}{Rätsel 1}
-Der Bereich, in dem die Dreiecke bewegt werden dürfen, ist die weiße Fläche. Deshalb sind die Dreiecke alle child Elemente, des Canvas das genau die größe der weißen Fläche hat. Denn im Skript ist der Bereich, in dem die Objekte bewegt werden dürfen, auf das Parent Element begrenzt.\\
+Der Bereich, in dem die Dreiecke bewegt werden dürfen, ist die weiße Fläche. Deshalb sind die Dreiecke alle child Elemente, des Canvas das genau die Größe der weißen Fläche hat. Denn im Skript ist der Bereich, in dem die Objekte bewegt werden dürfen, auf das Parent Element begrenzt.\\
 Auf jedes der Dreiecke wird dann das UIElementDragger Skript gesetzt, Variablen müssen hier im Editor nicht gesetzt werden.\\
 
 Um in der Rätsel Klasse zu testen, ob die Lösung korrekt ist, wird zuerst überprüft ob alle Dreiecke die richtige Rotation haben. Sind alle Dreiecke richtig rotiert, wird für jedes Dreieck die Distanz zur korrekten Position berechnet. Ist dann die Summe aller dieser Distanzen kleiner als 30, so wird die Lösung als korrekt akzeptiert. Sind also zwei Dreiecke perfekt platziert, so darf das dritte Dreieck weiter von der perfekten Position weg sein.\\
