@@ -105,7 +105,7 @@ Die Klassen für die Rätsel erben dabei alle von der abstrakten Klasse Riddle.c
     public void init(int id) {
         info = RiddleInfo.loadFromXML(id);
         solutionSprite = Resources.Load<Sprite>($"RiddleAssets/{idToString(id)}/solution") as Sprite;
-        interactiveArea = Instantiate(Resources.Load<GameObject>($"RiddleAssets/{idToString(id)}/R{idToString(id)}")) as GameObject;
+        interactiveArea = Instantiate(Resources.Load<GameObject>( $"RiddleAssets/{idToString(id)}/R{idToString(id)}")) as GameObject;
         resultAreaImage = Resources.Load<Sprite>($"RiddleAssets/{idToString(id)}/result") as Sprite;
     }
 
