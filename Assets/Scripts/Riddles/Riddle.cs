@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class Riddle : ScriptableObject {
     public RiddleInfo info;
     public Sprite resultAreaImage;
-    public string solution;
     public Sprite solutionSprite;
     public GameObject interactiveArea;
 

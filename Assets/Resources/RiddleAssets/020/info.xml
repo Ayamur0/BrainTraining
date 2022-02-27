@@ -7,7 +7,7 @@
     <descriptionParagraphs type="array">
         <value>Findest du durch das Labyrinth?</value>
         <value>Um vom Startpunkt links unten zum Ziel rechts oben zu gelangen, $musst du eine Stelle der Mauer durchbrechen$.</value>
-        <value>Klicke um den Kreis auf dem Mauerstück zu platzieren, das deiner Meinung nach zerstört werden muss.</value>
+        <value>Klicke, um den Kreis auf dem Mauerstück zu platzieren, das deiner Meinung nach zerstört werden muss.</value>
     </descriptionParagraphs>
     <solutionParagraphs>
         <value>Was für ein Durchbruch!</value>

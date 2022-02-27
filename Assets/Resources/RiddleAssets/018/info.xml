@@ -5,10 +5,10 @@
     <maxPoints>40</maxPoints>
     <minPoints>20</minPoints>
     <descriptionParagraphs type="array">
-        <value>Wie war gleich noch das Passwrot für den Tresor?.</value>
-        <value>$Es is sechstellig und besteht aus den Buchstaben A, B und C.$</value>
+        <value>Wie war gleich noch das Passwort für den Tresor?</value>
+        <value>$Es is sechsstellig und besteht aus den Buchstaben A, B und C.$</value>
         <value>Nutze die Hinweise und finde das Passwort heraus:</value>
-        <value>C kann nicht neben einem anderen C pder einem B vorkommen.</value>
+        <value>C kann nicht neben einem anderen C oder einem B vorkommen.</value>
         <value>Derselbe Buchstabe wird nie mehr als zweimal genutzt.</value>
         <value>Das Passwort liest sich vorwärts und rückwärts gleich.</value>
     </descriptionParagraphs>

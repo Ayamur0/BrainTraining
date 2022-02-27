@@ -1,0 +1,517 @@
+\newcommand{\graphic}[2]{
+\captionsetup{type=figure}
+\begin{center}
+\includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{images/#1}
+\end{center}
+\caption{#2}
+\bigskip
+}
+
+\documentclass[oneside]{Ausarbeitung}
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+\bibliography{latexlit}
+
+
+\usepackage{listings}
+\lstset{language=csh, literate={-}{-}1}
+% ----------------------------------------------------------------------
+
+\begin{document}
+
+%--- Sprachauswahl
+% Erlaubte Werte:
+%   \selectlanguage{english}
+%   \selectlanguage{ngerman}
+\selectlanguage{ngerman}
+
+%--- Art der Arbeit
+% Erlaubte Werte:
+%   \Praxissemesterbericht
+%   \Projektbericht
+%   \Bachelorarbeit
+%   \Seminararbeit
+%   \Masterarbeit
+
+\Projektbericht
+
+%--- Studiengang:
+% Erlaubte Werte:
+%   \Informatik
+%   \Elektronik
+%   \DataScience
+\Informatik
+
+\title{Lernspiel für Grundschulkinder}
+
+\author{Vincent Ugrai, Tim Staudenmaier}
+\matrikelnr{76389, 75981}
+
+%--- Ist der Erstbetreuer (\examinerA) an der Hochschule ein Professor?
+% Erlaubte Werte:
+%   \examinerIsAProfessortrue   % Ja
+%   \examinerIsAProfessorfalse  % Nein
+\examinerIsAProfessortrue   % Ja
+
+%--- Betreuer
+\examinerA{Dr. Mark Hermann}
+%\examinerB{Prof.~Dr.~Ulrich~Klauck}
+
+%--- Einreichungsdatum
+\date{28. Februar 2022}
+
+%--- Angaben zur Firma
+% Auskommentieren, wenn die Arbeit nicht bei einer ext. Firma gemacht wurde.
+% \companyname{Beispielfirma}
+% \industrialsector{Beispielbranche}
+% \department{Beispielabteilung}
+% \companystreet{Beispielstr. 1}
+% \companycity{12345 Musterstadt}
+
+%--- Angaben zum Betreuer bei dieser Firma
+% \advisorname{Name des Betreuers}
+% \advisorphone{(01234) 567-890}
+% \advisoremail{name@company.xxx}
+
+%--- Titelseite Anzeigen
+\maketitle
+\cleardoublepage
+
+%---
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+%--- Firmendaten Anzeigen
+% Auskommentieren, wenn die Arbeit nicht bei einer ext. Firma gemacht wurde.
+% \makeworkplace
+% \cleardoublepage
+
+%--- Eidesstattliche Erklärung anzeigen
+\makeaffirmation
+\cleardoublepage
+
+%---
+\begin{abstract}
+  Das Thema dieser Arbeit ist die Erstellung eines Lernspiels für Grundschulkinder.
+  Das Lernspiel soll dabei zwei große Teile beinhalten: Spiele mit denen die Kinder    wichtige Grundlagen in unter anderem Mathematik und Deutsch lernen können und Rätsel.
+  Die Lernspiele beinhalten 6 einzelne Spiele:
+  \begin{itemize}
+  	\item Blitzblick
+  	\item Grundrechenarten  (Addition, Subtraktion, Division, Multiplikation)
+  	\item Mengen vergleichen mit Objekten und Zahlen
+  	\item Vervollständigen die Reihe
+  	\item Rechenmauer
+  	\item Wortsalat
+  \end{itemize}
+  %TODO vielleicht als Fließtext
+  Zudem sind 23 verschiedene Rätsel vorhanden, die von einfachen Rätseln, bei denen eine Zahl als Ergebnis eingegeben werden muss, bis zu Rätseln bei denen Ziegen auf einem Feld verteilt werden müssen, reichen.\\
+
+  Das Spiel wird in 2D umgesetzt und mithilfe der Unity Engine programmiert.
+  In diesem Bericht wird der gesamte Erstellungsprozess eines 2D Spiels in Unity, vom Erstellen des Projekts, über den Aufbau des Codes, bis zum fertigen Spiel, beschrieben.
+
+\end{abstract}
+%-----------------------------------------------------------------------
+\cleardoublepage
+\tableofcontents
+
+%---
+\listoffigures
+
+%---
+%\listoftables
+
+%---
+\listoflistings
+
+%---
+
+
+\cleardoublepage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ----------------------------------------------------------------------
+\chapter{Einleitung}
+\label{cha:einleitung}
+
+In diesem Bericht werden zuerst die Grundlagen des Programmierens von Spielen in Unity erklärt. Alles Wissen, das notwendig ist um ein einfaches 2D Spiel in Unity zu entwickeln, sind im Kapitel \ref{cha:grundlagen} zu finden.\\
+Zuerst wurden die zwei Teile des Spiels (Rätsel und Lernspiele) einzeln entwickelt und am Ende durch ein Menü verbunden.\\
+Für die Rätsel wird eine Rätsel-Szene erstellt, welche drei Elemente beinhaltet:
+\begin{itemize}
+	\item Die Beschreibung des Rätsels
+	\item Bereich in dem das Rätsel zu sehen ist (hier werden zB die Antwortmöglichkeiten gezeigt, aus denen bei manchen Rätseln eine oder mehrere auszuwählen sind %TODO Screenshot)
+	\item Bereich für die Eingabe einer Lösung
+\end{itemize}
+Des weiteren werden für die Rätsel eine Szene für die Rätselauswahl, sowie eine Szene für die Auflösung der eingegebenen Lösung erstellt. Die Implementierung dieser Rätsel findet sich im Kapitel \ref{sec:raetsel}\\
+
+Auch für die Lernspiele wird ein Menü erstellt, über welches alle Spiele ausgewählt werden können. Zudem können hier vor dem Starten für bestimmte Spiele noch Variationen und die Schwierigkeit gewählt werden. \\
+Zudem wird für jedes Lernspiel eine Szene benötigt, welche das eigentliche Spiel realisiert. Die Implementierung hierfür wird im Kapitel \ref{sec:lernspiele} beschrieben.\\
+
+\section{Motivation}
+\label{sec:motivation}
+
+Durch die Lernspiele sollen die Kinder spielend an das Lernen herangeführt werden. Denn vor allem viele Grundschüler/-innen lernen zu beginn nicht gerne. Viele dieser Kinder lernen mithilfe solcher Spiele schneller, da sie mehr Spaß am lernen haben. \\
+Die Lernspiele dienen dabei dazu, den Kindern einfache Grundlagen, wie zB die Grundrechenarten und Rechtschreibung einfacher Worte, spielend beizubringen. Die Rätsel dienen vor allem dazu, das logische Denken der Kinder zu fördern. Darüber hinaus werden in manchen Rätseln auch grundlegende Mathematik Kenntnisse benötigt, wodurch auch dieser weiter gefestigt werden.
+
+\section{Problemstellung und -abgrenzung}
+\label{sec:problemstellung}
+
+Das Menü des Spiels muss eine für Kinder ansprechendes und möglichst einfaches UI Design besitzen. Zudem müssen die Kinder durch zB das Sammeln von Punkten motiviert werden die Spiele und Rätsel abzuschließen.\\
+
+In Hinsicht auf den Code des Projekts, muss für die Rätsel ein Grundgerüst erstellt werden, welches die verschiedenen Rätsel laden und darstellen kann, um möglichst viel wiederzuverwenden und zu verhindern, dass jedes Rätsel von neuem erstellt werden muss.\\
+
+Für die Lernspiele müssen die Aufgaben für jedes Spiel möglichst zufällig erstellt werden, damit das Spiel nicht auswendig gelernt werden kann und bei mehrmaligem Spielen noch immer neue Aufgaben vorkommen.
+
+\section{Ziel der Arbeit}
+\label{sec:ziel}
+
+Es wird ein 2D-Spiel erstellt, welches über 20 verschiedene Rätsel und 6 verschieden Lernspiele mit unterschiedlichen Variationen und Schwierigkeiten beinhalten. Alle diese Rätsel müssen über ein möglichst simples und für Kinder ansprechendes Menü auswählbar sein.\\
+Des weiteren muss ein Punktesystem eingebaut werden, um die Kinder zu motivieren möglichst viele Rätsel zu lösen und möglichst viele Spiele zu spielen. Die Punkte müssen dabei auch zwischen den Spielstarts gespeichert werden und es muss möglich sein diese wieder zu löschen.
+
+\section{Vorgehen}
+\label{sec:vorgehen}
+
+Um das Ziel des Projektes zu erreichen, wurde mehrere Meilensteine festgelegt. Um den ersten Meilenstein zu erreichen, muss das erste Level für die Rätsel- und Lernspiele vorhanden sein. Um die Lernspiele zu erstellen, musste erst Recherche betrieben werden, danach wurde die Szene erstellt und die Logik dafür implementiert. Damit das erste Rätsel erstellt wird, wurde eine Szene kreiert in die alle Rätsel geladen werden. Danach wurden die Klasse und XML Datei des Rätsel erstellt, als letztes wurde die Klasse die die Rätsel lädt erstellt. Um den zweiten Meilenstein zu erreichen, sollten die restlichen Level erstellt werden. Für die Lernspiele wurden die restlichen Szenen und Skripte der Lernspiele erstellt. Um die restlichen Rätsel einzubauen, wurden die Klassen und die XML Dateien erzeugt und danach die restlichen Skripte für die Rätsel implementiert. Im dritten Meilenstein wurde das Menü erstellt. Dafür wurde zuerst eine Menüszene für die Rätsel- und Lernspiele erstellt. Danach wurde ein Hauptmenü das in die einzelnen Menüs weiterleitet erstellt. Als letztes wurde ein Savegame angelegt, um die Punktzahl der Rätsel und die Sterne der Lernspiele zu speichern. Um den letzten Meilenstein zu erreichen, muss nur noch die Dokumentation geschrieben werden. Der Ablauf ist in der Abbildung 1.1 zu sehen.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[height=0.9\textheight]{images/loesungskonzept}
+  \caption{Vorgehen beim Erstellen des Spiels}
+  \label{fig:1}
+\end{figure}
+
+
+% ---
+\chapter{Grundlagen}
+\label{cha:grundlagen}
+
+Da das Spiel mit Unity erstellt wird, werden in diesem Kapitel einige wichtige Grundlagen des Unity Editors und der Skripte von Unity erklärt.
+
+\section{Unity Grundlagen}
+\label{sec:grundlagenunity}
+
+\subsection{Szenen Editor}
+\label{sub:szenenEditor}
+Im Editor von Unity können die Spielszenen erstellt werden.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{images/unityEditor}
+  \caption{Szenen Editor von Unity}
+  \label{fig:unityEditor}
+\end{figure}
+Der Editor besteht standardmäßig aus 4 Teilen, wie in der Abbildung zu sehen.
+\begin{itemize}
+	\item \textbf{Teil 1:} Hier wird die Struktur der Szene dargestellt. In dieser Liste sind alle in der Szene vorhandenen Elemente aufgeführt. Elemente die dabei weiter unten liegen, liegen in der Szene hinter Elemente die darüber liegen. Zudem können Elemente weitere Elemente beinhalten (Child Elemente), die in der Szene dann ebenfalls in dem Element liegen, das sie beinhaltet. Über diese Liste können mittels Rechtsklick auch neue Elemente erstellt werden.
+	\item \textbf{Teil 2:} Hier ist zu sehen, wie die Szene momentan aussieht. Durch einen Wechsel vom 'Scene' Tab in den 'Game' Tab, lässt sich auch genau sehen, wie die Szene im Spiel aussehen würde. Hier können die einzelnen Elemente zB verschoben, vergrößert oder gedreht werden.
+	\item \textbf{Teil 3:} Hier können die Attribute des aktuell ausgewählten Elements verändert werden. Je nach Element sind hier andere Komponenten enthalten, für ein Image Objekt lässt sich hier zB das dargestellte Bild ändern. Hier können auch weitere Komponenten hinzugefügt werden oder bereits vorhandene deaktiviert oder entfernt werden.
+	\item \textbf{Teil 4:} Dieser Teil ist ein einfacher Dateiexplorer, um zB Bilddateien auszuwählen, Skripte zu erstellen bzw. öffnen oder neue Szenen zu erstellen.
+\end{itemize}
+
+\subsection{Prefabs}
+\label{sub:prefab}
+Prefabs sind Objekte, die aus mehreren Szenen-Elementen bestehen.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{images/unityPrefab}
+  \caption{Prefab in Unity}
+  \label{fig:unityPrefab}
+\end{figure}
+In der obigen Abbildung wurde somit ein Zahlen Input Feld erstellt, welches aus einem Image ('NumberInput'), zwei Input Feldern ('tens' und 'ones') und zwei Texten ('Text') besteht. Dieses Prefab kann dann als ein Objekt in Szenen eingefügt werden, wodurch dieser Zahlen Input an mehreren Stellen verwendet werden kann, ohne ihn jedes mal neu zu erstellen.
+
+\subsection{Skripte}
+\label{sub:skripte}
+Die Skripte von Unity werden in C\# geschrieben. Erstellt man ein neues Skript, so sieht dieses zuerst wie folgt aus:
+\begin{lstlisting}[language=csh, caption={Generiertes Unity Skript}]
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TestScript : MonoBehaviour {
+    // Start is called before the first frame update
+    void Start() {
+    }
+
+	// Update is called once per frame
+    void Update() {
+    }
+}
+\end{lstlisting}
+Jedes Skript, welches Funktionen von Unity verwendet, erbt von der Klasse MonoBehaviour.
+Diese erlaubt es zB die beiden Methoden Start und Update zu verwenden, welche beim erstellen eines neuen Skripts auch direkt generiert werden.\\
+Die Start Methode wird dabei aufgerufen, bevor der erste Frame geladen wird, in dem dieses Skript vorhanden ist. Ist das Skript also zB die Komponente eines Würfels, welcher nun in die Szene geladen wird, so wird die Start Methode einmal aufgerufen, bevor der Würfel in der Szene auftaucht.\\
+Die Update Methode wird hingegen jeden Frame aufgerufen, solange das Skript in der Szene vorhanden ist. \\
+
+Hier können noch viele weitere Funktionen verwendet werden, wie zB onCollisionEnter(), wenn ein Collider vorhanden ist. Weitere Informationen sind in der Unity Dokumentation zu finden \autocite{Unity:Doc}.
+
+\subsubsection{UnityEngine.SceneManagement}
+\label{Grundlagen:SceneManagement}
+Wenn aus Skripten Szenen geladen werden sollen, muss UnityEngine.SceneManagement eingebunden werden.\\
+Dann können mithilfe der LoadScene() Funktion des SceneManagers neue Szenen geladen werden.
+\begin{lstlisting}[language=csh, caption={Laden einer Szene im Skript}]
+SceneManager.LoadScene("RiddleSolution", LoadSceneMode.Additive)
+\end{lstlisting}
+Dabei muss der Name der Szene als string übergeben werden. Außerdem kann ein Modus gewählt werden, standardmäßig wird die aktuelle Szene durch die neu geladene ersetzt. Im obigen Beispiel wird der Modus 'Additive' verwendet, wodurch die neue Szene über die alte gelegt wird, so kann man die neu geladene Szene wieder löschen und zur vorherigen zurückkehren.
+
+\subsubsection{Coroutines}
+\label{Grundlagen:Coroutines}
+Coroutines werden verwendet, um Code zu parallelisieren. Methoden die als Coroutine aufgerufen werden sollen, müssen dabei den Returntyp 'IEnumerator' besitzen. Des weiteren muss die Methode an mindestens einer Stelle eine Wartezeit zurückgeben, zB 'yield return new WaitForSeconds(1);.\\
+Wird die Methode dann mittels 'StartCoroutine(Methode()) aufgerufen, wird sie parallel ausgeführt und wartet dabei an den Stellen, an denen eine Wartezeit returned wird, ohne die Ausführung des aufrufenden Codes zu blockieren.\\
+Es ist auch möglich in einer Schleife die Wartezeiten zurückzugeben:
+\begin{lstlisting}[language=csh, caption={Laden einer Szene im Skript}]
+void IEnumerator count(int counter, int amount){
+	for(int i = 0; i < amount; i++){
+		counter++
+		yield return new WaitForSeconds(1);
+	}
+}
+\end{lstlisting}
+Diese Methode würde die Variable counter jede Sekunde um 1 hochzählen, bis sie amount mal erhöht wurde.
+
+%---
+\chapter{Problemanalyse}
+\label{cha:problemanalyse}
+
+\section{Rätsel}
+Die Rätsel sollen größtenteils aus XML Dateien geladen werden. Somit muss dann nur eine Szene für alle Rätsel erstellt werden. Die XML Dateien sollen so viele Informationen wie möglich beinhalten, so dass möglichst wenig Code für die Rätsel benötigt wird. \\
+Für jedes Rätsel existiert zudem eine Klasse, welche die zu ladende XML Datei, das Rätsel Prefab und die benötigten Bilder beinhaltet. Das Rätsel Prefab ist dabei ein Prefab, das in die Szene geladen wird, um Rätsel, die mehr Interaktion erlauben (wie unter anderem das verschieben von Objekten), in derselben Szene darstellen zu können. \\
+Außerdem werden allgemeine Klassen benötigt, die in mehreren Rätseln zum Einsatz kommen. Unter anderem ein Skript das dem Spieler erlaubt Objekte mit der Maus zu verschieben und ein Zahleninput sowie Textinput. Zudem wird ein Manager benötigt, der aus den vorhandenen Informationen die Rätsel in die Szene laden kann.\\
+Auch werden die Szenen für die Rätselauswahl und das Ergebnis des Rätsel benötigt.
+
+\section{Lernspiele}
+
+In diesem Teil des Projektes wurden Spiele für Grundschulkinder entwickelt. Damit das Projekt vernünftig wird, müssen die folgenden Probleme bedacht werden.
+\begin{enumerate}
+    \item Welche Spiele sind für Grundschulkinder der ersten bis vierten Klasse pädagogisch sinnvoll?
+    \item Was ist pädagogisch wertvoll für Kinder?
+    \item Was steht in ihrem Lehrplan?
+    \item Was ist gut umsetzbar?
+    \item Welches Umgebung um das Projekt umzusetzen soll verwendet werden?
+    \item Wird das Spiel Multiplayer Elemente beinhalten?
+    \item Auf welcher Plattform soll das Spiel erscheinen?
+    % \item Fragen warum wir das Projekt so umgesetzt haben
+\end{enumerate}
+
+% Probleme dann auf Text ein wenig ausweiten nachdem sie genannt wurden oben
+
+Das erste große Problem war, welche Spiele für Grundschulkinder der ersten bis vierten Klasse pädagogisch sinnvoll sind. Also müssen sich Spiele angesehen und bewertet werden. Dabei ist wichtig darauf zu achten, dass die Spiele im Schwierigkeitsgrad nicht zu schwer und nicht zu einfach sind. Die Spiele sollten zum Lernplan passen und den Kindern auch weiterhelfen. Die Kinder sollten die Spiele gerne spielen wollen und gleichzeitig ihre schulischen Leistungen verbessern.
+\\
+
+Das zweite Problem ist, was heißt pädagogisch wertvoll für Kinder? Was bedeutet dies für die Kinder und für die Umsetzung des Projektes? Wie kann gewährleistet werden, das das Projekt pädagogisch wertvoll Umgesetzt wird, so dass die Kinder mithilfe des Projektes ihre Leistungen verbessern können.
+\\
+
+Das dritte Problem wäre Spiele aufgrund des aktuell geltenden Lehrplans zu finden. Die Spiele sollten also den Stoff des Lehrplans aufgreifen und für die jeweilige Klassenstufe nicht zu anspruchsvoll sein, sodass die Kinder gefördert werden und sich durch die Spiele verbessern können.
+\\
+
+Nach der Lösung dieser drei Probleme folgt, dass vierte Problem, welche Spiele mit den davor genannten Kriterien gut umzusetzen sind? Also sollte überlegt werden, in welcher Art das Spiel dargestellt wird. Wäre es besser es in 2D oder in 3D zu gestalten? Wie müssen die Level aussehen, damit sie die Kinder nicht ablenken, aber sie trotzdem ansprechen?
+\\
+
+Im fünften Problem sollte behandelt werden, in welchem Framework das Projekt umgesetzt wird. Also sollten die verschiedenen Möglichkeiten betrachtet werden. Diese wären die Unity3D Engine, die CryEngine und die Unreal Engine. Von diesen müssen die Vor- und Nachteile gegenübergestellt werden und dann das Beste Framework ausgesucht werde.
+\\
+
+Als sechstes Problem sollte beachtet werden, ob das Spiel im Singleplayer oder im Multiplayer verfügbar sein soll und welche Option für den/die SchülerIn die sinnvollste Umsetzung ist. Dabei sollte beachtet werden, ob es für den/die SchülerIn Vorteile gäbe, wenn er seinen Lernfortschritt mit anderen SchülerInnen vergleichen kann oder sogar mit diesen gemeinsam lernen kann. Es sollten aber auch eventuelle Nachteile die Online stattfinden, bedacht werden.
+\\
+Als letztes stellt sich die Frage für welche Plattform das Projekt entwickelt werden soll. Für die folgenden Plattformen kann die Anwendung entwickelt werden. Auf dem Computer, einem Handy oder auf einer Konsole. Es muss auch in diesem Fall überlegt werden, welche Vor- und Nachteile die jeweilige Plattform bietet.
+
+%---
+\chapter{Lösungskonzept}
+\label{cha:loesungskonzept}
+
+\section{Rätsel}
+Ein wichtiger Aspekt für die Rätsel ist, dass sie nicht nur Zahlen oder Text als Lösung haben. Denn wenn alle Rätsel nur Zahlen oder Text als Lösung haben, dann werden diese schnell repetitiv und langweilig für Kinder. Rätsel, die mehr Interaktion bieten, motivieren die Kinder mehr dazu diese zu lösen und sich damit zu beschäftigen.\\
+Zudem sind auch aussagekräftige Bilder notwendig, um die Rätsel für Kinder leichter verständlich zu machen. Die Bilder für dieses Spiel wurden alle aus Layton’s Mystery Journey: Katrielle und die Verschwörung der Millionäre für Nintendo Switch entnommen (Shopseite des Spiels: \autocite{Layton:Shop} Wiki des Spiels: \autocite{Layton:Wiki}.\\
+
+\graphic{classDiagramRiddle}{Klassenstruktur zum Laden der Rätsel}
+
+Im obigen Klassendiagramm ist die Struktur zu sehen, welches verwendet wird, um die Rätsel zu laden. Die Prefabs für die Rätsel verwenden dabei verschiedene Skripte, um Interaktionen, wie das Verschieben von Objekten zu ermöglichen.\\
+Die R001 - R023 Klassen enthalten alle Informationen zum Laden der Rätsel. Dabei besitzt jede dieser Klassen eine Instanz der RiddleInfo Klasse, welche die aus den XML Dateien geladenen Informationen beinhaltet. Zu den aus der XML Datei geladenen Informationen, werden auch manche Infos aus dem Savegame geladen, wie zB ob das Rätsel bereits abgeschlossen wurde.\\
+Der RiddleManager verwendet dann die R001 - R023 Klassen um die Rätsel zu laden und die SolutionScene um die Lösung anzuzeigen.
+
+\section{Lernspiele}
+Für das erste Problem, welche Spiele für Grundschulkinder der ersten bis vierten Klasse pädagogisch wirkungsvoll sind, sollte erst überlegt werden, was \textit{pädagogisch sinnvoll} für Kinder ist und was im Lehrplan steht.\\
+Deshalb sollte das zweite und dritte Problem zuerst gelöst werden. Um dieses zu beantworten, wird zuerst die Begrifflichkeit \textit{pädagogisch sinnvoll} erklärt.  Zunächst wird erklärt, was man unter \textit{pädagogisch} versteht. Der Begriff \textit{pädagogisch} lässt sich in vier Aufgabenbereiche unterteilen \textit{Betreuung, Erziehung, Bildung und Lernen}. Die ersten drei Begriffe sind nicht essenziell für das Spiel, also wird sich auf den Begriff des Lernens fokussiert. Im familien- und schulergänzenden Kontext wird dem Lernen in seinen spielerischen, sensomotorischen, entdeckenden und selbst-gesteuerten Aspekten Bedeutung zugewiesen. Nicht im Vordergrund stehen das begriffliche und kognitive Lernen, welche aber dennoch eine Rolle spielen\autocite{PaedaLog}.
+In dem Fall des Projektes sollten die Spiele für die Kinder spielerisch sein und ihr kognitives Lernen fördern. Zeitgleich sollten die Spiele nicht über dem Niveau der ersten bis vierten Klasse stehen.\\
+
+Das dritte Problem, also was im Lehrplan steht, ist leicht zu lösen. Da das Projekt in Baden-Württemberg bearbeitet wurde, wurde der Lehrplan aus diesem Bundesland gewählt.\\
+Im Fach Deutsch geht es in den ersten beiden Klassen, also Klasse 1/2 darum, von den SchülerInnen die Handschrift zu entwickeln, sie Texte schreiben zu lassen und sie im Lesen zu fördern. Unter anderem wird den SchülerInnen auch beigebracht zu präsentieren und Texte zu verstehen. Im Bereich Sprache sollen Kinder die Unterschiede zum Schreiben kennenlernen. Sie sollen auch lernen, wie Sprache als Mittel der Kommunikation wirkt und grundlegende Strukturen und Mittel in der Sprache kennenlernen. In der 3./4. Klasse werden die vorherigen genannten Bereiche erweitert und verbessert, sodass das Kind in der Lage ist Texte noch besser zu schreiben, verstehen und zu lesen. Das Kind lernt auch noch besser in der deutschen Sprache zurechtzufinden\autocite{Deutsch:Lehrplan}.\\
+Im Bereich der Mathematik lernen Kinder der Klassen 1/2, Zahlen und Operatoren, Raum und Formen, Größen und Messen und Daten, Häufigkeiten und Wahrscheinlichkeit kennen.\\
+Im Bereich Zahlen und Operatoren lernen Kinder Zahlen und Zahlenbeziehungen kennen. Sie sollen auch verstehen, was Rechenoperatoren sind und wie diese anzuwenden sind. Im Bereich Raum und Form sollen die Kinder die Fähigkeit sich im Raum zu orientieren bekommen, sie sollten Flächen legen und auslegen können. Sie sollen auch einfache Geometrische Figuren und Abbildungen erkennen und benennen.\\
+Die Kinder lernen auch Größen zu erkennen und mit diesen in den geeigneten Situationen umzugehen.\\
+Im letzten Bereich lernen Kinder Daten aus einfachen Situationen auszuwerten und darzustellen. Sie lernen auch einfache Zufallsexperimente kennen.
+\\
+In der Klasse 3/4 werden die oben genannten Bereiche erweitert und verbessert, so müssen Kinder zum Beispiel jetzt weitere geometrische Figuren erkennen und nennen können\autocite{Mathe:Lehrplan}.
+\\
+Nachdem diese Probleme nun gelöst wurden, können Spiele, die den oben genannten Kriterien entsprechen, ausgesucht werden. Es werden nun Spiele ausgesucht, die die verschiedenen Bereiche des Lehrplans abdecken und gleichzeitig die Kinder fördern und ihr Wissen verbessern.\\
+Um Ideen für Lernspiele zu sammeln wurde im Internet recherchiert welche Spiele andere Anwendungen zum Lernen anbieten. Es wurde hierzu auf unterschiedlichen Seiten nach Spielen gesucht. Auf den Online-Portalen für Spiele wie zum Beispiel Spielzwerg, findet man überwiegend Sudokus, Puzzles und ein paar andere Arten von Spielen, die das Gehirn trainieren sollen. Die meisten sind für Kinder der ersten bis vierten Klasse aber nicht sinnvoll, da diese Spiele nicht alle den Inhalten des Lehrplans entsprechen.\\
+Also wurden Spielideen auf der Basis des Lehrplans gesammelt, in welchen die Kinder die Grundrechenarten, Mengen, Wahrscheinlichkeiten kennenlernen, sowie deutsche Wörter schreiben und lesen können. Daraus bilden sich folgende Ideen, einmal die Grundrechenarten, das Vergleichen von Mengen mit Gegenständen, sowie das Vergleichen von Zahlen in der symbolischen Art, Rechenmauer lösen, das Spiel Blitzblick, die Länger von Objekten vergleichen, Zahlenreihen erkennen und fortführen können. Damit Kinder in der Sprache Deutsch besser werden können, sollten die Kinder Wörter lesen und schreiben können. Die Kinder sollten außerdem ganze Texte schreiben und verstehen.\\
+Aus den oben genannten Spielen wurde sechs ausgewählt, darunter die Grundrechenarten, da diese für Schulkinder unbedingt notwendig sind. Des Weiteren wurden der Blitzblick und der Mengenvergleich ausgewählt. Beim Blitzblick müssen Kinder schnell erfassen, wie viele Objekte sie sehen und lernen dadurch Mengen zu erfassen und die Anzahl dann auch zu nennen, ohne die Objekte nachzuzählen. Beim Mengenvergleich in dem die SchülerInnen die Mengen vergleichen sollen, gibt es zwei Varianten, den Vergleich von Objekten in der ikonischen Schreibweise und den Vergleich von Zahlen in der symbolischen Art. Bei der Variante mit Zahlen, lernen die Kinder die Zahlen miteinander zu vergleichen und somit welche Zahl größer oder kleiner ist. Die Objekten animieren die Kinder dazu Mengen zunächst zu erfassen und anschließend miteinander zu vergleichen sollen. Es wurde sich auch für das Spiel entschieden Zahlenreihen zu erkennen und fortzuführen, da das Erkennen von Mustern und Strukturen ebenfalls Teil des Lehrplans ist.
+Die SchülerInnen, sollten in der Lage sein die Zahlen um die die Reihe erweitert wird zu erkennen und dadurch die Reihe fortzuführen. Die Rechenmauer bietet den Kindern die Möglichkeit die Addition noch einmal zu verbessern. Das Prinzip der Rechenmauer ist das folgende, jeweils zwei Steine der Rechenmauer, die in der gleichen Ebene werden addiert und das Ergebnis wird in den Stein darüber geschrieben. Die Subtraktion kann als Erweiterung noch eingebaut werden. Bei der Rechenmauer sollen die SchülerInnen wie bei dem Spiel \textit{Grundrechenarten - Addition} addieren, aber in diesem Fall können die Zahlen wesentlich größer werden. Als letztes Spiel wurde sich für ein Spiel entschieden, was Wörter für Grundschulkinder nimmt, diese mischt und dem Kind anzeigen. Die Aufgabe des Kindes ist es zu erkennen welches Wort gemischt wurde und es richtig in ein Textfeld zu schreiben. Hierbei lernt das Kind Wörter, die es gelernt hat, zu erkennen und zu schreiben. Für die Aufgaben, in denen das Kind die Länge von Objekten unterscheiden kann, wurde sich nicht entschieden, da der Bildschirm nur eine gewisse Größe hat und es sehr ähnlich zu dem Mengenvergleichen ist. Die Objekte würden in Unity lang gezogen werden und das Kind müsste sehen welches länger ist. Außerdem ist die enaktive Umsetzung mit realen Objekten bei dem Vergleich von Längen besser geeignet. Im Fach Deutsch wurde sich nur für ein Spiel entschieden, da ein Spiel mit langen Texten schwer umsetzbar wäre. Das Kind müsste entweder lange Texte schreiben oder lesen und darauf hin müsste dieser lange Text überprüft werden. In diesem Fall gibt es auch keine gute Möglichkeit dies umzusetzen, sodass es dem Kind Spaß machen würde. Die Konzepte der einzelnen Spiele sind in den Abbildungen \ref{MengenKonzept}, \ref{RechenmauerKonzept}, \ref{BlitzblickKonzept}, \ref{FuehreDieReiheKonzept}, \ref{WortSalatKonzept}, \ref{WortSalatKonzept} zu sehen.\\
+Es wurde auch eine Szene entworfen die dem Kind zeigen soll wie gut es das Level abgeschlossen hat, das Konzept für diese ist in der Abbildung \ref{EndSzeneKonzept} zu sehen.\\       
+Um zwischen den einzelnen Level zu wechseln wurde ein Menü entworfen.
+Die Designs der Menüs sind in den Abbildungen \ref{MenuIdee}, \ref{MenuErweitertIdee}, zu sehen.\\
+Nachdem die Spiele des Projektes festgelegt sind, muss geklärt werden, welches Framework verwendet werden soll. Hierzu muss festgelegt sein, was es für ein Projekt sein soll. Soll die Anwendung in 2D oder in 3D sein? Für ein Projekt, das aus Spielen und Rätseln besteht, bietet sich es in 2D mehr an. Das liegt daran, dass die Kinder in diesen Spielen mehr schreiben und Objekte bewegen müssen. In 3D ist die Umgebung wahrscheinlich zusätzlich ablenkend und nicht dem Ziel förderlich. Wenn Lernspiele im Internet betrachtet werden, so sind diese immer in 2D.\\
+Um die Wahl des Frameworks einzugrenzen, muss klar sein, ob das Spiel online oder offline spielbar ist und auf welcher Plattform dieses Projekt erscheinen soll.\\
+Darum muss sich erst mit den Problemen Nummer sechs und sieben auseinandergesetzt werden.
+Im sechsten Problem ist die Frage, ob das Projekt online oder offline, also ob es nur für einen/eine SchülerIn sichtbar ist wie er/sie lernt und die Rätsel löst oder ob es für seinen/ihren Freundeskreis auch sichtbar sein kann. Der Vorteil von Online Ranglisten ist die Möglichkeit sich zu vergleichen und vielleicht die Motivation zu entwickeln mehr zu lernen, um besser als sein/ihr Freundeskreis zu sein. Andererseits, kann dies auch ein negativer Grund sein, wenn man  nicht so schnell wie sein/ihr Freundeskreis lernt oder nicht so gut ist, besteht die Gefahr, die Lust an der Anwendung zu verlieren. Wenn die Möglichkeit besteht mit dem Freundeskreis zu lernen, bringt das den Lernenden den Vorteil, dass sie motivierter sind. Der Nachteil hierbei ist, dass die Kinder die Anwendung nutzen sollten, weil sie es wollen und nicht weil ein Freund diese auch verwendet. Also wird das Projekt zunächst nur für einen Spieler ausgelegt. Die Kinder können es sich herunterladen und mithilfe des Punktesystems bei den Rätseln und den gezählten Sternen bei den Lernspielen untereinander vergleichen. So können sie für sich üben, ihren Fortschritt anzeigen und, wenn sie es wollen, diesen mit Freunden vergleichen.\\
+Zu dem Problem auf welcher Plattform das Projekt entwickelt werden soll gibt es vier Möglichkeiten. Es kann im Browser, auf einer Konsole, wie der Xbox, Playstation oder Switch erscheinen, auf dem Computer oder dem Handy entwickelt werden. Der Browser bietet gute Möglichkeiten für eine Kombination mit einem Multiplayer, einer Rangliste oder dem  gemeinsamen Lernen, für die Umsetzung des Projektes bis jetzt ist das aber nicht notwendig.\\
+Auf einer Konsole wäre die Umsetzung möglich, aber die Art wie die Lernenden ihr Lösungen bei den Lernspielen eintragen, gestaltet sich als komplizierter, da die meisten Konsolen keine Tastatur um die Lösung einfach einzutragen besitzen. Zum Schluss bleibt noch die Möglichkeit eine Handy-Anwendung oder eine Computer-Anwendung zu entwickeln. Auf dem Handy kann man das Projekt für einen Spieler oder mehrere entwickeln, auch die Art wie die Lösung eingetragen wird ist simpel, da Handys eine Tastatur besitzen. Das Problem dabei ist, dass nicht alle SchülerInnen ein Handy oder Tablet besitzen.\\
+Damit bleibt für unser Projekt der Computer. In den meisten Haushalten gibt es einen Computer, der in der Lage ist ein Lernspiel mit nicht so hohen Anforderungen in der Grafik und in der Leistung ausführen zu können. Der Computer hat eine Tastatur und wenn später das Projekt einen online Modus bekommen soll, so kann dieser problemlos hinzugefügt werden. Des Weiteren ist die Möglichkeit der Hilfestellung durch die Eltern am Computer durch einen größeren Bildschirm besser möglich.
+
+Nachdem diese Probleme geklärt wurden, sollte überlegt werden, welche Engine diese Voraussetzungen erfüllt. Die Frameworks, die genutzt werden können, um das Projekt zu realisieren, wären Unity3D Engine, die Unreal Engine und die CryEngine. Die CryEngine ist für Virtual Reality Spiele eine sehr gute Engine und für das Projekt einer 2D Entwicklung daher nicht geeignet. Die Unreal Engine ist eine gute Engine mit vielen Möglichkeiten, diese legt ihren Schwerpunkt aber auf Anwendungen, die in 3D sein sollen. Die Unity Engine ist in der Lage Anwendungen in 2D und 3D zu entwickeln, sie wird laut Bewertungen aber bevorzugt für 2D-Anwendungen verwendet und wurde unter anderem deswegen ausgewählt. Ein weiterer Vorteil, der für die Unity Engine spricht, ist, dass in den vorherigen Semestern an der Hochschule bereits mit Unity gearbeitet wurde.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/MenuIdee.PNG}
+  \caption{Menü Konzept}
+  \label{MenuIdee}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/AdvancedMenuIdee.PNG}
+  \caption{Erweitertes Menü Konzept}
+  \label{MenuErweitertIdee}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/MengenVergleichenIdee.PNG}
+  \caption{Mengen vergleichen Konzept}
+  \label{MengenKonzept}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/basicOperations.PNG}
+  \caption{Grundrechenarten Konzept}
+  \label{GrundrechenartenKonzept}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/triangleIdee.PNG}
+  \caption{Rechenmauer Konzept}
+  \label{RechenmauerKonzept}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/Blitzblick.PNG}
+  \caption{Blitzblick Konzept}
+  \label{BlitzblickKonzept}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/fuehreDieReiheFortIdee.PNG}
+  \caption{Führe die Reihe fort Konzept}
+  \label{FuehreDieReiheKonzept}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/wordMixIdee.PNG}
+  \caption{Wortsalat Konzept}
+  \label{WortSalatKonzept}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/finishSzeenIdee.PNG}
+  \caption{Endszene Konzept}
+  \label{EndSzeneKonzept}
+\end{figure}
+%---
+\chapter{Implementierung}
+\label{cha:implementierung}
+\section{Rätsel}
+\label{sec:raetsel}
+\input{implementierung-raetsel}
+\newpage
+\section{Lernspiele}
+\label{sec:lernspiele}
+\input{implementierung-lernspiele}
+%---
+\chapter{Inbetriebnahme}
+\label{cha:inbetriebnahme}
+
+Um das Projekt in betrieb nehmen zu können, muss in Unity ein Build erzeugt werden. Dafür muss in Unity oben Links auf File und danach auf Build Settings gedrückt werden. Dies ist in Abbildung \ref{GoToBuildSettings} zu sehen. Es wird nicht nur Build and Run ausgewählt, da erst noch ein paar Einstellungen angepasst werden müssen.\\
+Als erstes muss überprüft werden, ob alle Szenen in dem Build aktiviert sind. In den Einstellungen ganz oben gibt es eine Liste mit den Szenen, dort müssen alle hinzugefügt werden. Dies ist in der Abbildung \ref{BuildSettingsSzene} zu sehen. Wichtig hierbei ist, dass die Szenen ganz oben das Hauptmenü ist, wenn das Programm später gestartet wird, wird die oberste Szene als erstes angezeigt.\\
+In diesem Projekt wurde ein Icon eingefügt, das in der Taskleiste und bei der Anwendung im Explorer zu sehen ist. Dieses Icon wird in den Build settings hinzugefügt \autocite{Glühbirne}. Um das Icon hinzuzufügen, muss auf Player Settings gedrückt werden, dafür muss unten Links in den Build Settings gedrückt werden. In diesen Einstellungen unter Player, wird das Icon in das dafür vorhergesehen Feld gezogen. Dies ist in der Abbildung \ref{PlayerSettings} zu sehen. Der obere Blaue Pfeil, ist für das Anwendungs-Icon. Das Icon das zu sehen ist, wenn die Anwendung gestartet ist, wird an die Position, die der untere blaue Pfeil\autocite{Gehirn} markiert gezogen. Wie die beiden Icons aussehen ist in der Abbildung \ref{Lightbulb} und in der Abbildung \ref{BrainBook} zu sehen.\\
+Nachdem alles eingestellt wurde, wird auf Build gedrückt. Danach muss ein Ordner für das Build ausgewählt werden. Um das Projekt dann zu starten, muss der/die NutzerIn in dem Ordner des Builds auf die 'BrainTraining.exe' drücken und dann kann das Spiel gespielt werden.
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/GoToBuildSettings.PNG}
+  \caption{Zu den Build Settings gelangen}
+  \label{GoToBuildSettings}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/BuildSettingsSzenes.PNG}
+  \caption{Alles Szenen aktivieren}
+  \label{BuildSettingsSzene}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/PlayerSettings.jpg}
+  \caption{Player Settings}
+  \label{PlayerSettings}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/Lightbulb.PNG}
+  \caption{Glühbirne als Icon für die Anwendung}
+  \label{Lightbulb}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth,height=0.55\textheight,keepaspectratio]{images/StartIcon.PNG}
+  \caption{Icon beim Start der Anwendung}
+  \label{BrainBook}
+\end{figure}
+
+%---
+\chapter{Evaluierung}
+Um zu nennen, welche Ziele des Projektes erreicht wurden und welche nicht erreicht wurden, werden diese in vier Kategorien eingeteilt. Diese lauten "Must Have"\ , "\ Should Have"\, "Could Have"\ und "Nice to Have"\ eingeteilt.\\
+Die Kategorie "Must Have" beinhaltete alle Ziele die auf jeden Fall erfüllt sein müssen. In diesem Projekt wären das die Lernspiele und die Rätsel. Diese sollten auch ein Menü zur Auswahl der Spiele besitzen. Diese Ziel wurde erreicht, es gibt in beiden Bereichen eine Auswahl an unterschiedlichen Spielen. Die Spiele wurden durch ein Menü eingeteilt und können so bequem ausgewählt werden.\\
+In der Kategorie ''Should Have'' wurde für das Projekt ein Hauptmenü vorhergesehen. Auch diese Ziele wurde erreicht. Es gibt eine Szene in dieser kann das Kind zwischen den Rätseln und den Lernspielen entscheiden. Hierbei kann das Kind sehen, wie viele Punkte es in dem Abschnitt der Rätsel bekommen hat und wie viele Sterne es durch das Spielen der Lernspiele schon gesammelt hat. Das Kind kann diese Anzahl auch mit einem Button zurücksetzten. Und das Spiel beenden.\\
+Zu den "Could Have"\ gehören schwierigere Level, eine Online Rangliste und das Spiel auch für Handys zu implementieren. Davon wurden nur die schwierigeren Level umgesetzt.\\
+In der letzten Kategorie den sogenannten "Nice to Have"\, gehören ein Profil, Achievements und eine Evaluation. Ein Profil und Achievements wurden nicht implementiert, aber eine sehr vereinfachtet Art der Evaluation hat statt gefunden. Das Projekt wurde von Bekannten und Freunden getestet. Dies hat dabei geholfen Fehler zu finden und Ideen zu sammeln um das Projekt zu erweitert.\\
+
+%---
+\chapter{Zusammenfassung und Ausblick}
+\label{cha:zusammenfassung}
+
+\section{Erreichte Ergebnisse}
+\label{sec:ergebnisse}
+
+In diesem Projekt wurde eine Anwendung entwickelt zum Lernen und Rätseln erzeugt. Um die Rätsel und Lernspiele zu entwickeln wurde sich mit der Materie auseinandergesetzt. Die Rätsel mussten rausgesucht werden und für die Lernspiele musste Recherche betrieben werden. Die Probleme wurden zuerst analysiert und danach im Kapitel Lösungskonzept bearbeitet. Die genannten Probleme und Lösungen wurden so wie beschrieben erreicht. Was noch an dem Projekt erweitert werden kann und wie dies umgesetzt werden könnte, wird in den Folgenden Kapiteln erläutert.
+
+Die Zusammenfassung dient dazu, die wesentlichen Ergebnisse des
+Praktikums und vor allem die entwickelte Problemlösung und den
+erreichten Fortschritt darzustellen. (Sie haben Ihr Ziel erreicht und
+dies nachgewiesen).
+
+\section{Ausblick}
+\label{sec:ausblick}
+
+Das gesamte Projekt könnte noch um ein Profil erweitert werden. Die Kinder könnten sich einen Namen aussuchen, ein Bild für ihr Profil auswählen. Durch das Profil könnten Errungenschaften beinhalten. Das Projekt könnte auch den Kindern ermöglichen sich mit anderen Kindern zu vergleichen, dass heißt sie könnten die Errungenschaften und den Fortschritt sehen. Die Kinder könnten sich auch als Freunde hinzufügen. Außerdem könnten Events eingebaut werden in denen die Kinder durch das Spielen von Leveln Punkte sammeln und dann in einer Rangliste aufsteigen. Es könnte Musik eingebaut werden die eine angenehme Atmosphäre bieten. Diese könnte in den Einstellungen leiser oder lauter gestellt werden. \\
+Die Rätsel können durch noch mehr unterschiedliche Rätselarten erweitert werden. Außerdem könnte ein Hinweissystem eingefügt werden. Nach der Eingabe der Ergebnisse, könnte mithilfe einer Animation zu dem Sound der abgespielt wurde dem Kind zeigen ob es richtig oder falsch lag.\\
+Die Lernspiele könnten mit neuen Spielen erweitert werden, außerdem könnte die Anzahl der Level nicht mehr mit der Schwierigkeit hochgehen, sonder im dem Menü mitangegeben werden. Es kann ein Menü das mithilfe von Bildern den Kinder erklärt wie sie die Spiele spielen sollen eingebaut werden. Das Menü kann um eine Auswahl der Klassen erweitert werden, so können die Spiele besser für die einzelnen Klassen gefiltert werden. Das Menü könnte dann auch zwischen den unterschiedlichen Schulfächern unterscheiden um so die Übersichtlichkeit zu verbessern.\\
+
+\subsection{Erweiterbarkeit der Ergebnisse}
+\label{sub:erweiterbarkeit}
+
+Um ein Profil einzubauen, wird eine Szene dafür benötigt. Diese benötigt dann einen passenden Aufbau. Ein Textfeld um den Namen einzugeben, ein Feld um ein Bild hochzuladen. Das Profil benötigt eine Liste mit Errungenschaften. Die Errungenschaften bräuchten einen Text und ein Bild. Die Szene würde auch ein Button benötigen um die Änderungen zu speichern. Für den Multiplayer, müssten die Daten des Kindes gespeichert werden. Mit diesen könnte dann verglichen werden welches Kind mehr oder weniger erreicht hat, dieses Ergebnis könnte dann in einer Tabelle sichtbar sein. Diese Statistik könnte auch im Profil angezeigt werden. Um eine Art gemeinsames lernen umzusetzen, benötigt man in diesem Projekt eine Aufgabe die allen NutzerInnen gestellt werden kann. Wer dann zum Beispiel mehr Aufgaben in einer gewissen Zeit gelöst hat, wird in der Tabelle für die Aufgabe ganz oben angezeigt. Das Event geht ein paar Tage und nach Ablauf bekommt das beste Kind eine Trophäe. Um eine passende Musik zu finden, kann frei verfügbare Musik aus dem Internet verwendet werden oder sogar eine eigene Melodie komponiert werden. Diese Musik darf das Kind nicht ablenken und muss eine Atmosphäre erzeugen, in der das Kind nicht abgelenkt wird. Mit einem Einstellungs-Button könnte die Musik lauter und leiser gestellt werden, diese kann im Hauptmenü eingebaut werden. Die Position für diesen Button wäre dort wo der Fortschritt zurückgesetzt wird. Dort könnte das Kind die Anzahl an Punkten und Sternen zurück setzten und die Musik einstellen.\\
+Die Rätsel wurden so Implementiert, dass ohne Probleme mehrere erzeugt werden können. Es besteht auch kein Problem ein Hinweissystem einzubauen. Dafür müsste es die Möglichkeit geben eine Währung zu sammeln, diese könnte das Kind durch das Lösen der Rätsel oder sogar durch das Lösen der Lernspiele erhalten. Mit dieser Währung könnte das Kind sich dann einen Hinweis kaufen um das Rätsel lösen zu können. Es muss nur überlegt werden wie viele Hinweise das Kind pro Rätsel kaufen darf. Eine Animation einzubauen ist auch nicht Problematisch, dafür werden zwei Sounds benötigt. Einer für das richtige Lösen und einer für das Falsche Lösen. Des weiteren wird eine Animation benötigt die dem Kind visuell zeigen soll, ob es das Rätsel richtig oder falsch gelöst hat. Diese muss nicht komplex sein, dafür würde auch eine Anreihung von Bildern reichen. \\
+Die Lernspiele können um neue Spiele erweitert werden. Die Spiele die zurzeit Implementiert sind, sind für die erste bis vierte Klasse. Der Lehrplan gibt aber noch mehr Stoff her, so können sich also dafür auch neue Spiele ausgedacht werden. Die Menü-Szenen einzubauen ist auch kein Problem, dafür muss nur ein Design überlegt werden, dass zum restlichen Projekt passt. Eine Anleitung der Spiele, kann in eines der Menüs eingebaut werden. Am besten in das Menü das dann die Spiele auch anbietet. Wenn ein Menü eingebaut wird, welches zum Beispiel zwischen den Spielen für das Fach Deutsch und Mathe unterscheidet, dann sollte sich die Anleitung im jeweiligen Menü befinden, in dem auch die Spiele vorkommen.\\
+
+%-----------------------------------------------------------------------
+\appendix
+
+%---
+\printbibliography[heading=bibintoc]
+
+
+
+\end{document}

@@ -6,10 +6,13 @@ using System.Xml;
 using System.Xml.Serialization;
 
 public class RiddleInfo {
+    public const int RiddleAmount = 23;
+
     [XmlElement]
     public int id;
     [XmlElement]
     public string title;
+    public bool completed;
     public int points;
     [XmlElement]
     public int maxPoints;
@@ -37,14 +40,15 @@ public class RiddleInfo {
         using (XmlReader reader = new XmlNodeReader(xmldoc)) {
             info = serializer.Deserialize(reader) as RiddleInfo;
         }
-        if (info.points == 0)
-            info.points = info.maxPoints;
+        if (SaveDataManager.RiddleSaveData != null) {
+            info.completed = SaveDataManager.RiddleSaveData.IsCompleted(id);
+            info.points = SaveDataManager.RiddleSaveData.GetRemainingPoints(id);
+        }
         info.pointReduction = (info.maxPoints - info.minPoints) / 5;
         foreach (string s in info.descriptionParagraphs) {
             if (info.description.Length > 0)
                 info.description += "\n\n";
             string temp = s;
-            // temp = Regex.Replace(temp, @"\$([^?]*)\$", "<color=#b83e39>$1</color>");
             temp = Regex.Replace(temp, @"\$([^$]+)\$", "<color=#b83e39>$1</color>");
             info.description += temp;
         }
@@ -62,6 +66,7 @@ public class RiddleInfo {
         public int id;
         [XmlElement]
         public string title;
+        public bool completed;
         public int points;
         [XmlElement]
         public int maxPoints;
@@ -78,8 +83,10 @@ public class RiddleInfo {
         using (XmlReader reader = new XmlNodeReader(xmldoc)) {
             info = simpleSerializer.Deserialize(reader) as RiddleInfo.SimpleRiddleInfo;
         }
-        if (info.points == 0)
-            info.points = info.maxPoints;
+        if (SaveDataManager.RiddleSaveData != null) {
+            info.completed = SaveDataManager.RiddleSaveData.IsCompleted(id);
+            info.points = SaveDataManager.RiddleSaveData.GetRemainingPoints(id);
+        }
         return info;
     }
 }

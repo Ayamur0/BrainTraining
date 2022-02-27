@@ -8,7 +8,7 @@
         <value>Von links nach rechts haben wir Personen A, B und C.</value>
         <value>$Finde heraus in welchem Monat sie jeweils geboren sind$. Dabei helfen dir ihre Aussage:</value>
         <value>A: "C wurde $zwei Monate nach mir geboren$."</value>
-        <value>B: "A und mit trennen $6 Monate$."</value>
+        <value>B: "A und mich trennen $6 Monate$."</value>
         <value>C: "B wurde $in dem Monat geboren, dessen Zahl drei Mal so groß ist wie die meines Geburtsmonats$."</value>
         <value>Gib deine Antwort als Zahl ein (1 für Januar, 2 für Februar usw.).</value>
     </descriptionParagraphs>
